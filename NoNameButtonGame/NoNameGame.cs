@@ -11,7 +11,6 @@ namespace NoNameButtonGame
 
         private RenderTarget2D target2D;
 
-        float Scale = 1F;
         float DefaultWidth = 1280F;
         float DefaultHeight = 720F;
 
@@ -38,7 +37,6 @@ namespace NoNameButtonGame
         Rectangle BackbufferBounds;
         float backbufferAspectRatio;
         float ScreenAspectRatio;
-
         float rx,ry,rw,rh;
         protected override void Update(GameTime gameTime) {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -66,8 +64,20 @@ namespace NoNameButtonGame
         }
 
         protected override void Draw(GameTime gameTime) {
-            GraphicsDevice.Clear(new Color(50,50,50));
-            Rectangle BackbufferBounds = GraphicsDevice.PresentationParameters.Bounds;
+            GraphicsDevice.SetRenderTarget(target2D);
+            GraphicsDevice.Clear(new Color(50, 50, 50));
+            //Game Update
+
+            //End
+            GraphicsDevice.SetRenderTarget(null);
+            BackbufferBounds = GraphicsDevice.PresentationParameters.Bounds;
+
+            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, null);
+            Rectangle DesRec = new Rectangle((int)rx, (int)ry, (int)rw, (int)rh);
+            GraphicsDevice.Clear(Color.HotPink);
+            _spriteBatch.Draw(target2D, DesRec, null, Color.White);
+            _spriteBatch.End();
+            
           
             base.Draw(gameTime);
         }
