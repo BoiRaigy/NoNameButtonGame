@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using NoNameButtonGame.BeforeMaths;
 
 namespace NoNameButtonGame
 {
@@ -14,7 +15,7 @@ namespace NoNameButtonGame
 
         float DefaultWidth = 1280F;
         float DefaultHeight = 720F;
-        AwesomeButton button;
+        AwesomeButton[] button;
         Raigy.Camera.CameraClass camera;
         public NoNameGame() {
             _graphics = new GraphicsDeviceManager(this);
@@ -24,21 +25,27 @@ namespace NoNameButtonGame
 
         protected override void Initialize() {
             base.Initialize();
-
+            Console.CursorVisible = false;
             target2D = new RenderTarget2D(GraphicsDevice, (int)DefaultWidth, (int)DefaultHeight);
             _graphics.PreferredBackBufferWidth = (int)DefaultWidth;
             _graphics.PreferredBackBufferHeight = (int)DefaultHeight;
             _graphics.ApplyChanges();
             camera = new Raigy.Camera.CameraClass(new Vector2(DefaultWidth, DefaultHeight));
-            button = new AwesomeButton(new Vector2(128,64)) {
-                Texture = Content.Load<Texture2D>("awesomebutton"),
-                Position = new Vector2(0, 0),
-                
+            button = new AwesomeButton[3];
+            button[0] = new AwesomeButton(new Vector2(0, 0),new Vector2(128,64),Content.GetTHBox("awesomebutton")) {
              DrawColor = Color.White,
-             
             };
-            button.Click += BtnEvent;
-            CamPos = new Vector2(button.Size.X / 2, button.Size.Y / 2);
+            button[0].Click += BtnEvent;
+            button[1] = new AwesomeButton(new Vector2(-10, -64), new Vector2(16, 8), Content.GetTHBox("awesomebutton")) {
+                DrawColor = Color.White,
+            };
+            button[1].Click += BtnEvent;
+            button[2] = new AwesomeButton(new Vector2(200, 100),new Vector2(512, 256), Content.GetTHBox("awesomebutton")) {
+                DrawColor = Color.White,
+            };
+            button[2].Click += BtnEvent;
+            //CamPos = new Vector2(button[0].Size.X / 2, button[0].Size.Y / 2);
+            //CamPos = new Vector2(700, 400);
         }
 
         protected override void LoadContent() {
@@ -55,7 +62,18 @@ namespace NoNameButtonGame
             Console.SetCursorPosition(0, 0);
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.Right, true)) {
+                CamPos.X += 45;
+            }
+            if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.Left, true)) {
+                CamPos.X -= 45;
+            }
+            if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.Up, true)) {
+                CamPos.Y -= 45;
+            }
+            if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.Down, true)) {
+                CamPos.Y += 45;
+            }
             if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.F11, true)) {
                 _graphics.ToggleFullScreen();
                 if (_graphics.IsFullScreen) {
@@ -86,10 +104,9 @@ namespace NoNameButtonGame
 
             Vector2 V2C = new Vector2(VMP.X / camera.Zoom + CamPos.X - (DefaultWidth / camera.Zoom) / 2, VMP.Y / camera.Zoom + CamPos.Y - (DefaultHeight / camera.Zoom) / 2);
             Console.WriteLine("V2C:" + V2C + "        ");
-            button.Update(gameTime, V2C);
-            Console.WriteLine("Button");
-            Console.WriteLine(button.Position + "        ");
-            Console.WriteLine(button.Size + "        ");
+            for (int i = 0; i < button.Length; i++) {
+                button[i].Update(gameTime, V2C);
+            }
             Console.WriteLine("Camera");
             Console.WriteLine(CamPos + "        ");
 
@@ -122,8 +139,10 @@ namespace NoNameButtonGame
             GraphicsDevice.Clear(new Color(50, 50, 50));
 
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, transformMatrix: camera.CamMatrix);
-            
-            button.Draw(_spriteBatch);
+            for (int i = 0; i < button.Length; i++) {
+                button[i].Draw(_spriteBatch);
+            }
+           
 
             _spriteBatch.End();
             GraphicsDevice.SetRenderTarget(null);

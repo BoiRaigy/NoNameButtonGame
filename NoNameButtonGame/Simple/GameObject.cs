@@ -12,6 +12,7 @@ namespace Raigy.Obj
         public Texture2D Texture;
         public Vector2 Position;
         public Vector2 Size;
+        public Vector2 FrameSize;
         public Rectangle ImageLocation;
         public Color DrawColor;
         public int DrawImportance;

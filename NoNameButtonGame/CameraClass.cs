@@ -8,7 +8,7 @@ namespace Raigy.Camera
     class CameraClass
     {
         public Matrix CamMatrix { get; set; }
-        public float Zoom = 4f;
+        public float Zoom = 2f;
         Vector2 Screen;
 
         public CameraClass(Vector2 screen) {
