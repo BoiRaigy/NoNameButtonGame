@@ -52,6 +52,7 @@ namespace NoNameButtonGame
         Vector2 CamPos;
         
         protected override void Update(GameTime gameTime) {
+            Console.SetCursorPosition(0, 0);
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -68,14 +69,29 @@ namespace NoNameButtonGame
                 _graphics.ApplyChanges();
 
             }
+            Console.WriteLine("Screen (Window)");
+            Console.WriteLine(_graphics.PreferredBackBufferWidth + "        ");
+            Console.WriteLine(_graphics.PreferredBackBufferHeight + "        ");
+            camera.Update(CamPos, new Vector2(0, 0));
 
-            camera.Update(CamPos, new Vector2(2, 2));
+            Console.WriteLine("Mouse");
             MouseState mouseState = Mouse.GetState();
-            Vector2 VMP = mouseState.Position.ToVector2();
-            Vector2 V2C = (new Vector2(DefaultWidth  / 2, DefaultHeight  / 2) - new Vector2(VMP.X,VMP.Y) )/ camera.Zoom;
-            button.Update(gameTime, CamPos + V2C);
-            Console.WriteLine(button.Position);
-            Console.WriteLine(CamPos);
+            Vector2 VecMouse = mouseState.Position.ToVector2();
+            Console.WriteLine("VecMouse:" + VecMouse + "        ");
+            float TargetScreenDifX = _graphics.PreferredBackBufferWidth / DefaultWidth;
+            float TargetScreenDifY = _graphics.PreferredBackBufferHeight / DefaultHeight;
+            
+            Vector2 VMP = new Vector2(VecMouse.X / TargetScreenDifX, VecMouse.Y / TargetScreenDifY);
+            Console.WriteLine("VMP:" + VMP + "        ");
+
+            Vector2 V2C = new Vector2(VMP.X / camera.Zoom + CamPos.X - (DefaultWidth / camera.Zoom) / 2, VMP.Y / camera.Zoom + CamPos.Y - (DefaultHeight / camera.Zoom) / 2);
+            Console.WriteLine("V2C:" + V2C + "        ");
+            button.Update(gameTime, V2C);
+            Console.WriteLine("Button");
+            Console.WriteLine(button.Position + "        ");
+            Console.WriteLine(button.Size + "        ");
+            Console.WriteLine("Camera");
+            Console.WriteLine(CamPos + "        ");
 
             base.Update(gameTime);
 
