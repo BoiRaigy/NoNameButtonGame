@@ -18,6 +18,8 @@ namespace NoNameButtonGame
         float DefaultWidth = 1280F;
         float DefaultHeight = 720F;
         LevelManager lvmng;
+
+        //SyncRepoPullMultiDeviceTest
         public NoNameGame() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
