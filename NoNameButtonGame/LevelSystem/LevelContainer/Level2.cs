@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using NoNameButtonGame.BeforeMaths;
-namespace NoNameButtonGame.LevelSystem
+namespace NoNameButtonGame.LevelSystem.LevelContainer
 {
     class Level2 : SampleLevel
     {
