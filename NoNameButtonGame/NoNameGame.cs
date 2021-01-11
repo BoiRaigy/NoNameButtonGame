@@ -35,10 +35,13 @@ namespace NoNameButtonGame
             _graphics.PreferredBackBufferHeight = (int)DefaultHeight;
             _graphics.ApplyChanges();
             lvmng = new LevelManager((int)DefaultHeight, (int)DefaultWidth, new Vector2(DefaultWidth, DefaultHeight));
+            lvmng.ChangeWindowName = ChangeTitle;
             //CamPos = new Vector2(button[0].Size.X / 2, button[0].Size.Y / 2);
             //CamPos = new Vector2(700, 400);
         }
-
+        private void ChangeTitle(string NewName) {
+            Window.Title = NewName;
+        }
         protected override void LoadContent() {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 

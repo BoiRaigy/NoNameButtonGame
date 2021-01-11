@@ -21,6 +21,7 @@ namespace NoNameButtonGame.LevelSystem
         public int DefaultHeight;
         public Vector2 Window;
         public Vector2 MouseIngame;
+        public string Name;
         public SampleLevel(int defaultWidth, int defaultHeight, Vector2 window) {
             DefaultWidth = defaultWidth;
             DefaultHeight = defaultHeight;
@@ -52,6 +53,18 @@ namespace NoNameButtonGame.LevelSystem
             float TargetScreenDifY = Window.Y / DefaultHeight;
             Vector2 VMP = new Vector2(VecMouse.X / TargetScreenDifX, VecMouse.Y / TargetScreenDifY);
             MouseIngame = new Vector2(VMP.X / camera.Zoom + CamPos.X - (DefaultWidth / camera.Zoom) / 2, VMP.Y / camera.Zoom + CamPos.Y - (DefaultHeight / camera.Zoom) / 2);
+        }
+        public virtual void CallFinish() {
+            if (Finish != null && Finish.GetInvocationList().Length > 0)
+                Finish(this, new EventArgs());
+        }
+        public virtual void CallFail() {
+            if (Fail != null && Fail.GetInvocationList().Length > 0)
+                Fail(this, new EventArgs());
+        }
+        public virtual void CallReset() {
+            if (Reset != null && Reset.GetInvocationList().Length > 0)
+                Reset(this, new EventArgs());
         }
     }
 }

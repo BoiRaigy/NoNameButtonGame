@@ -14,19 +14,18 @@ using Microsoft.Xna.Framework.Input;
 using NoNameButtonGame.BeforeMaths;
 namespace NoNameButtonGame.LevelSystem
 {
-    class Level1 : SampleLevel
+    class Level2 : SampleLevel
     {
 
         AwesomeButton button;
 
 
-        public Level1(int defaultWidth, int defaultHeight, Vector2 window) : base(defaultWidth, defaultHeight, window) {
-
-            button = new AwesomeButton(new Vector2(-64, -32), new Vector2(128, 64), staticContent.Content.GetTHBox("awesomebutton")) {
+        public Level2(int defaultWidth, int defaultHeight, Vector2 window) : base(defaultWidth, defaultHeight, window) {
+            Name = "Level 2 - WHAAT?!? There is more to this Game?!";
+            button = new AwesomeButton(new Vector2(-64, -232), new Vector2(128, 64), staticContent.Content.GetTHBox("awesomebutton")) {
                 DrawColor = Color.White,
             };
             button.Click += BtnEvent;
-            Name = "Click the Button!";
         }
 
 
