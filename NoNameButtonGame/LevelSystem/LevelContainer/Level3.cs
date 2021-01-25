@@ -15,25 +15,24 @@ using NoNameButtonGame.BeforeMaths;
 using NoNameButtonGame.GameObjects;
 namespace NoNameButtonGame.LevelSystem.LevelContainer
 {
-    class Level1 : SampleLevel
+    class Level3 : SampleLevel
     {
 
         AwesomeButton button;
-        Cursor cursor;
 
-        public Level1(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
 
-            button = new AwesomeButton(new Vector2(-64, -32), new Vector2(160, 64), staticContent.Content.GetTHBox("startbutton")) {
+        public Level3(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
+            Name = "Level 3 - YOU ARE GETTING THE HANG I SEE";
+            button = new AwesomeButton(new Vector2(-64, -0), new Vector2(128, 64), staticContent.Content.GetTHBox("failbutton")) {
                 DrawColor = Color.White,
             };
             button.Click += BtnEvent;
-            Name = "Click the Button!";
         }
 
 
 
         private void BtnEvent(object sender, EventArgs e) {
-            CallFinish();
+            CallFail();
         }
         public override void Draw(SpriteBatch sp) {
             button.Draw(sp);
@@ -41,7 +40,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
         public override void Update(GameTime gt) {
             base.Update(gt);
-            
+
             button.Update(gt, MouseIngame);
 
         }

@@ -63,11 +63,11 @@ namespace NoNameButtonGame
                     _graphics.PreferredBackBufferWidth = 1920;
                     _graphics.PreferredBackBufferHeight = 1080;
                 } else {
-                    _graphics.PreferredBackBufferWidth = (int)DefaultWidth;
+                    _graphics.PreferredBackBufferWidth = (int)DefaultWidth + 100;
                     _graphics.PreferredBackBufferHeight = (int)DefaultHeight;
                 }
                 _graphics.ApplyChanges();
-                lvmng.ChangeScreen(new Vector2(DefaultHeight, DefaultWidth));
+                lvmng.ChangeScreen(new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
             }
 
             lvmng.Update(gameTime);

@@ -23,9 +23,21 @@ namespace NoNameButtonGame.BeforeMaths
                 new Rectangle(1,2,30,12) };
                     r.Imagesize = new Vector2(32, 16);
                     break;
+                case "startbutton":
+                    r.Hitbox = new Rectangle[2] { new Rectangle(2,1, 44,14),
+                new Rectangle(1,2,46,12)  };
+                    r.Imagesize = new Vector2(48, 16);
+                    break;
+                case "failbutton":
+                    r.Hitbox = new Rectangle[2] { new Rectangle(2,1, 28,14),
+                new Rectangle(1,2,30,12) };
+                    r.Imagesize = new Vector2(32, 16);
+                    break;
+                case "dontTouchZone":
                 default:
                     r.Imagesize = new Vector2(r.Texture.Width, r.Texture.Height);
                     r.Hitbox = new Rectangle[1] { new Rectangle(0, 0, r.Texture.Width, r.Texture.Height) };
+                    r.Imagesize = new Vector2(r.Texture.Width, r.Texture.Height);
                     break;
             }
             return r;

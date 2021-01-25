@@ -7,7 +7,9 @@ using Raigy.Obj;
 using Microsoft.Xna.Framework.Input;
 using NoNameButtonGame.Interfaces;
 using NoNameButtonGame.BeforeMaths;
-namespace NoNameButtonGame
+using Raigy.Input;
+
+namespace NoNameButtonGame.GameObjects
 {
     class AwesomeButton : GameObject, IMouseActions, IHitbox
     {
@@ -29,7 +31,7 @@ namespace NoNameButtonGame
         public event EventHandler Enter;
         public event EventHandler Click;
         bool Hover;
-        
+
         Rectangle[] hitbox;
         public Rectangle[] Hitbox {
             get => hitbox;
@@ -51,11 +53,9 @@ namespace NoNameButtonGame
                     if (Enter != null)
                         Enter(this, new EventArgs());
                 }
-                switch (mouseState.LeftButton) {
-                    case ButtonState.Pressed:
-                        if (Click != null)
-                            Click(this, new EventArgs());
-                        break;
+                if (InputReaderMouse.CheckKey(InputReaderMouse.MouseKeys.Left, true)){
+                    if (Click != null)
+                        Click(this, new EventArgs());
                 }
             } else {
                 if (Hover)
@@ -66,9 +66,9 @@ namespace NoNameButtonGame
 
 
             if (Hover) {
-                ImageLocation = new Rectangle(32, 0, 32, 16);
+                ImageLocation = new Rectangle((int)FrameSize.X, 0, (int)FrameSize.X, (int)FrameSize.Y);
             } else {
-                ImageLocation = new Rectangle(0, 0, 32, 16);
+                ImageLocation = new Rectangle(0, 0, (int)FrameSize.X, (int)FrameSize.Y);
             }
 
 
