@@ -9,7 +9,7 @@ using NoNameButtonGame.Interfaces;
 
 namespace NoNameButtonGame.GameObjects
 {
-    class DontTouch: GameObject, IHitbox
+    class DontTouch: GameObject, IHitbox, IMouseActions
     {
         public DontTouch(Vector2 Pos, Vector2 Size, THBox box) {
             base.Size = Size;
@@ -24,7 +24,9 @@ namespace NoNameButtonGame.GameObjects
             get => hitbox;
         }
        
-        public event EventHandler Touched;
+        public event EventHandler Leave;
+        public event EventHandler Enter;
+        public event EventHandler Click;
 
         public override void Draw(SpriteBatch sp) {
             base.Draw(sp);

@@ -18,7 +18,9 @@ namespace NoNameButtonGame
         float DefaultWidth = 1280F;
         float DefaultHeight = 720F;
         LevelManager lvmng;
-
+        Texture2D Mousepoint;
+        Vector2 MousepointTopLeft;
+        bool ShowActualMousePos = false;
         public NoNameGame() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -37,6 +39,8 @@ namespace NoNameButtonGame
             _graphics.ApplyChanges();
             lvmng = new LevelManager((int)DefaultHeight, (int)DefaultWidth, new Vector2(DefaultWidth, DefaultHeight));
             lvmng.ChangeWindowName = ChangeTitle;
+            Mousepoint = Content.GetTHBox("mousepoint").Texture;
+            
             //CamPos = new Vector2(button[0].Size.X / 2, button[0].Size.Y / 2);
             //CamPos = new Vector2(700, 400);
         }
@@ -54,7 +58,8 @@ namespace NoNameButtonGame
        
        
         protected override void Update(GameTime gameTime) {
-          
+            MouseState mouse = Mouse.GetState();
+            MousepointTopLeft = mouse.Position.ToVector2() - new Vector2(3, 3);
             base.Update(gameTime);
 
             if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.F11, true)) {
@@ -108,6 +113,8 @@ namespace NoNameButtonGame
             Rectangle DesRec = new Rectangle((int)rx, (int)ry, (int)rw, (int)rh);
             GraphicsDevice.Clear(Color.HotPink);
             _spriteBatch.Draw(target2D, DesRec, null, Color.White);
+            if (ShowActualMousePos)
+            _spriteBatch.Draw(Mousepoint, new Rectangle(MousepointTopLeft.ToPoint(), new Point(6,6)), Color.White);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
