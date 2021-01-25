@@ -23,7 +23,7 @@ namespace NoNameButtonGame
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             staticContent.Content = Content;
-            IsMouseVisible = true;
+            IsMouseVisible = false;
             
         }
 

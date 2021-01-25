@@ -27,6 +27,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 DrawColor = Color.White,
             };
             button.Click += BtnEvent;
+            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), staticContent.Content.GetTHBox("cursor"));
             Name = "Click the Button!";
         }
 
@@ -36,13 +37,16 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             CallFinish();
         }
         public override void Draw(SpriteBatch sp) {
+
             button.Draw(sp);
+            cursor.Draw(sp);
         }
 
         public override void Update(GameTime gt) {
+            cursor.Update(gt);
             base.Update(gt);
-            
-            button.Update(gt, MouseIngame);
+            cursor.Position = MouseIngame - cursor.Size / 2;
+            button.Update(gt, cursor.rec);
 
         }
     }

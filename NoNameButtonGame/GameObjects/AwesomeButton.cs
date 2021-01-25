@@ -45,9 +45,9 @@ namespace NoNameButtonGame.GameObjects
             }
             return false;
         }
-        public void Update(GameTime gt, Vector2 MousePos) {
+        public void Update(GameTime gt, Rectangle MousePos) {
             MouseState mouseState = Mouse.GetState();
-            if (HitboxCheck(new Rectangle(MousePos.ToPoint(), new Point(1, 1)))) {
+            if (HitboxCheck(MousePos)) {
                 if (!Hover) {
                     Hover = true;
                     if (Enter != null)

@@ -37,7 +37,6 @@ namespace NoNameButtonGame.BeforeMaths
                 default:
                     r.Imagesize = new Vector2(r.Texture.Width, r.Texture.Height);
                     r.Hitbox = new Rectangle[1] { new Rectangle(0, 0, r.Texture.Width, r.Texture.Height) };
-                    r.Imagesize = new Vector2(r.Texture.Width, r.Texture.Height);
                     break;
             }
             return r;

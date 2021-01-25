@@ -9,19 +9,15 @@ using NoNameButtonGame.Interfaces;
 
 namespace NoNameButtonGame.GameObjects
 {
-    class Cursor : GameObject, IHitbox
+    class Cursor : GameObject
     {
         public Cursor(Vector2 Pos, Vector2 Size, THBox box) {
             base.Size = Size;
             Position = Pos;
-            ImageLocation = new Rectangle((int)box.Imagesize.X, 0, (int)box.Imagesize.X, (int)box.Imagesize.Y);
+            ImageLocation = new Rectangle(0,0,0,0);
             FrameSize = box.Imagesize;
-            hitbox = new Rectangle[box.Hitbox.Length];
             Texture = box.Texture;
-        }
-        Rectangle[] hitbox;
-        public Rectangle[] Hitbox {
-            get => hitbox;
+            DrawColor = Color.White;
         }
         public override void Draw(SpriteBatch sp) {
             base.Draw(sp);

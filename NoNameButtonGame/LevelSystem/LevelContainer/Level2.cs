@@ -19,12 +19,13 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     {
 
         AwesomeButton[] button;
-
+        Cursor cursor;
 
         public Level2(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 2 - WHAAT?!? There is more to this Game?!";
             button = new AwesomeButton[16];
             int randI64 = rand.Next(0, 16);
+            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), staticContent.Content.GetTHBox("cursor"));
             for (int i = 0; i < button.Length; i++) {
                 if (i == randI64) {
                     button[i] = new AwesomeButton(new Vector2(130 * (i % 4) - 256, (i / 4) * 68 - 128), new Vector2(128, 64), staticContent.Content.GetTHBox("awesomebutton")) {
@@ -53,13 +54,15 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             for (int i = 0; i < button.Length; i++) {
                 button[i].Draw(sp);
             }
-
+            cursor.Draw(sp);
         }
 
         public override void Update(GameTime gt) {
+            cursor.Update(gt);
             base.Update(gt);
+            cursor.Position = MouseIngame - cursor.Size / 2;
             for (int i = 0; i < button.Length; i++) {
-                button[i].Update(gt, MouseIngame);
+                button[i].Update(gt, cursor.rec);
             }
         }
     }

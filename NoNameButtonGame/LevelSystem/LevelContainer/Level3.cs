@@ -19,14 +19,14 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     {
 
         AwesomeButton button;
-
-
+        Cursor cursor;
         public Level3(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
-            Name = "Level 3 - YOU ARE GETTING THE HANG I SEE";
+            Name = "Level 3 - Tutorial time!";
             button = new AwesomeButton(new Vector2(-64, -0), new Vector2(128, 64), staticContent.Content.GetTHBox("failbutton")) {
                 DrawColor = Color.White,
             };
             button.Click += BtnEvent;
+            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), staticContent.Content.GetTHBox("cursor"));
         }
 
 
@@ -36,13 +36,14 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         }
         public override void Draw(SpriteBatch sp) {
             button.Draw(sp);
+            cursor.Draw(sp);
         }
 
         public override void Update(GameTime gt) {
+            cursor.Update(gt);
             base.Update(gt);
-
-            button.Update(gt, MouseIngame);
-
+            cursor.Position = MouseIngame - cursor.Size / 2;
+            button.Update(gt, cursor.rec);
         }
     }
 }
