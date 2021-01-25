@@ -21,9 +21,11 @@ namespace NoNameButtonGame.GameObjects
             FrameSize = box.Imagesize;
             hitbox = new Rectangle[box.Hitbox.Length];
             Texture = box.Texture;
-            Vector2 Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
+           Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
+            hitbox = box.Hitbox;
+            IGhitbox = new Rectangle[hitbox.Length];
             for (int i = 0; i < box.Hitbox.Length; i++) {
-                hitbox[i] = new Rectangle((int)(Position.X + (box.Hitbox[i].X * Scale.X)), (int)(Position.Y + (box.Hitbox[i].Y * Scale.Y)), (int)(box.Hitbox[i].Width * Scale.X), (int)(box.Hitbox[i].Height * Scale.Y));
+                IGhitbox[i] = new Rectangle((int)(Position.X + (box.Hitbox[i].X * Scale.X)), (int)(Position.Y + (box.Hitbox[i].Y * Scale.Y)), (int)(box.Hitbox[i].Width * Scale.X), (int)(box.Hitbox[i].Height * Scale.Y));
             }
         }
 
@@ -33,8 +35,10 @@ namespace NoNameButtonGame.GameObjects
         bool Hover;
 
         Rectangle[] hitbox;
+        Rectangle[] IGhitbox;
+        Vector2 Scale;
         public Rectangle[] Hitbox {
-            get => hitbox;
+            get => IGhitbox;
         }
 
         public bool HitboxCheck(Rectangle rec) {
@@ -44,6 +48,12 @@ namespace NoNameButtonGame.GameObjects
                 }
             }
             return false;
+        }
+        private void UpdateHitbox() {
+            Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
+            for (int i = 0; i < hitbox.Length; i++) {
+                IGhitbox[i] = new Rectangle((int)(Position.X + (hitbox[i].X * Scale.X)), (int)(Position.Y + (hitbox[i].Y * Scale.Y)), (int)(hitbox[i].Width * Scale.X), (int)(hitbox[i].Height * Scale.Y));
+            }
         }
         public void Update(GameTime gt, Rectangle MousePos) {
             MouseState mouseState = Mouse.GetState();
@@ -64,14 +74,13 @@ namespace NoNameButtonGame.GameObjects
                 Hover = false;
             }
 
-
             if (Hover) {
                 ImageLocation = new Rectangle((int)FrameSize.X, 0, (int)FrameSize.X, (int)FrameSize.Y);
             } else {
                 ImageLocation = new Rectangle(0, 0, (int)FrameSize.X, (int)FrameSize.Y);
             }
 
-
+            UpdateHitbox();
 
             Update(gt);
         }

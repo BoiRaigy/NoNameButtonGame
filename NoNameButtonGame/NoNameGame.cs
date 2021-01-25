@@ -24,6 +24,7 @@ namespace NoNameButtonGame
             Content.RootDirectory = "Content";
             staticContent.Content = Content;
             IsMouseVisible = false;
+            IsFixedTimeStep = false;
             
         }
 

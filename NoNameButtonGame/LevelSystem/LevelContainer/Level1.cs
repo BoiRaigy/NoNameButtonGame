@@ -46,7 +46,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             cursor.Update(gt);
             base.Update(gt);
             cursor.Position = MouseIngame - cursor.Size / 2;
-            button.Update(gt, cursor.rec);
+            button.Update(gt, cursor.Hitbox[0]);
 
         }
     }
