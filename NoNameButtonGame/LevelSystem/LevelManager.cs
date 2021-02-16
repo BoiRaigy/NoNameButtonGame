@@ -25,7 +25,7 @@ namespace NoNameButtonGame.LevelSystem
         bool BetweenLevels = true;
         bool CanSelect = false;
         
-        int LastLevel = 0;
+        int LastLevel = 2;
         public void ChangeScreen(Vector2 Screen) {
             this.Screen = Screen;
             if (CurrentLevel != null)

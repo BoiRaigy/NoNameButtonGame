@@ -11,6 +11,9 @@ namespace NoNameButtonGame.BeforeMaths
         public Texture2D Texture;
         public Vector2 Imagesize;
         public Rectangle[] Hitbox;
+        public int Aniframes;
+        public bool? AniFromTop;
+        
     }
     public static class TextureHitboxManager
     {
@@ -37,7 +40,12 @@ namespace NoNameButtonGame.BeforeMaths
                     r.Imagesize = new Vector2(r.Texture.Width, r.Texture.Height);
                     r.Hitbox = new Rectangle[1] { new Rectangle(0, 0, 2, 2) };
                     break;
-                case "dontTouchZone":
+                case "zone":
+                    r.Imagesize = new Vector2(8, 8);
+                    r.Hitbox = new Rectangle[1] { new Rectangle(0, 0, 8, 8) };
+                    r.Aniframes = 16;
+                    r.AniFromTop = true;
+                    break;
                 default:
                     r.Imagesize = new Vector2(r.Texture.Width, r.Texture.Height);
                     r.Hitbox = new Rectangle[1] { new Rectangle(0, 0, r.Texture.Width, r.Texture.Height) };
