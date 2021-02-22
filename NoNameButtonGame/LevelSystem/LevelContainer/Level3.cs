@@ -43,7 +43,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 dt[i] = new DontTouch(new Vector2(clustPos.X + clustSize * (i%5), clustPos.Y + clustSize * (i / 5)), new Vector2(clustSize, clustSize), Globals.Content.GetTHBox("zone"));
                 dt[i].Enter += BtnEvent;
             }
-            Info = new TextBuilder("abcdefghijklmopqrstuvwxyz01234567890!?/-<=>*+%();.", new Vector2(-0, -512), new Vector2(16, 16), null, 2);
+            Info = new TextBuilder("memebig? => bigindeed!", new Vector2(-0, -512), new Vector2(16, 16), null, 0);
         }
 
 

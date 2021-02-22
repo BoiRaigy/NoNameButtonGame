@@ -14,6 +14,7 @@ namespace NoNameButtonGame.Text
         Letter.Character[] Characters;
         Color[] LColor;
         int spacing;
+        int Length;
         public int Spacing { get { return spacing; } set { spacing = value; CreateLetters(); } }
         public TextBuilder(string InitText,Vector2 Position, Vector2 LSize, Color[] LColor, int Spacing) {
             this.Size = LSize;
@@ -60,9 +61,16 @@ namespace NoNameButtonGame.Text
                 throw new Exception("char and color length do not match!");
             } else {
                 LetterAry = new Letter[Characters.Length];
+                int CurrentStrLength = 0;
                 for (int i = 0; i < Characters.Length; i++) {
-                    LetterAry[i] = new Letter(new Vector2(Position.X + i * Size.X + spacing * i, Position.Y), this.Size, Characters[i], LColor[i]);
+                    LetterAry[i] = new Letter(new Vector2(Position.X + CurrentStrLength , Position.Y), this.Size, Characters[i], LColor[i]);
+                    CurrentStrLength += LetterAry[i].FrameSpace.Width * ((int)Size.X / 8) 
+                        +
+                        LetterAry[i].FrameSpace.X * ((int)Size.X / 8)
+                        +
+                        (spacing + 1) * ((int)Size.X / 8);
                 }
+                Length = CurrentStrLength;
             }
         }
         private Letter.Character[] ConvertFromChar(char[] strArr) {
@@ -245,8 +253,17 @@ namespace NoNameButtonGame.Text
                     case '.':
                         Letters.Add(Letter.Character.cDOT);
                         break;
+                    case ' ':
+                        Letters.Add(Letter.Character.cSPACE);
+                        break;
+                    case '✔':
+                        Letters.Add(Letter.Character.cCHECKMARK);
+                        break;
+                    case '❌':
+                        Letters.Add(Letter.Character.cCROSSOUT);
+                        break;
                     default:
-                        throw new Exception("Unknown Character at char" + (i + 1));
+                        throw new Exception("Unknown Character at char \'" + strArr[i] + "\' ");
                 }
             }
             return Letters.ToArray();
@@ -257,7 +274,7 @@ namespace NoNameButtonGame.Text
             for (int i = 0; i < LetterAry.Length; i++) {
                 LetterAry[i].Update(gt);
             }
-            rec = new Rectangle(Position.ToPoint(), new Point((int)Size.X * LetterAry.Length + spacing * (LetterAry.Length - 1), (int)Size.Y));
+            rec = new Rectangle(Position.ToPoint(), new Point(Length + (spacing + 1) * (LetterAry.Length - 1), (int)Size.Y));
         }
 
         public override void Draw(SpriteBatch sp) {
