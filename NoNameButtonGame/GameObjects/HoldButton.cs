@@ -23,14 +23,14 @@ namespace NoNameButtonGame.GameObjects
             Texture = box.Texture;
             Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
             hitbox = box.Hitbox;
-            TextLocation = Position;
+            text = new TextBuilder("test", Position, new Vector2(16, 16), null, 2);
+            
             TextFont = Globals.Content.Load<SpriteFont>("DisplayFont");
-            TextStr = string.Empty;
             IGhitbox = new Rectangle[hitbox.Length];
             for (int i = 0; i < box.Hitbox.Length; i++) {
                 IGhitbox[i] = new Rectangle((int)(Position.X + (box.Hitbox[i].X * Scale.X)), (int)(Position.Y + (box.Hitbox[i].Y * Scale.Y)), (int)(box.Hitbox[i].Width * Scale.X), (int)(box.Hitbox[i].Height * Scale.Y));
             }
-            letter = new Letter(TextLocation, new Vector2(16,16), Letter.Character.cEXCLAMATION,Color.White);
+            
         }
         
         public event EventHandler Leave;
@@ -43,9 +43,8 @@ namespace NoNameButtonGame.GameObjects
         Rectangle[] IGhitbox;
         Vector2 Scale;
         SpriteFont TextFont;
-        string TextStr;
-        Vector2 TextLocation;
-        Letter letter;
+        
+        TextBuilder text;
         public Rectangle[] Hitbox {
             get => IGhitbox;
         }
@@ -97,17 +96,19 @@ namespace NoNameButtonGame.GameObjects
                 ImageLocation = new Rectangle(0, 0, (int)FrameSize.X, (int)FrameSize.Y);
             }
             UpdateHitbox();
-            TextStr = ((EndHoldTime - HoldTime) / 1000).ToString("0.00") +"s";
-            TextLocation = rec.Center.ToVector2() - TextFont.MeasureString(TextStr) / 2;
-            TextLocation.Y -= 32;
-            letter.Update(gt);
+            text.ChangeText((((EndHoldTime - HoldTime) / 1000).ToString("0.00") +"s").Replace(',','.'));
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine(rec.ToString());
+            Console.WriteLine(text.rec.ToString());
+            text.Position = rec.Center.ToVector2() - text.rec.Size.ToVector2() / 2;
+            text.Position.Y -= 32;
+            text.Update(gt);
             Update(gt);
         }
         
         public override void Draw(SpriteBatch sp) {
             base.Draw(sp);
-            sp.DrawString(TextFont, TextStr, TextLocation, Color.White);
-            letter.Draw(sp);
+            text.Draw(sp);
             
         }
     }
