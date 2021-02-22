@@ -30,7 +30,7 @@ namespace NoNameButtonGame.GameObjects
             for (int i = 0; i < box.Hitbox.Length; i++) {
                 IGhitbox[i] = new Rectangle((int)(Position.X + (box.Hitbox[i].X * Scale.X)), (int)(Position.Y + (box.Hitbox[i].Y * Scale.Y)), (int)(box.Hitbox[i].Width * Scale.X), (int)(box.Hitbox[i].Height * Scale.Y));
             }
-            letter = new Letter(TextLocation, Size, Letter.Character.cEXCLAMATION,Color.White);
+            letter = new Letter(TextLocation, new Vector2(16,16), Letter.Character.cEXCLAMATION,Color.White);
         }
         
         public event EventHandler Leave;

@@ -82,7 +82,7 @@ namespace NoNameButtonGame.Text
             cOPENBRACKET,
             cCLOSEBRACKET,
             cSEMICOLON,
-            cNone
+            cDOT,
         }
     }
 }
