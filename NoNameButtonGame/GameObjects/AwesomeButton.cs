@@ -21,7 +21,7 @@ namespace NoNameButtonGame.GameObjects
             FrameSize = box.Imagesize;
             hitbox = new Rectangle[box.Hitbox.Length];
             Texture = box.Texture;
-           Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
+            Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
             hitbox = box.Hitbox;
             IGhitbox = new Rectangle[hitbox.Length];
             for (int i = 0; i < box.Hitbox.Length; i++) {
@@ -84,5 +84,7 @@ namespace NoNameButtonGame.GameObjects
 
             Update(gt);
         }
+
+        
     }
 }

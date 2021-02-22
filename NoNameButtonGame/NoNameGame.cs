@@ -24,7 +24,7 @@ namespace NoNameButtonGame
         public NoNameGame() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            staticContent.Content = Content;
+            Globals.Content = Content;
             IsMouseVisible = false;
             IsFixedTimeStep = false;
             
@@ -49,7 +49,6 @@ namespace NoNameButtonGame
         }
         protected override void LoadContent() {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
         }
         Rectangle BackbufferBounds;
         float backbufferAspectRatio;

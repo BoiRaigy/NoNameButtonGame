@@ -24,21 +24,21 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         HoldButton hold;
         public Level3(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 3 - Tutorial time!";
-            button = new AwesomeButton(new Vector2(-64, -0), new Vector2(128, 64), staticContent.Content.GetTHBox("failbutton")) {
+            button = new AwesomeButton(new Vector2(-64, -0), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton")) {
                 DrawColor = Color.White,
             };
             button.Click += BtnEvent;
 
-            hold = new HoldButton(new Vector2(200, -0), new Vector2(128, 64), staticContent.Content.GetTHBox("failbutton")) {
+            hold = new HoldButton(new Vector2(200, -0), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton")) {
                 DrawColor = Color.White,
             };
             hold.Click += BtnEvent;
             int clustSize = 32;
             Vector2 clustPos = new Vector2(-250, -150);
-            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), staticContent.Content.GetTHBox("cursor"));
+            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             dt = new DontTouch[25];
             for (int i = 0; i < dt.Length; i++) {
-                dt[i] = new DontTouch(new Vector2(clustPos.X + clustSize * (i%5), clustPos.Y + clustSize * (i / 5)), new Vector2(clustSize, clustSize), staticContent.Content.GetTHBox("zone"));
+                dt[i] = new DontTouch(new Vector2(clustPos.X + clustSize * (i%5), clustPos.Y + clustSize * (i / 5)), new Vector2(clustSize, clustSize), Globals.Content.GetTHBox("zone"));
                 dt[i].Enter += BtnEvent;
             }
            

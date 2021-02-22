@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using NoNameButtonGame.Interfaces;
 using NoNameButtonGame.BeforeMaths;
 using Raigy.Input;
+using NoNameButtonGame.Text;
 
 namespace NoNameButtonGame.GameObjects
 {
@@ -22,12 +23,16 @@ namespace NoNameButtonGame.GameObjects
             Texture = box.Texture;
             Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
             hitbox = box.Hitbox;
+            TextLocation = Position;
+            TextFont = Globals.Content.Load<SpriteFont>("DisplayFont");
+            TextStr = string.Empty;
             IGhitbox = new Rectangle[hitbox.Length];
             for (int i = 0; i < box.Hitbox.Length; i++) {
                 IGhitbox[i] = new Rectangle((int)(Position.X + (box.Hitbox[i].X * Scale.X)), (int)(Position.Y + (box.Hitbox[i].Y * Scale.Y)), (int)(box.Hitbox[i].Width * Scale.X), (int)(box.Hitbox[i].Height * Scale.Y));
             }
+            letter = new Letter(TextLocation, Size, Letter.Character.cEXCLAMATION,Color.White);
         }
-
+        
         public event EventHandler Leave;
         public event EventHandler Enter;
         public event EventHandler Click;
@@ -37,6 +42,10 @@ namespace NoNameButtonGame.GameObjects
         Rectangle[] hitbox;
         Rectangle[] IGhitbox;
         Vector2 Scale;
+        SpriteFont TextFont;
+        string TextStr;
+        Vector2 TextLocation;
+        Letter letter;
         public Rectangle[] Hitbox {
             get => IGhitbox;
         }
@@ -78,16 +87,28 @@ namespace NoNameButtonGame.GameObjects
                 HoldTime -= gt.ElapsedGameTime.Milliseconds / 2;
                 
             }
-            if (HoldTime < 0)
+            if (HoldTime < 0) {
                 HoldTime = 0;
+            }
+                
             if (Hover) {
                 ImageLocation = new Rectangle((int)FrameSize.X, 0, (int)FrameSize.X, (int)FrameSize.Y);
             } else {
                 ImageLocation = new Rectangle(0, 0, (int)FrameSize.X, (int)FrameSize.Y);
             }
             UpdateHitbox();
-
+            TextStr = ((EndHoldTime - HoldTime) / 1000).ToString("0.00") +"s";
+            TextLocation = rec.Center.ToVector2() - TextFont.MeasureString(TextStr) / 2;
+            TextLocation.Y -= 32;
+            letter.Update(gt);
             Update(gt);
+        }
+        
+        public override void Draw(SpriteBatch sp) {
+            base.Draw(sp);
+            sp.DrawString(TextFont, TextStr, TextLocation, Color.White);
+            letter.Draw(sp);
+            
         }
     }
 }

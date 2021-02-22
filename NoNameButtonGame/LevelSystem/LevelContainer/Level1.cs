@@ -23,11 +23,11 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
         public Level1(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
 
-            button = new AwesomeButton(new Vector2(-64, -32), new Vector2(160, 64), staticContent.Content.GetTHBox("startbutton")) {
+            button = new AwesomeButton(new Vector2(-64, -32), new Vector2(160, 64), Globals.Content.GetTHBox("startbutton")) {
                 DrawColor = Color.White,
             };
             button.Click += BtnEvent;
-            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), staticContent.Content.GetTHBox("cursor"));
+            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             Name = "Click the Button!";
         }
 
