@@ -97,9 +97,7 @@ namespace NoNameButtonGame.GameObjects
             }
             UpdateHitbox();
             text.ChangeText((((EndHoldTime - HoldTime) / 1000).ToString("0.00") +"s").Replace(',','.'));
-            Console.SetCursorPosition(0, 0);
-            Console.WriteLine(rec.ToString());
-            Console.WriteLine(text.rec.ToString());
+            
             text.Position = rec.Center.ToVector2() - text.rec.Size.ToVector2() / 2;
             text.Position.Y -= 32;
             text.Update(gt);
