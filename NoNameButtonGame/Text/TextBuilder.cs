@@ -16,9 +16,9 @@ namespace NoNameButtonGame.Text
         int spacing;
         public int Spacing { get { return spacing; } set { spacing = value; CreateLetters(); } }
         public TextBuilder(string InitText,Vector2 Position, Vector2 LSize, Color[] LColor, int Spacing) {
-            textstr = InitText;
             this.Size = LSize;
             spacing = Spacing;
+            this.Position = Position;
             if (LColor == null) {
                 LColor = new Color[InitText.Length];
                 for (int i = 0; i < InitText.Length; i++) {
@@ -28,7 +28,7 @@ namespace NoNameButtonGame.Text
             if (InitText.Length != LColor.Length) {
                 throw new Exception("InitText and LColor length do not match!");
             }
-
+            ChangeText(InitText, LColor); 
 
         }
         

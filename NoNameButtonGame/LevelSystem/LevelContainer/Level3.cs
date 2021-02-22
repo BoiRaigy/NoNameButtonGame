@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using NoNameButtonGame.BeforeMaths;
 using NoNameButtonGame.GameObjects;
+using NoNameButtonGame.Text;
 namespace NoNameButtonGame.LevelSystem.LevelContainer
 {
     class Level3 : SampleLevel
@@ -22,6 +23,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         Cursor cursor;
         DontTouch[] dt;
         HoldButton hold;
+        TextBuilder Info;
         public Level3(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 3 - Tutorial time!";
             button = new AwesomeButton(new Vector2(-64, -0), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton")) {
@@ -41,7 +43,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 dt[i] = new DontTouch(new Vector2(clustPos.X + clustSize * (i%5), clustPos.Y + clustSize * (i / 5)), new Vector2(clustSize, clustSize), Globals.Content.GetTHBox("zone"));
                 dt[i].Enter += BtnEvent;
             }
-           
+            Info = new TextBuilder("abcdefghijklmopqrstuvwxyz01234567890!?/-<=>*+%();.", new Vector2(-0, -512), new Vector2(16, 16), null, 2);
         }
 
 
@@ -55,13 +57,14 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             for (int i = 0; i < dt.Length; i++) {
                 dt[i].Draw(sp);
             }
-            
+            Info.Draw(sp);
             cursor.Draw(sp);
             
         }
 
         public override void Update(GameTime gt) {
             cursor.Update(gt);
+            Info.Update(gt);
             base.Update(gt);
             for (int i = 0; i < dt.Length; i++) {
                 dt[i].Update(gt, cursor.Hitbox[0]);
