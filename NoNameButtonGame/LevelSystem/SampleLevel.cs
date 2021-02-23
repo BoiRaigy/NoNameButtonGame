@@ -20,8 +20,9 @@ namespace NoNameButtonGame.LevelSystem
         public int DefaultWidth;
         public int DefaultHeight;
         public Vector2 Window;
-        public Vector2 MouseIngame;
+        
         public string Name;
+        public Vector2 MousePos;
         Random rand;
         public SampleLevel(int defaultWidth, int defaultHeight, Vector2 window, Random rand) {
             DefaultWidth = defaultWidth;
@@ -29,6 +30,7 @@ namespace NoNameButtonGame.LevelSystem
             Window = window;
             this.rand = rand;
             camera = new CameraClass(new Vector2(DefaultWidth, DefaultHeight));
+            Mouse.SetPosition((int)Window.X / 2, (int)Window.Y / 2);
         }
 
         public override void Draw(SpriteBatch sp) {
@@ -54,7 +56,8 @@ namespace NoNameButtonGame.LevelSystem
             float TargetScreenDifX = Window.X / DefaultWidth;
             float TargetScreenDifY = Window.Y / DefaultHeight;
             Vector2 VMP = new Vector2(VecMouse.X / TargetScreenDifX, VecMouse.Y / TargetScreenDifY);
-            MouseIngame = new Vector2(VMP.X / camera.Zoom + CamPos.X - (DefaultWidth / camera.Zoom) / 2, VMP.Y / camera.Zoom + CamPos.Y - (DefaultHeight / camera.Zoom) / 2);
+            MousePos = new Vector2(VMP.X / camera.Zoom + CamPos.X - (DefaultWidth / camera.Zoom) / 2, VMP.Y / camera.Zoom + CamPos.Y - (DefaultHeight / camera.Zoom) / 2);
+        
         }
 
         public virtual void SetScreen(Vector2 Screen) {

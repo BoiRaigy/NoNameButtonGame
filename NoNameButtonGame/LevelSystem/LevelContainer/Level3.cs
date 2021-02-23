@@ -78,7 +78,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             base.Update(gt);
             
             laserwall.Update(gt, cursor.Hitbox[0]);
-            cursor.Position = MouseIngame - cursor.Size / 2;
+            cursor.Position = MousePos - cursor.Size / 2;
             button.Update(gt, cursor.Hitbox[0]);
             hold.Update(gt, cursor.Hitbox[0]);
         }
