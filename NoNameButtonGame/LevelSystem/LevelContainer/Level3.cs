@@ -26,6 +26,8 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         TextBuilder Info;
         Rainbow raincolor;
         Laserwall laserwall;
+        
+        float GT;
         public Level3(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 3 - Tutorial time!";
             button = new AwesomeButton(new Vector2(-64, -0), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton")) {
@@ -64,7 +66,11 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         }
 
         public override void Update(GameTime gt) {
-            
+            GT += gt.ElapsedGameTime.Milliseconds;
+            while(GT > 125) {
+                GT -= 125;
+                laserwall.Move(new Vector2(1, 0));
+            }
             cursor.Update(gt);
             raincolor.Update(gt);
             Info.ChangeColor(raincolor.GetColor(Info.Text.Length));
