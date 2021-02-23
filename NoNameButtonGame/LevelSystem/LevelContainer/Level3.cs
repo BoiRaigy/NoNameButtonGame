@@ -46,7 +46,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             raincolor.Increment = 32;
             raincolor.Speed = 32;
             raincolor.Offset = 256;
-            laserwall = new Laserwall(new Vector2(-250, -150), new Vector2(128, 48), Globals.Content.GetTHBox("zone"));
+            laserwall = new Laserwall(new Vector2(-128, -128), new Vector2(64, 64), Globals.Content.GetTHBox("zone"));
             laserwall.Enter += BtnEvent;
         }
 
