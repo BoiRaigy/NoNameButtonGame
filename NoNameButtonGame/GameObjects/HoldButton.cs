@@ -96,7 +96,7 @@ namespace NoNameButtonGame.GameObjects
                 ImageLocation = new Rectangle(0, 0, (int)FrameSize.X, (int)FrameSize.Y);
             }
             UpdateHitbox();
-            text.ChangeText((((EndHoldTime - HoldTime) / 1000).ToString("0.00") +"s").Replace(',','.'));
+            text.ChangeText((((EndHoldTime - HoldTime) / 1000).ToString("0.0") +"s").Replace(',','.'));
             
             text.Position = rec.Center.ToVector2() - text.rec.Size.ToVector2() / 2;
             text.Position.Y -= 32;
