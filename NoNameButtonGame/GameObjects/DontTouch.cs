@@ -15,12 +15,19 @@ namespace NoNameButtonGame.GameObjects
     {
         public DontTouch(Vector2 Pos, Vector2 Size, THBox box) {
             base.Size = Size;
+           
             Position = Pos;
             FrameSize = box.Imagesize;
-            hitbox = new Rectangle[box.Hitbox.Length];
+            hitbox = box.Hitbox;
+            if (Size.X % 32 != 0 || Size.Y % 32 != 0) {
+                FrameSize = FrameSize / 32 * Size;
+                for (int i = 0; i < hitbox.Length; i++) {
+                    hitbox[i].Size = FrameSize.ToPoint();
+                }
+            }
             Texture = box.Texture;
             FrameMax = box.Aniframes;
-            hitbox = box.Hitbox;
+            
             ImageLocation = new Rectangle(0, 0, (int)box.Imagesize.X, (int)box.Imagesize.Y);
             IGhitbox = new Rectangle[hitbox.Length];
             DrawColor = Color.White;
@@ -56,7 +63,7 @@ namespace NoNameButtonGame.GameObjects
         public event EventHandler Leave;
         public event EventHandler Enter;
         public event EventHandler Click;
-
+       
         public override void Draw(SpriteBatch sp) {
             base.Draw(sp);
         }
