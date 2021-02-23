@@ -73,12 +73,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             
             cursor.Update(gt);
             raincolor.Update(gt);
-            Console.SetCursorPosition(0, 0);
-            Color[] ctmp = raincolor.GetColor(Info.Text.Length);
-            for (int i = 0; i < ctmp.Length; i++) {
-                Console.WriteLine(ctmp[i]);
-            }
-            Info.ChangeColor(ctmp);
+            Info.ChangeColor(raincolor.GetColor(Info.Text.Length));
             Info.Update(gt);
             base.Update(gt);
             for (int i = 0; i < dt.Length; i++) {
