@@ -40,6 +40,7 @@ namespace NoNameButtonGame.GameObjects
         Vector2 Scale;
         int FramePos = 0;
         int FrameMax = 0;
+        int FrameSpeed = 200;
         public Rectangle[] Hitbox {
             get => IGhitbox;
         }
@@ -71,8 +72,8 @@ namespace NoNameButtonGame.GameObjects
         public void Update(GameTime gt, Rectangle MousePos) {
             MouseState mouseState = Mouse.GetState();
             GT += gt.ElapsedGameTime.Milliseconds;
-            while(GT > 125) {
-                GT -= 125;
+            while(GT > FrameSpeed) {
+                GT -= FrameSpeed;
                 FramePos++;
                 if (FramePos == FrameMax) FramePos = 0;
                 ImageLocation = new Rectangle(0, FramePos * (int)FrameSize.X, (int)FrameSize.X, (int)FrameSize.Y);

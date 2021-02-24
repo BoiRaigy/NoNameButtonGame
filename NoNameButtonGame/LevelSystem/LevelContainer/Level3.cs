@@ -48,7 +48,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             raincolor.Increment = 32;
             raincolor.Speed = 32;
             raincolor.Offset = 256;
-            laserwall = new Laserwall(new Vector2(-128, -128), new Vector2(64, 64), Globals.Content.GetTHBox("zone"));
+            laserwall = new Laserwall(new Vector2(-128, -128), new Vector2(64, 64), Globals.Content.GetTHBox("zonenew"));
             laserwall.Enter += BtnEvent;
         }
 
@@ -69,7 +69,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             GT += gt.ElapsedGameTime.Milliseconds;
             while(GT > 125) {
                 GT -= 125;
-                laserwall.Move(new Vector2(1, 0));
+                //laserwall.Move(new Vector2(1, 0));
             }
             cursor.Update(gt);
             raincolor.Update(gt);

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Raigy.Obj;
 using Raigy.Camera;
 using NoNameButtonGame.LevelSystem.LevelContainer;
+using Raigy.Input;
 
 namespace NoNameButtonGame.LevelSystem
 {
@@ -47,6 +48,7 @@ namespace NoNameButtonGame.LevelSystem
                 CurrentLevel.Update(gt);
             else {
                 if (!CanSelect) {
+                    InputReaderMouse.CheckKey(InputReaderMouse.MouseKeys.Left, true); //To stop hold button instant reset shenanigans
                     switch (LastLevel) {
                         case 0:
                             CurrentLevel = new Level1(DWidth, DHeight, Screen,rand);
