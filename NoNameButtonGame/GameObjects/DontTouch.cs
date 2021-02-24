@@ -40,7 +40,7 @@ namespace NoNameButtonGame.GameObjects
         Vector2 Scale;
         int FramePos = 0;
         int FrameMax = 0;
-        int FrameSpeed = 200;
+        int FrameSpeed = 180;
         public Rectangle[] Hitbox {
             get => IGhitbox;
         }

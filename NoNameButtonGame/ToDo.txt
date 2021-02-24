@@ -3,6 +3,7 @@ Locked Button (only code is able to unlock him)
 Implement IDisposible
 Anschauen wie man load und unload nutzen kann könnte
 Camera Grid System
+SHADER (glow)
 Implement Difficulty for levels (global difficulty, diffrent levels);
 Settings, Menu, etc
 create the Levels (3 dif > 100level)
