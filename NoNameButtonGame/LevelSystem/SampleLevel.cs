@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Raigy.Obj;
 using Raigy.Camera;
 using NoNameButtonGame.Interfaces;
-
+using NoNameButtonGame.GameObjects;
 using Microsoft.Xna.Framework.Input;
 namespace NoNameButtonGame.LevelSystem
 {
@@ -15,12 +15,12 @@ namespace NoNameButtonGame.LevelSystem
         public event EventHandler Fail;
         public event EventHandler Reset;
         public event EventHandler Finish;
-        public CameraClass camera;
-        public Vector2 CamPos;
+       
         public int DefaultWidth;
         public int DefaultHeight;
         public Vector2 Window;
-        
+        public CameraClass Camera;
+        Vector2 CamPos;
         public string Name;
         public Vector2 MousePos;
         Random rand;
@@ -29,7 +29,7 @@ namespace NoNameButtonGame.LevelSystem
             DefaultHeight = defaultHeight;
             Window = window;
             this.rand = rand;
-            camera = new CameraClass(new Vector2(DefaultWidth, DefaultHeight));
+            Camera = new CameraClass(new Vector2(defaultWidth, defaultHeight));
             Mouse.SetPosition((int)Window.X / 2, (int)Window.Y / 2);
         }
 
@@ -38,6 +38,14 @@ namespace NoNameButtonGame.LevelSystem
         }
 
         public override void Update(GameTime gt) {
+
+            Camera.Update(CamPos, new Vector2(0, 0));
+            MouseState mouseState = Mouse.GetState();
+            Vector2 VecMouse = mouseState.Position.ToVector2();
+            float TargetScreenDifX = Window.X / DefaultWidth;
+            float TargetScreenDifY = Window.Y / DefaultHeight;
+            Vector2 VMP = new Vector2(VecMouse.X / TargetScreenDifX, VecMouse.Y / TargetScreenDifY);
+            MousePos = new Vector2(VMP.X / Camera.Zoom + CamPos.X - (DefaultWidth / Camera.Zoom) / 2, VMP.Y / Camera.Zoom + CamPos.Y - (DefaultHeight / Camera.Zoom) / 2);
             if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.Right, true)) {
                 CamPos.X += 45;
             }
@@ -50,14 +58,6 @@ namespace NoNameButtonGame.LevelSystem
             if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.Down, true)) {
                 CamPos.Y += 45;
             }
-            camera.Update(CamPos, new Vector2(0, 0));
-            MouseState mouseState = Mouse.GetState();
-            Vector2 VecMouse = mouseState.Position.ToVector2();
-            float TargetScreenDifX = Window.X / DefaultWidth;
-            float TargetScreenDifY = Window.Y / DefaultHeight;
-            Vector2 VMP = new Vector2(VecMouse.X / TargetScreenDifX, VecMouse.Y / TargetScreenDifY);
-            MousePos = new Vector2(VMP.X / camera.Zoom + CamPos.X - (DefaultWidth / camera.Zoom) / 2, VMP.Y / camera.Zoom + CamPos.Y - (DefaultHeight / camera.Zoom) / 2);
-        
         }
 
         public virtual void SetScreen(Vector2 Screen) {

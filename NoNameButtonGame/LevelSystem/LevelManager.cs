@@ -17,7 +17,7 @@ namespace NoNameButtonGame.LevelSystem
         public Changewindowname ChangeWindowName;
 
         public CameraClass GetCurrentCamera() {
-            return CurrentLevel.camera;
+            return CurrentLevel.Camera;
         }
         int DHeight;
         int DWidth;

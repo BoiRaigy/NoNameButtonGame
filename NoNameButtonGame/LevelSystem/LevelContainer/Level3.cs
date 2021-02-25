@@ -26,7 +26,8 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         TextBuilder Info;
         Rainbow raincolor;
         Laserwall laserwall;
-        
+        StateButton statebutton;
+        LockButton lockbutton;
         float GT;
         public Level3(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 3 - Tutorial time!";
@@ -39,6 +40,17 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 DrawColor = Color.White,
             };
             hold.Click += BtnEvent;
+
+            statebutton = new StateButton(new Vector2(200, 75), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton"), 100) {
+                DrawColor = Color.White,
+            };
+            statebutton.Click += BtnEvent;
+
+
+            lockbutton = new LockButton(new Vector2(64, 75), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton"), true) {
+                DrawColor = Color.White,
+            };
+            lockbutton.Click += BtnEvent;
             int clustSize = 32;
             Vector2 clustPos = new Vector2(-250, -150);
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
@@ -61,8 +73,10 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             button.Draw(sp);
             hold.Draw(sp);
             Info.Draw(sp);
-            cursor.Draw(sp);
             laserwall.Draw(sp);
+            lockbutton.Draw(sp);
+            statebutton.Draw(sp);
+            cursor.Draw(sp);
         }
 
         public override void Update(GameTime gt) {
@@ -78,9 +92,11 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             base.Update(gt);
             
             laserwall.Update(gt, cursor.Hitbox[0]);
+            lockbutton.Update(gt, cursor.Hitbox[0]);
             cursor.Position = MousePos - cursor.Size / 2;
             button.Update(gt, cursor.Hitbox[0]);
             hold.Update(gt, cursor.Hitbox[0]);
+            statebutton.Update(gt, cursor.Hitbox[0]);
         }
     }
 }

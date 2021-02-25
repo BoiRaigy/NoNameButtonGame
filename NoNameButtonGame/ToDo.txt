@@ -1,10 +1,5 @@
-﻿State Button (click to change state)
-Locked Button (only code is able to unlock him)
-Implement IDisposible
-Anschauen wie man load und unload nutzen kann könnte
-Camera Grid System
-SHADER (glow)
-Implement Difficulty for levels (global difficulty, diffrent levels);
+﻿SHADER (glow)
 Settings, Menu, etc
-create the Levels (3 dif > 100level)
-give the eediots a demo for playtesting (75 levels 3 dif > 25 levels)
+create the Levels (100+level)
+Sounds?
+give the eediots a demo for playtesting
