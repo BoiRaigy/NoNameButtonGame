@@ -26,6 +26,9 @@ namespace NoNameButtonGame.LevelSystem
         bool BetweenLevels = true;
         bool CanSelect = false;
         bool CanOverallSelect = true;
+
+        
+
         int LastLevel = 2;
         public void ChangeScreen(Vector2 Screen) {
             this.Screen = Screen;
@@ -46,8 +49,11 @@ namespace NoNameButtonGame.LevelSystem
         }
 
         public override void Update(GameTime gt) {
-            if (!BetweenLevels)
+            if (!BetweenLevels) {
+                ChangeWindowName(CurrentLevel.Name);
                 CurrentLevel.Update(gt);
+            }
+                
             else {
                 if (!CanSelect) {
                     InputReaderMouse.CheckKey(InputReaderMouse.MouseKeys.Left, true); //To stop hold button instant reset shenanigans
@@ -94,8 +100,9 @@ namespace NoNameButtonGame.LevelSystem
         }
         private void LevelFail(object sender, EventArgs e) {
             BetweenLevels = true;
-            if (!CanOverallSelect)
-                LastLevel--;
+            //REMOVED TO MAKE THE GAME MORE FUN
+            //if (!CanOverallSelect)
+                //LastLevel--;
 
         }
         private void LevelReset(object sender, EventArgs e) {

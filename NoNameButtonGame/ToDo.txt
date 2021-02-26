@@ -1,4 +1,20 @@
-﻿Settings, Menu, etc
-create the Levels (100+level)
+﻿Startscreen{
+Play
+Play Selected
+Settings
+Exit
+}
+
+Settings{
+FixedStep
+Resolution
+Fullscreen
+}
+
+Unlock level system (select screen)
+
 Sounds?
+
+create the Levels (100+level)
+
 give the eediots a demo for playtesting

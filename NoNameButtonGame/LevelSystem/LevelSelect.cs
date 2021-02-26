@@ -94,10 +94,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                         CamPos += SinWaveRoute;
                     CTicks--;
                     if (CTicks == 0) {
-                        Console.SetCursorPosition(0, 0);
                         float ftmp = CamPos.Y % (DefaultHeight / Camera.Zoom);
-                        Console.WriteLine(ftmp);
-                        Console.WriteLine((DefaultHeight / Camera.Zoom));
                         if (!bUp)
                             CamPos.Y += (DefaultHeight / Camera.Zoom) - ftmp;
                         else

@@ -31,10 +31,10 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         float GT;
         public Level3(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 3 - Tutorial time!";
-            button = new AwesomeButton(new Vector2(-64, -0), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton")) {
+            button = new AwesomeButton(new Vector2(-64, -0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton")) {
                 DrawColor = Color.White,
             };
-            button.Click += BtnEvent;
+            button.Click += CallFinish;
 
             hold = new HoldButton(new Vector2(200, -0), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton")) {
                 DrawColor = Color.White,
@@ -65,7 +65,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         }
 
 
-
+        
         private void BtnEvent(object sender, EventArgs e) {
             CallFail();
         }
