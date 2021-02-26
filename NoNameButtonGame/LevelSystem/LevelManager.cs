@@ -25,7 +25,7 @@ namespace NoNameButtonGame.LevelSystem
         Vector2 Screen;
         bool BetweenLevels = true;
         bool CanSelect = false;
-        
+        bool CanOverallSelect = true;
         int LastLevel = 2;
         public void ChangeScreen(Vector2 Screen) {
             this.Screen = Screen;
@@ -37,6 +37,8 @@ namespace NoNameButtonGame.LevelSystem
             DWidth = Width;
             this.Screen = Screen;
             rand = new Random();
+            if (CanOverallSelect)
+                CanSelect = true;
         }
         public override void Draw(SpriteBatch sp) {
             if (!BetweenLevels)
@@ -49,37 +51,52 @@ namespace NoNameButtonGame.LevelSystem
             else {
                 if (!CanSelect) {
                     InputReaderMouse.CheckKey(InputReaderMouse.MouseKeys.Left, true); //To stop hold button instant reset shenanigans
-                    switch (LastLevel) {
-                        case 0:
-                            CurrentLevel = new Level1(DWidth, DHeight, Screen,rand);
-                            break;
-                        case 1:
-                            CurrentLevel = new Level2(DWidth, DHeight, Screen, rand);
-                            break;
-                        case 2:
-                            CurrentLevel = new Level3(DWidth, DHeight, Screen, rand);
-                            break;
-                        case 3:
-                            CurrentLevel = new Level3(DWidth, DHeight, Screen, rand);
-                            break;
-                    }
-                    CurrentLevel.Finish += LevelFinish;
-                    CurrentLevel.Fail += LevelFail;
-                    CurrentLevel.Reset += LevelReset;
-                    BetweenLevels = false;
+                    SelectLevel(LastLevel);
                 } else {
-                    //LevelSelection or something
+                    CurrentLevel = new LevelSelect(DWidth, DHeight, Screen, rand);
+                    CurrentLevel.Finish += LevelSelected;
+                    BetweenLevels = false;
                 }
                 ChangeWindowName(CurrentLevel.Name);
             }
         }
+        private void SelectLevel(int LL) {
+            switch (LL) {
+                case 0:
+                    CurrentLevel = new Level1(DWidth, DHeight, Screen, rand);
+                    break;
+                case 1:
+                    CurrentLevel = new Level2(DWidth, DHeight, Screen, rand);
+                    break;
+                case 2:
+                    CurrentLevel = new Level3(DWidth, DHeight, Screen, rand);
+                    break;
+                case 3:
+                    CurrentLevel = new Level4(DWidth, DHeight, Screen, rand);
+                    break;
+            }
+            CurrentLevel.Finish += LevelFinish;
+            CurrentLevel.Fail += LevelFail;
+            CurrentLevel.Reset += LevelReset;
+            BetweenLevels = false;
+        }
+        private void LevelSelected(object sender, EventArgs e) {
+            LastLevel = int.Parse((sender as GameObjects.TextButton).Name) - 1;
+            BetweenLevels = true;
+            CanSelect = false;
+            SelectLevel(LastLevel);
+        }
         private void LevelFinish(object sender, EventArgs e) {
             BetweenLevels = true;
+            if (CanOverallSelect)
+                CanSelect = true;
             LastLevel++;
         }
         private void LevelFail(object sender, EventArgs e) {
             BetweenLevels = true;
-            LastLevel--;
+            if (!CanOverallSelect)
+                LastLevel--;
+
         }
         private void LevelReset(object sender, EventArgs e) {
             BetweenLevels = true;

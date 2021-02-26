@@ -23,7 +23,7 @@ namespace NoNameButtonGame.GameObjects
             Texture = box.Texture;
             Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
             hitbox = box.Hitbox;
-            text = new TextBuilder("test", Position, new Vector2(16, 16), null, 0);
+            text = new TextBuilder("test", new Vector2(float.MinValue, float.MinValue), new Vector2(16, 16), null, 0);
 
             IGhitbox = new Rectangle[hitbox.Length];
             for (int i = 0; i < box.Hitbox.Length; i++) {

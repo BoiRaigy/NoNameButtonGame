@@ -99,6 +99,9 @@ namespace NoNameButtonGame.Text
                 case Character.cSTAR:
                 case Character.cPLUS:
                     return new Rectangle(1, 0, 5, 5);
+                case Character.CDOWN:
+                case Character.cUP:
+                    return new Rectangle(0, 2, 8, 4);
                 default:
                     return new Rectangle(0, 0, 8, 8);
 
@@ -160,6 +163,8 @@ namespace NoNameButtonGame.Text
             cSPACE,
             cCHECKMARK,
             cCROSSOUT,
+            CDOWN,
+            cUP,
         }
     }
 }

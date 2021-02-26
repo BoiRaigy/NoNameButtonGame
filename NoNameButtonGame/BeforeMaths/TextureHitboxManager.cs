@@ -52,6 +52,10 @@ namespace NoNameButtonGame.BeforeMaths
                     r.Aniframes = 32;
                     r.AniFromTop = true;
                     break;
+                case "minibutton":
+                    r.Imagesize = new Vector2(16, 8);
+                    r.Hitbox = new Rectangle[1] { new Rectangle(0, 0, 16, 8) };
+                    break;
                 default:
                     r.Imagesize = new Vector2(r.Texture.Width, r.Texture.Height);
                     r.Hitbox = new Rectangle[1] { new Rectangle(0, 0, r.Texture.Width, r.Texture.Height) };

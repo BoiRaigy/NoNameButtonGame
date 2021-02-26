@@ -262,6 +262,12 @@ namespace NoNameButtonGame.Text
                     case '❌':
                         Letters.Add(Letter.Character.cCROSSOUT);
                         break;
+                    case '⬇':
+                        Letters.Add(Letter.Character.CDOWN);
+                        break;
+                    case '⬆':
+                        Letters.Add(Letter.Character.cUP);
+                        break;
                     default:
                         throw new Exception("Unknown Character at char \'" + strArr[i] + "\' ");
                 }

@@ -20,9 +20,10 @@ namespace NoNameButtonGame.LevelSystem
         public int DefaultHeight;
         public Vector2 Window;
         public CameraClass Camera;
-        Vector2 CamPos;
+        public Vector2 CamPos;
         public string Name;
         public Vector2 MousePos;
+        public Rectangle CamRec;
         Random rand;
         public SampleLevel(int defaultWidth, int defaultHeight, Vector2 window, Random rand) {
             DefaultWidth = defaultWidth;
@@ -40,24 +41,25 @@ namespace NoNameButtonGame.LevelSystem
         public override void Update(GameTime gt) {
 
             Camera.Update(CamPos, new Vector2(0, 0));
+            CamRec = new Rectangle((CamPos - new Vector2(DefaultWidth, DefaultHeight)).ToPoint(), new Point(DefaultWidth * 2, DefaultHeight * 2));
             MouseState mouseState = Mouse.GetState();
             Vector2 VecMouse = mouseState.Position.ToVector2();
             float TargetScreenDifX = Window.X / DefaultWidth;
             float TargetScreenDifY = Window.Y / DefaultHeight;
             Vector2 VMP = new Vector2(VecMouse.X / TargetScreenDifX, VecMouse.Y / TargetScreenDifY);
             MousePos = new Vector2(VMP.X / Camera.Zoom + CamPos.X - (DefaultWidth / Camera.Zoom) / 2, VMP.Y / Camera.Zoom + CamPos.Y - (DefaultHeight / Camera.Zoom) / 2);
-            if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.Right, true)) {
-                CamPos.X += 45;
-            }
-            if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.Left, true)) {
-                CamPos.X -= 45;
-            }
-            if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.Up, true)) {
-                CamPos.Y -= 45;
-            }
-            if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.Down, true)) {
-                CamPos.Y += 45;
-            }
+            //if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.Right, true)) {
+            //    CamPos.X += 45;
+            //}
+            //if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.Left, true)) {
+            //    CamPos.X -= 45;
+            //}
+            //if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.Up, true)) {
+            //    CamPos.Y -= 45;
+            //}
+            //if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.Down, true)) {
+            //    CamPos.Y += 45;
+            //}
         }
 
         public virtual void SetScreen(Vector2 Screen) {
@@ -74,6 +76,18 @@ namespace NoNameButtonGame.LevelSystem
         public virtual void CallReset() {
             if (Reset != null && Reset.GetInvocationList().Length > 0)
                 Reset(this, new EventArgs());
+        }
+        public virtual void CallFinish(object s, EventArgs e) {
+            if (Finish != null && Finish.GetInvocationList().Length > 0)
+                Finish(s,e);
+        }
+        public virtual void CallFail(object s, EventArgs e) {
+            if (Fail != null && Fail.GetInvocationList().Length > 0)
+                Fail(s, e);
+        }
+        public virtual void CallReset(object s, EventArgs e) {
+            if (Reset != null && Reset.GetInvocationList().Length > 0)
+                Reset(s, e);
         }
     }
 }
