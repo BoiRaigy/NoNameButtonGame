@@ -62,17 +62,14 @@ namespace NoNameButtonGame.GameObjects
             if (HitboxCheck(MousePos)) {
                 if (!Hover) {
                     Hover = true;
-                    if (Enter != null)
-                        Enter(this, new EventArgs());
+                    Enter?.Invoke(this, new EventArgs());
                 }
                 if (InputReaderMouse.CheckKey(InputReaderMouse.MouseKeys.Left, true)){
-                    if (Click != null)
-                        Click(this, new EventArgs());
+                    Click?.Invoke(this, new EventArgs());
                 }
             } else {
                 if (Hover)
-                    if (Leave != null)
-                        Leave(this, new EventArgs());
+                    Leave?.Invoke(this, new EventArgs());
                 Hover = false;
             }
 

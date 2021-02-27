@@ -18,8 +18,9 @@ namespace NoNameButtonGame.BeforeMaths
     public static class TextureHitboxManager
     {
         public static THBox GetTHBox(this ContentManager mam, string tname) {
-            THBox r = new THBox();
-            r.Texture = mam.Load<Texture2D>(tname);
+            THBox r = new THBox {
+                Texture = mam.Load<Texture2D>(tname)
+            };
             switch (tname) {
                 case "awesomebutton":
                     r.Hitbox = new Rectangle[2] { new Rectangle(2,1, 28,14),

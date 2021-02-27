@@ -51,15 +51,15 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 DrawColor = Color.White,
             };
             lockbutton.Click += BtnEvent;
-            int clustSize = 32;
             Vector2 clustPos = new Vector2(-250, -150);
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             
             Info = new TextBuilder("memebig? => bigindeed!", new Vector2(-0, 150), new Vector2(16, 16), null, 0);
-            raincolor = new Rainbow();
-            raincolor.Increment = 32;
-            raincolor.Speed = 32;
-            raincolor.Offset = 256;
+            raincolor = new Rainbow {
+                Increment = 32,
+                Speed = 32,
+                Offset = 256
+            };
             laserwall = new Laserwall(new Vector2(-128, -128), new Vector2(128, 96), Globals.Content.GetTHBox("zonenew"));
             laserwall.Enter += BtnEvent;
         }

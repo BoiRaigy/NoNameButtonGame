@@ -25,15 +25,15 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             Up = new TextButton[Screen];
             for (int i = 0; i < Screen; i++) {
                 
-                Down[i] = new TextButton(new Vector2(-300, 138 + (defaultHeight / Camera.Zoom) * i), new Vector2(64, 32), Globals.Content.GetTHBox("minibutton"), "⬇", new Vector2(16, 16));
+                Down[i] = new TextButton(new Vector2(-300, 138 + (defaultHeight / Camera.Zoom) * i), new Vector2(64, 32), Globals.Content.GetTHBox("minibutton"),"", "⬇", new Vector2(16, 16));
                 Down[i].Click += MoveDown;
                 
-                Up[i] = new TextButton(new Vector2(-300, 190 + (defaultHeight / Camera.Zoom) * i), new Vector2(64, 32), Globals.Content.GetTHBox("minibutton"), "⬆", new Vector2(16, 16));
+                Up[i] = new TextButton(new Vector2(-300, 190 + (defaultHeight / Camera.Zoom) * i), new Vector2(64, 32), Globals.Content.GetTHBox("minibutton"),"", "⬆", new Vector2(16, 16));
                 Up[i].Click += MoveUp;
             }
             
             for (int i = 0; i < LevelAmmount; i++) {
-                LevelButton[i] = new TextButton(new Vector2(-200 + 100 * (i % 5), -140 + 50 * (i / 5) + 60 * (int)(i / 30)), new Vector2(64, 32), Globals.Content.GetTHBox("minibutton"), (i + 1).ToString(), new Vector2(16, 16));
+                LevelButton[i] = new TextButton(new Vector2(-200 + 100 * (i % 5), -140 + 50 * (i / 5) + 60 * (int)(i / 30)), new Vector2(64, 32), Globals.Content.GetTHBox("minibutton"), (i + 1).ToString(), (i + 1).ToString(), new Vector2(16, 16));
             LevelButton[i].Click += SelectLevel;
             } 
 

@@ -1,20 +1,6 @@
-﻿Startscreen{
-Play
-Play Selected
-Settings
-Exit
-}
-
-Settings{
-FixedStep
-Resolution
-Fullscreen
-}
-
+﻿
 Unlock level system (select screen)
 
-Sounds?
-
-create the Levels (100+level)
+create the Levels
 
 give the eediots a demo for playtesting

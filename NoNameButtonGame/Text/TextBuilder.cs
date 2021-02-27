@@ -4,7 +4,7 @@ using System.Text;
 using Raigy.Obj;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Raigy.Obj;
+
 namespace NoNameButtonGame.Text
 {
     class TextBuilder : GameObject
@@ -32,7 +32,11 @@ namespace NoNameButtonGame.Text
             ChangeText(InitText, LColor); 
 
         }
-        
+        public void ChangePosition(Vector2 Pos) {
+            Position = Pos;
+            CreateLetters();
+
+        }
         public void ChangeColor(Color[] LColor) {
             if (textstr.Length != LColor.Length) {
                 throw new Exception("InitText and LColor length do not match!");

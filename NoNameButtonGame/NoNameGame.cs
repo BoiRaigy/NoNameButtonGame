@@ -24,21 +24,30 @@ namespace NoNameButtonGame
         public NoNameGame() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            Globals.Content = Content;
             IsMouseVisible = false;
             IsFixedTimeStep = false;
-            
+            Globals.Content = Content;
+            Globals.IsFix = IsFixedTimeStep;
+        }
+        private void Changesettings(Vector2 Res, bool step, bool full) {
+            IsFixedTimeStep = step;
+            if ((!_graphics.IsFullScreen && full) || (!full && _graphics.IsFullScreen))
+                _graphics.ToggleFullScreen();
+            _graphics.PreferredBackBufferWidth = (int)Res.X;
+            _graphics.PreferredBackBufferHeight = (int)Res.Y;
+            _graphics.ApplyChanges();
+            lvmng.ChangeScreen(new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
         }
 
         protected override void Initialize() {
             base.Initialize();
-            Console.CursorVisible = false;
             target2D = new RenderTarget2D(GraphicsDevice, (int)DefaultWidth, (int)DefaultHeight);
             _graphics.PreferredBackBufferWidth = (int)DefaultWidth;
             _graphics.PreferredBackBufferHeight = (int)DefaultHeight;
             _graphics.ApplyChanges();
-            lvmng = new LevelManager((int)DefaultHeight, (int)DefaultWidth, new Vector2(DefaultWidth, DefaultHeight));
-            lvmng.ChangeWindowName = ChangeTitle;
+            lvmng = new LevelManager((int)DefaultHeight, (int)DefaultWidth, new Vector2(DefaultWidth, DefaultHeight), Changesettings) {
+                ChangeWindowName = ChangeTitle
+            };
             Mousepoint = Content.GetTHBox("mousepoint").Texture;
             
             //CamPos = new Vector2(button[0].Size.X / 2, button[0].Size.Y / 2);
@@ -61,20 +70,7 @@ namespace NoNameButtonGame
             MousepointTopLeft = mouse.Position.ToVector2() - new Vector2(3, 3);
             base.Update(gameTime);
 
-            if (Raigy.Input.InputReaderKeyboard.CheckKey(Keys.F11, true)) {
-                _graphics.ToggleFullScreen();
-                if (_graphics.IsFullScreen) {
-
-                    _graphics.PreferredBackBufferWidth = 1920;
-                    _graphics.PreferredBackBufferHeight = 1080;
-                } else {
-                    _graphics.PreferredBackBufferWidth = (int)DefaultWidth + 100;
-                    _graphics.PreferredBackBufferHeight = (int)DefaultHeight;
-                }
-                _graphics.ApplyChanges();
-                lvmng.ChangeScreen(new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
-            }
-
+            
             lvmng.Update(gameTime);
 
             //SHOUTOUT: https://youtu.be/yUSB_wAVtE8

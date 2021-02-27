@@ -15,8 +15,6 @@ namespace Raigy.Obj
         public Vector2 FrameSize;
         public Rectangle ImageLocation;
         public Color DrawColor;
-        public int DrawImportance;
-        
         public Rectangle rec;
 
 

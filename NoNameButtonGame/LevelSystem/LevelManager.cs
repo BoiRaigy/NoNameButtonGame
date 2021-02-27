@@ -14,34 +14,34 @@ namespace NoNameButtonGame.LevelSystem
     {
         SampleLevel CurrentLevel;
         StartScreen startScreen;
+        SettingsScreen settings;
         public delegate void Changewindowname(string name);
         public Changewindowname ChangeWindowName;
 
         public CameraClass GetCurrentCamera() {
-            switch (state) {
-                case MState.Settings:
-                    break;
-                case MState.Startmenu:
-                    return startScreen.Camera;
-                case MState.BetweenLevel:
-                    return new CameraClass(Screen);
-            }
-            return CurrentLevel.Camera;
+            return state switch {
+                MState.Settings => settings.Camera,
+                MState.Startmenu => startScreen.Camera,
+                MState.BetweenLevel => new CameraClass(Screen),
+                _ => CurrentLevel.Camera,
+            };
         }
+            
         int DHeight;
         int DWidth;
         Random rand;
         Vector2 Screen;
         bool CanOverallSelect = true;
         MState state;
-
+        SettingsScreen.ApplySettings changesettings;
         int LastLevel = 0;
         public void ChangeScreen(Vector2 Screen) {
             this.Screen = Screen;
             if (CurrentLevel != null)
                 CurrentLevel.SetScreen(Screen);
         }
-        public LevelManager(int Height, int Width, Vector2 Screen) {
+        public LevelManager(int Height, int Width, Vector2 Screen, SettingsScreen.ApplySettings changesettings) {
+            this.changesettings = changesettings;
             DHeight = Height;
             DWidth = Width;
             this.Screen = Screen;
@@ -49,6 +49,7 @@ namespace NoNameButtonGame.LevelSystem
             state = MState.Startmenu;
             startScreen = new StartScreen(Width, Height, Screen, rand);
             startScreen.Finish += ExitStartScreen;
+            settings = new SettingsScreen(Width, Height, Screen, rand, changesettings);
         }
         enum MState
         {
@@ -61,6 +62,7 @@ namespace NoNameButtonGame.LevelSystem
         public override void Draw(SpriteBatch sp) {
             switch (state) {
                 case MState.Settings:
+                    settings.Draw(sp);
                     break;
                 case MState.Startmenu:
                     startScreen.Draw(sp);
@@ -92,6 +94,8 @@ namespace NoNameButtonGame.LevelSystem
             ChangeWindowName((CurrentLevel ?? new SampleLevel(DWidth, DHeight, Screen, rand) { Name = "NoNameButtonGame" }).Name);
             switch (state) {
                 case MState.Settings:
+                    settings.Update(gt);
+                    ChangeWindowName(settings.Name);
                     break;
                 case MState.Startmenu:
                     startScreen.Update(gt);
@@ -150,6 +154,7 @@ namespace NoNameButtonGame.LevelSystem
                     break;
                 case StartScreen.ButtonPressed.Settings:
                     state = MState.Settings;
+                    settings = new SettingsScreen(DWidth, DHeight, Screen, rand, changesettings);
                     break;
                 case StartScreen.ButtonPressed.Exit:
                     Environment.Exit(0);

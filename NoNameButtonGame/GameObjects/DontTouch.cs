@@ -61,10 +61,10 @@ namespace NoNameButtonGame.GameObjects
             }
         }
 
-        public event EventHandler Leave;
         public event EventHandler Enter;
+        public event EventHandler Leave;
         public event EventHandler Click;
-       
+
         public override void Draw(SpriteBatch sp) {
             base.Draw(sp);
         }

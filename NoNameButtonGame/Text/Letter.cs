@@ -86,7 +86,7 @@ namespace NoNameButtonGame.Text
                     return new Rectangle(2, 0, 4, 7);
                 case Character.cW:
                 case Character.cCROSSOUT:
-                    return new Rectangle(0, 0, 7, 7);
+                    return new Rectangle(0, 0, 8, 8);
                 case Character.cSLASH:
                     return new Rectangle(2, 0, 4 ,8);
                 case Character.cMINUS:
