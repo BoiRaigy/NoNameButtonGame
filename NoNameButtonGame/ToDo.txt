@@ -1,6 +1,2 @@
-﻿
-Unlock level system (select screen)
-
-create the Levels
-
+﻿create the Levels
 give the eediots a demo for playtesting

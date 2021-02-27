@@ -25,7 +25,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             string s1 ="❌", s2 = "❌";
             if (Globals.IsFix)
                 s1 = "✔";
-            if (Globals.IsFix)
+            if (Globals.FullScreen)
                 s2 = "✔";
             Name = "Start Menu";
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
@@ -40,7 +40,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             FixedStepBn = new TextButton(new Vector2(-108, -8), new Vector2(40, 32), Globals.Content.GetTHBox("minibutton"), "IsFixedStep", s1, new Vector2(16, 16));
             FixedStepBn.Text.ChangeColor(new Color[1] { s1 == "❌" ? Color.Red : Color.Green});
             FixedStepBn.Click += ChangePressState;
-            FullscreenBn = new TextButton(new Vector2(-108, 56), new Vector2(40, 32), Globals.Content.GetTHBox("minibutton"), "Fullscreen", s1, new Vector2(16, 16));
+            FullscreenBn = new TextButton(new Vector2(-108, 56), new Vector2(40, 32), Globals.Content.GetTHBox("minibutton"), "Fullscreen", s2, new Vector2(16, 16));
             FullscreenBn.Text.ChangeColor(new Color[1] { s2 == "❌" ? Color.Red : Color.Green });
             FullscreenBn.Click += ChangePressState;
             VecResolution = new Vector2(1280,720);
@@ -54,11 +54,15 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                         VecResolution = new Vector2(1920, 1080);
                         break;
                     case "1920x1080":
+                        VecResolution = new Vector2(2560, 1440);
+                        break;
+                    case "2560x1440":
                         VecResolution = new Vector2(3840, 2160);
                         break;
                     case "3840x2160":
                         VecResolution = new Vector2(1280, 720);
                         break;
+                    
                 }
             }
 
@@ -70,8 +74,12 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                     case "1920x1080":
                         VecResolution = new Vector2(1280, 720);
                         break;
-                    case "3840x2160":
+                    case "2560x1440":
                         VecResolution = new Vector2(1920, 1080);
+                        break;
+                    case "3840x2160":
+                        VecResolution = new Vector2(2560, 1440);
+                        
                         break;
                 }
             }

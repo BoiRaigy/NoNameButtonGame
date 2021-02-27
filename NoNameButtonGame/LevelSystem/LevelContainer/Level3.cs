@@ -22,61 +22,58 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
         AwesomeButton button;
         Cursor cursor;
-        HoldButton hold;
         TextBuilder Info;
         Rainbow raincolor;
-        Laserwall laserwall;
-        StateButton statebutton;
-        LockButton lockbutton;
+        Laserwall[] laserwall;
         float GT;
         public Level3(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 3 - Tutorial time!";
-            button = new AwesomeButton(new Vector2(-64, -0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton")) {
-                DrawColor = Color.White,
-            };
-            button.Click += CallFinish;
+            
 
-            hold = new HoldButton(new Vector2(200, -0), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton")) {
-                DrawColor = Color.White,
-            };
-            hold.Click += BtnEvent;
-
-            statebutton = new StateButton(new Vector2(200, 75), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton"), 100) {
-                DrawColor = Color.White,
-            };
-            statebutton.Click += BtnEvent;
-
-
-            lockbutton = new LockButton(new Vector2(64, 75), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton"), true) {
-                DrawColor = Color.White,
-            };
-            lockbutton.Click += BtnEvent;
+            
             Vector2 clustPos = new Vector2(-250, -150);
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             
-            Info = new TextBuilder("memebig? => bigindeed!", new Vector2(-0, 150), new Vector2(16, 16), null, 0);
+            Info = new TextBuilder("this is bad! ->", new Vector2(-32, 132), new Vector2(16, 16), null, 0);
             raincolor = new Rainbow {
                 Increment = 32,
                 Speed = 32,
                 Offset = 256
             };
-            laserwall = new Laserwall(new Vector2(-128, -128), new Vector2(128, 96), Globals.Content.GetTHBox("zonenew"));
-            laserwall.Enter += BtnEvent;
+            laserwall = new Laserwall[6];
+            Vector2 Move = new Vector2(-100,0);
+            button = new AwesomeButton(Move + new Vector2(-110,-110), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton")) {
+                DrawColor = Color.White,
+            };
+            button.Click += CallFinish;
+            laserwall[0] = new Laserwall(new Vector2(Move.X - 128, Move.Y-128), new Vector2(8, 96), Globals.Content.GetTHBox("zonenew"));
+            laserwall[1] = new Laserwall(new Vector2(Move.X - 128, Move.Y - 128), new Vector2(160, 8), Globals.Content.GetTHBox("zonenew"));
+            laserwall[2] = new Laserwall(new Vector2(Move.X + 32, Move.Y - 128), new Vector2(8, 96), Globals.Content.GetTHBox("zonenew"));
+            laserwall[3] = new Laserwall(new Vector2(Move.X - 32, Move.Y - 32), new Vector2(72, 8), Globals.Content.GetTHBox("zonenew"));
+            laserwall[4] = new Laserwall(new Vector2(Move.X - 128, Move.Y - 32), new Vector2(72, 8), Globals.Content.GetTHBox("zonenew"));
+            laserwall[5] = new Laserwall(new Vector2(190, 100), new Vector2(64, 64), Globals.Content.GetTHBox("zonenew"));
+            for (int i = 0; i < laserwall.Length; i++) {
+                laserwall[i].Enter += LaserEvent;
+            }
+            
         }
 
+        private void LaserEvent(object sender, EventArgs e) {
+            CallFail(sender, e);
+        }
 
-        
         private void BtnEvent(object sender, EventArgs e) {
-            CallFail();
+            CallFinish(sender,e);
         }
         public override void Draw(SpriteBatch sp) {
             button.Draw(sp);
-            hold.Draw(sp);
+            
             Info.Draw(sp);
-            laserwall.Draw(sp);
-            lockbutton.Draw(sp);
-            statebutton.Draw(sp);
+            for (int i = 0; i < laserwall.Length; i++) {
+                laserwall[i].Draw(sp);
+            }
             cursor.Draw(sp);
+           
         }
 
         public override void Update(GameTime gt) {
@@ -90,13 +87,12 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             Info.ChangeColor(raincolor.GetColor(Info.Text.Length));
             Info.Update(gt);
             base.Update(gt);
+            for (int i = 0; i < laserwall.Length; i++) {
+                laserwall[i].Update(gt, cursor.Hitbox[0]);
+            }
             
-            laserwall.Update(gt, cursor.Hitbox[0]);
-            lockbutton.Update(gt, cursor.Hitbox[0]);
             cursor.Position = MousePos - cursor.Size / 2;
             button.Update(gt, cursor.Hitbox[0]);
-            hold.Update(gt, cursor.Hitbox[0]);
-            statebutton.Update(gt, cursor.Hitbox[0]);
         }
     }
 }

@@ -13,6 +13,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using NoNameButtonGame.BeforeMaths;
 using NoNameButtonGame.GameObjects;
+using NoNameButtonGame.Text;
+
 namespace NoNameButtonGame.LevelSystem.LevelContainer
 {
     class Level4 : SampleLevel
@@ -20,7 +22,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
         AwesomeButton button;
         Cursor cursor;
-
+        TextBuilder[] Infos;
         public Level4(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 2 - WHAAT?!? There is more to this Game?!";
             button = new AwesomeButton(new Vector2(-64, -0), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton")) {
@@ -28,6 +30,8 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             };
             button.Click += BtnEvent;
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
+            Infos = new TextBuilder[1];
+            Infos[0] = new TextBuilder("Thin walls can be penetrated!", new Vector2(80,-132),new Vector2(8,8),null,0);
         }
 
 
@@ -37,12 +41,18 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         }
         public override void Draw(SpriteBatch sp) {
             button.Draw(sp);
+            for (int i = 0; i < Infos.Length; i++) {
+                Infos[i].Draw(sp);
+            }
             cursor.Draw(sp);
         }
 
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
+            for (int i = 0; i < Infos.Length; i++) {
+                Infos[i].Update(gt);
+            }
             cursor.Position = MousePos - cursor.Size / 2;
             button.Update(gt, cursor.Hitbox[0]);
         }

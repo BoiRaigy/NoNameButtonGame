@@ -27,7 +27,7 @@ namespace NoNameButtonGame.GameObjects
             }
             Texture = box.Texture;
             FrameMax = box.Aniframes;
-            
+            Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
             ImageLocation = new Rectangle(0, 0, (int)box.Imagesize.X, (int)box.Imagesize.Y);
             IGhitbox = new Rectangle[hitbox.Length];
             DrawColor = Color.White;

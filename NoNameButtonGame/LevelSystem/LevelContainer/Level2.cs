@@ -13,6 +13,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using NoNameButtonGame.BeforeMaths;
 using NoNameButtonGame.GameObjects;
+using NoNameButtonGame.Text;
+
 namespace NoNameButtonGame.LevelSystem.LevelContainer
 {
     class Level2 : SampleLevel
@@ -20,7 +22,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
         AwesomeButton[] button;
         Cursor cursor;
-
+        TextBuilder Info;
         public Level2(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 2 - WHAAT?!? There is more to this Game?!";
             button = new AwesomeButton[16];
@@ -39,6 +41,8 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                     button[i].Click += BtnFailEvent;
                 }
             }
+            Info = new TextBuilder("Watch out. There Random!", new Vector2(-170, -(defaultHeight / Camera.Zoom / 2) + 32), new Vector2(16, 16), null, 0);
+            
         }
 
 
@@ -54,6 +58,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             for (int i = 0; i < button.Length; i++) {
                 button[i].Draw(sp);
             }
+            Info.Draw(sp);
             cursor.Draw(sp);
         }
 
@@ -64,6 +69,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             for (int i = 0; i < button.Length; i++) {
                 button[i].Update(gt, cursor.Hitbox[0]);
             }
+            Info.Update(gt);
         }
     }
 }

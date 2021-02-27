@@ -32,6 +32,7 @@ namespace NoNameButtonGame.LevelSystem
         Random rand;
         Vector2 Screen;
         bool CanOverallSelect = true;
+        bool RedoCall = false;
         MState state;
         SettingsScreen.ApplySettings changesettings;
         int LastLevel = 0;
@@ -47,6 +48,7 @@ namespace NoNameButtonGame.LevelSystem
             this.Screen = Screen;
             rand = new Random();
             state = MState.Startmenu;
+            LastLevel = Globals.MaxLevel;
             startScreen = new StartScreen(Width, Height, Screen, rand);
             startScreen.Finish += ExitStartScreen;
             settings = new SettingsScreen(Width, Height, Screen, rand, changesettings);
@@ -109,7 +111,7 @@ namespace NoNameButtonGame.LevelSystem
                     break;
                 case MState.BetweenLevel:
                     InputReaderMouse.CheckKey(InputReaderMouse.MouseKeys.Left, true);
-                    if (CanOverallSelect) {
+                    if (CanOverallSelect && !RedoCall) {
                         CurrentLevel = new LevelSelect(DWidth, DHeight, Screen, rand);
                         CurrentLevel.Finish += LevelSelected;
                         state = MState.LevelSelect;
@@ -170,15 +172,23 @@ namespace NoNameButtonGame.LevelSystem
         private void LevelFinish(object sender, EventArgs e) {
 
             state = MState.BetweenLevel;
-            if (!CanOverallSelect)
+            if (!CanOverallSelect) {
                 LastLevel++;
+                if (Globals.MaxLevel < LastLevel) {
+                    Globals.MaxLevel = LastLevel;
+                    changesettings.Invoke(Screen, Globals.IsFix, Globals.FullScreen);
+                }
+            }
+            RedoCall = false;
 
         }
         private void LevelFail(object sender, EventArgs e) {
             state = MState.BetweenLevel;
+            RedoCall = true;
         }
         private void LevelReset(object sender, EventArgs e) {
             state = MState.BetweenLevel;
+            RedoCall = true;
         }
     }
 }

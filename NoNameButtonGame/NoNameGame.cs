@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using NoNameButtonGame.BeforeMaths;
 using NoNameButtonGame.LevelSystem;
-
+using System.IO;
 
 namespace NoNameButtonGame
 {
@@ -24,8 +24,42 @@ namespace NoNameButtonGame
         public NoNameGame() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = false;
             IsFixedTimeStep = false;
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\NoNameButtonGame")) {
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\NoNameButtonGame");
+            }
+            if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\NoNameButtonGame\\data.txt")) {
+                using (StreamWriter sw = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\NoNameButtonGame\\data.txt")) {
+                    sw.WriteLine(IsFixedTimeStep);
+                    sw.WriteLine(_graphics.IsFullScreen);
+                    sw.WriteLine("1280");
+                    sw.WriteLine("720");
+                }
+            } else {
+                try {
+                    using (StreamReader sr = new StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\NoNameButtonGame\\data.txt")) {
+                        IsFixedTimeStep = bool.Parse(sr.ReadLine());
+                        bool full = bool.Parse(sr.ReadLine());
+                        Globals.FullScreen = full;
+                        if ((!_graphics.IsFullScreen && full) || (!full && _graphics.IsFullScreen))
+                            _graphics.ToggleFullScreen();
+                        int X = int.Parse(sr.ReadLine());
+                        int Y = int.Parse(sr.ReadLine());
+                        _graphics.PreferredBackBufferWidth = X;
+                        _graphics.PreferredBackBufferHeight = Y;
+                        _graphics.ApplyChanges();
+                        Globals.MaxLevel = int.Parse(sr.ReadLine());
+                    }
+                } catch {
+                    if (_graphics.IsFullScreen)
+                        _graphics.ToggleFullScreen();
+                    _graphics.PreferredBackBufferWidth = 1280;
+                    _graphics.PreferredBackBufferHeight = 720;
+                    _graphics.ApplyChanges();
+                    IsFixedTimeStep = false;
+                }
+            }
+            IsMouseVisible = false;
             Globals.Content = Content;
             Globals.IsFix = IsFixedTimeStep;
         }
@@ -36,6 +70,14 @@ namespace NoNameButtonGame
             _graphics.PreferredBackBufferWidth = (int)Res.X;
             _graphics.PreferredBackBufferHeight = (int)Res.Y;
             _graphics.ApplyChanges();
+
+            using (StreamWriter sw = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\NoNameButtonGame\\data.txt")) {
+                sw.WriteLine(step);
+                sw.WriteLine(full);
+                sw.WriteLine(Res.X);
+                sw.WriteLine(Res.Y);
+                sw.WriteLine(Globals.MaxLevel);
+            }
             lvmng.ChangeScreen(new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
         }
 
@@ -49,7 +91,7 @@ namespace NoNameButtonGame
                 ChangeWindowName = ChangeTitle
             };
             Mousepoint = Content.GetTHBox("mousepoint").Texture;
-            
+
             //CamPos = new Vector2(button[0].Size.X / 2, button[0].Size.Y / 2);
             //CamPos = new Vector2(700, 400);
         }
@@ -62,15 +104,15 @@ namespace NoNameButtonGame
         Rectangle BackbufferBounds;
         float backbufferAspectRatio;
         float ScreenAspectRatio;
-        float rx,ry,rw,rh;
-       
-       
+        float rx, ry, rw, rh;
+
+
         protected override void Update(GameTime gameTime) {
             MouseState mouse = Mouse.GetState();
             MousepointTopLeft = mouse.Position.ToVector2() - new Vector2(3, 3);
             base.Update(gameTime);
 
-            
+
             lvmng.Update(gameTime);
 
             //SHOUTOUT: https://youtu.be/yUSB_wAVtE8
@@ -90,7 +132,7 @@ namespace NoNameButtonGame
                 ry = (BackbufferBounds.Height - rh) / 2f;
             }
         }
-        
+
         protected override void Draw(GameTime gameTime) {
 
             GraphicsDevice.SetRenderTarget(target2D);
@@ -109,7 +151,7 @@ namespace NoNameButtonGame
             GraphicsDevice.Clear(Color.HotPink);
             _spriteBatch.Draw(target2D, DesRec, null, Color.White);
             if (ShowActualMousePos)
-            _spriteBatch.Draw(Mousepoint, new Rectangle(MousepointTopLeft.ToPoint(), new Point(6,6)), Color.White);
+                _spriteBatch.Draw(Mousepoint, new Rectangle(MousepointTopLeft.ToPoint(), new Point(6, 6)), Color.White);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
