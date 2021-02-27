@@ -11,115 +11,65 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 {
     class StartScreen : SampleLevel
     {
-        TextButton[] LevelButton;
-        TextButton[] Down;
-        TextButton[] Up;
+        AwesomeButton Start;
+        AwesomeButton Setting;
+        AwesomeButton LevelSelect;
+        AwesomeButton Exit;
         Cursor cursor;
-        int LevelAmmount = 1000;
         public StartScreen(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Start Menu";
-            LevelButton = new TextButton[LevelAmmount];
+            int Startpos = -(64 * 2);
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
-            int Screen = LevelAmmount / 30;
-            Down = new TextButton[Screen];
-            Up = new TextButton[Screen];
-            for (int i = 0; i < Screen; i++) {
-
-                Down[i] = new TextButton(new Vector2(-300, 138 + (defaultHeight / Camera.Zoom) * i), new Vector2(64, 32), Globals.Content.GetTHBox("minibutton"), "⬇", new Vector2(16, 16));
-                Down[i].Click += MoveDown;
-
-                Up[i] = new TextButton(new Vector2(-300, 190 + (defaultHeight / Camera.Zoom) * i), new Vector2(64, 32), Globals.Content.GetTHBox("minibutton"), "⬆", new Vector2(16, 16));
-                Up[i].Click += MoveUp;
-            }
-
-            for (int i = 0; i < LevelAmmount; i++) {
-                LevelButton[i] = new TextButton(new Vector2(-200 + 100 * (i % 5), -140 + 50 * (i / 5) + 60 * (int)(i / 30)), new Vector2(64, 32), Globals.Content.GetTHBox("minibutton"), (i + 1).ToString(), new Vector2(16, 16));
-                LevelButton[i].Click += SelectLevel;
-            }
-
+            Start = new AwesomeButton(new Vector2(-64, Startpos), new Vector2(160, 64), Globals.Content.GetTHBox("startbutton"));
+            Start.Click += BnEvStart;
+            LevelSelect = new AwesomeButton(new Vector2(-92, Startpos + 64), new Vector2(216, 64), Globals.Content.GetTHBox("selectbutton"));
+            LevelSelect.Click += BnEvSelect;
+            Setting = new AwesomeButton(new Vector2(-130, Startpos + 64 * 2), new Vector2(292, 64), Globals.Content.GetTHBox("settingsbutton"));
+            Setting.Click += BnEvSettings;
+            Exit = new AwesomeButton(new Vector2(-52, Startpos + 64 * 3), new Vector2(136, 64), Globals.Content.GetTHBox("exitbutton"));
+            Exit.Click += BnEvExit;
         }
-        bool bMove = false;
-        bool bUp = false;
-        int CTicks = 0;
-        private void SelectLevel(object sender, EventArgs e) {
-            CallFinish(sender, e);
+        
+        public ButtonPressed Action;
+        public enum ButtonPressed
+        {
+            Start,
+            LevelSelect,
+            Settings,
+            Exit
         }
-        public override void CallFail() {
-            base.CallFail();
+        private void BnEvStart(object sender, EventArgs e) {
+            Action = ButtonPressed.Start;
+            CallFinish(this, e);
         }
-
-        public override void CallFinish() {
-            base.CallFinish();
+        private void BnEvSelect(object sender, EventArgs e) {
+            Action = ButtonPressed.LevelSelect;
+            CallFinish(this, e);
         }
-
-        public override void CallReset() {
-            base.CallReset();
+        private void BnEvSettings(object sender, EventArgs e) {
+            Action = ButtonPressed.Settings;
+            CallFinish(this, e);
         }
-        private void MoveDown(object sender, EventArgs e) {
-            bMove = true;
-            bUp = false;
-            CTicks = 40;
+        private void BnEvExit(object sender, EventArgs e) {
+            Action = ButtonPressed.Exit;
+            CallFinish(this, e);
         }
-        private void MoveUp(object sender, EventArgs e) {
-            bMove = true;
-            bUp = true;
-            CTicks = 40;
-        }
-
         public override void Draw(SpriteBatch sp) {
 
-            for (int i = 0; i < LevelAmmount; i++) {
-                if (LevelButton[i].rec.Intersects(CamRec))
-                    LevelButton[i].Draw(sp);
-            }
-            for (int i = 0; i < Down.Length; i++) {
-                if (Down[i].rec.Intersects(CamRec))
-                    Down[i].Draw(sp);
-                if (Up[i].rec.Intersects(CamRec))
-                    Up[i].Draw(sp);
-            }
+            Start.Draw(sp);
+            Setting.Draw(sp);
+            LevelSelect.Draw(sp);
+            Exit.Draw(sp);
             cursor.Draw(sp);
         }
-        float GT;
         public override void Update(GameTime gt) {
             base.Update(gt);
-            if (bMove) {
-                GT += gt.ElapsedGameTime.Milliseconds;
-                while (GT > 10) {
-                    GT -= 10;
-                    Vector2 SinWaveRoute = new Vector2(0, 12.2F * (float)Math.Sin((float)CTicks / 50 * Math.PI));
-                    if (bUp)
-                        CamPos -= SinWaveRoute;
-                    else
-                        CamPos += SinWaveRoute;
-                    CTicks--;
-                    if (CTicks == 0) {
-                        Console.SetCursorPosition(0, 0);
-                        float ftmp = CamPos.Y % (DefaultHeight / Camera.Zoom);
-                        Console.WriteLine(ftmp);
-                        Console.WriteLine((DefaultHeight / Camera.Zoom));
-                        if (!bUp)
-                            CamPos.Y += (DefaultHeight / Camera.Zoom) - ftmp;
-                        else
-                            CamPos.Y -= ftmp;
-                        bMove = false;
-                    }
-
-                }
-            }
+            Start.Update(gt, cursor.Hitbox[0]);
+            Setting.Update(gt, cursor.Hitbox[0]);
+            LevelSelect.Update(gt, cursor.Hitbox[0]);
+            Exit.Update(gt, cursor.Hitbox[0]);
+            cursor.Position = MousePos;
             cursor.Update(gt);
-            cursor.Position = MousePos - cursor.Size / 2;
-            for (int i = 0; i < Down.Length; i++) {
-                if (Down[i].rec.Intersects(CamRec))
-                    Down[i].Update(gt, cursor.Hitbox[0]);
-                if (Up[i].rec.Intersects(CamRec))
-                    Up[i].Update(gt, cursor.Hitbox[0]);
-            }
-
-            for (int i = 0; i < LevelAmmount; i++) {
-                if (LevelButton[i].rec.Intersects(CamRec))
-                    LevelButton[i].Update(gt, cursor.Hitbox[0]);
-            }
         }
     }
 }

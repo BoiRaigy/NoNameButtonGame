@@ -17,6 +17,7 @@ namespace NoNameButtonGame.GameObjects
         public AwesomeButton(Vector2 Pos, Vector2 Size, THBox box) {
             base.Size = Size;
             Position = Pos;
+            DrawColor = Color.White;
             ImageLocation = new Rectangle((int)box.Imagesize.X, 0, (int)box.Imagesize.X, (int)box.Imagesize.Y);
             FrameSize = box.Imagesize;
             hitbox = new Rectangle[box.Hitbox.Length];

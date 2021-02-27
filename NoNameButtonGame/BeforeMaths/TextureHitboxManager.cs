@@ -56,6 +56,18 @@ namespace NoNameButtonGame.BeforeMaths
                     r.Imagesize = new Vector2(16, 8);
                     r.Hitbox = new Rectangle[1] { new Rectangle(0, 0, 16, 8) };
                     break;
+                case "settingsbutton":
+                    r.Imagesize = new Vector2(73, 16);
+                    r.Hitbox = new Rectangle[2] { new Rectangle(1, 2, 71, 12), new Rectangle(2, 1, 69, 14) };
+                    break;
+                case "selectbutton":
+                    r.Imagesize = new Vector2(54, 16);
+                    r.Hitbox = new Rectangle[2] { new Rectangle(1, 2, 52, 12), new Rectangle(2, 1, 50, 14) };
+                    break;
+                case "exitbutton":
+                    r.Imagesize = new Vector2(34, 16);
+                    r.Hitbox = new Rectangle[2] { new Rectangle(1, 2, 32, 12), new Rectangle(2, 1, 30, 14) };
+                    break;
                 default:
                     r.Imagesize = new Vector2(r.Texture.Width, r.Texture.Height);
                     r.Hitbox = new Rectangle[1] { new Rectangle(0, 0, r.Texture.Width, r.Texture.Height) };

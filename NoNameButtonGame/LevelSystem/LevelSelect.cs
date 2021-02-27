@@ -44,17 +44,6 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         private void SelectLevel(object sender, EventArgs e) {
             CallFinish(sender,e);
         }
-        public override void CallFail() {
-            base.CallFail();
-        }
-
-        public override void CallFinish() {
-            base.CallFinish();
-        }
-
-        public override void CallReset() {
-            base.CallReset();
-        }
         private void MoveDown(object sender, EventArgs e) {
             bMove = true;
             bUp = false;
