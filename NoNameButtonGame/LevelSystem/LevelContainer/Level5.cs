@@ -31,10 +31,18 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             button.Click += EmptyBtnEvent;
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             Infos = new TextBuilder[2];
-            Infos[0] = new TextBuilder("<-- Hold this button till the timer runs out!", new Vector2(-64, -72), new Vector2(8, 8), null, 0);
+            Infos[0] = new TextBuilder("<-- Hold this button till the timer runs out!", new Vector2(-64, -72), new Vector2(8,8), null, 0);
             Infos[1] = new TextBuilder("<-- This one will be unlocked then", new Vector2(-64, 32), new Vector2(8, 8), null, 0);
+            for (int i = 0; i < Infos.Length; i++) {
+                Color[] c = new Color[Infos[i].Text.Length];
+                for (int a = 0; a < Infos[i].Text.Length; a++) {
+                    c[a] = new Color(rand.Next(64, 255), rand.Next(64, 255), rand.Next(64, 255));
+                }
+                Infos[i].ChangeColor(c);
+            }
             lockbutton = new LockButton(new Vector2(-220, 0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"), true);
             lockbutton.Click += BtnEvent;
+            
         }
 
 
@@ -63,7 +71,6 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             for (int i = 0; i < Infos.Length; i++) {
                 Infos[i].Update(gt);
             }
-
             cursor.Position = MousePos - cursor.Size / 2;
             button.Update(gt, cursor.Hitbox[0]);
             lockbutton.Update(gt, cursor.Hitbox[0]);
