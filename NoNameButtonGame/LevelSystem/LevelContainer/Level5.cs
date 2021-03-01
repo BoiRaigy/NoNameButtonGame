@@ -27,6 +27,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         public Level5(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 5 - MORE BUTTONS!";
             button = new HoldButton(new Vector2(-220, -100), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"));
+            button.EndHoldTime = 6900;
             button.Click += EmptyBtnEvent;
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             Infos = new TextBuilder[2];
