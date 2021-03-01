@@ -62,7 +62,7 @@ namespace NoNameButtonGame.GameObjects
         }
 
         private void CallEnter(object sender, EventArgs e) {
-            Enter(sender, e);
+            Enter?.Invoke(sender, e);
         }
         Rectangle[] hitbox;
         public Rectangle[] Hitbox => hitbox;
@@ -76,7 +76,7 @@ namespace NoNameButtonGame.GameObjects
             }
             for (int i = 0; i < hitbox.Length; i++) {
                 if (hitbox[i].Intersects(MousePos))
-                    Enter(this, new EventArgs());
+                    Enter?.Invoke(this, new EventArgs());
             }
             base.Update(gt);
         }
