@@ -23,13 +23,14 @@ namespace NoNameButtonGame.GameObjects
             Texture = box.Texture;
             Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
             hitbox = box.Hitbox;
+            DrawColor = Color.White;
             text = new TextBuilder("test", new Vector2(float.MinValue, float.MinValue), new Vector2(16, 16), null, 0);
 
             IGhitbox = new Rectangle[hitbox.Length];
             for (int i = 0; i < box.Hitbox.Length; i++) {
                 IGhitbox[i] = new Rectangle((int)(Position.X + (box.Hitbox[i].X * Scale.X)), (int)(Position.Y + (box.Hitbox[i].Y * Scale.Y)), (int)(box.Hitbox[i].Width * Scale.X), (int)(box.Hitbox[i].Height * Scale.Y));
             }
-            locked = Startstate;
+            Locked = Startstate;
         }
 
         public event EventHandler Leave;
@@ -39,8 +40,7 @@ namespace NoNameButtonGame.GameObjects
         Rectangle[] hitbox;
         Rectangle[] IGhitbox;
         Vector2 Scale;
-        bool locked;
-        public bool Locked { get { return locked; } set { Locked = value; } }
+        public bool Locked;
         
 
         TextBuilder text;
@@ -71,7 +71,7 @@ namespace NoNameButtonGame.GameObjects
                         Enter(this, new EventArgs());
                 }
                 if (InputReaderMouse.CheckKey(InputReaderMouse.MouseKeys.Left, true)) {
-                   if (!locked)
+                   if (!Locked)
                         Click(this, new EventArgs());
                 } else {
                     //HoldTime -= gt.ElapsedGameTime.Milliseconds / 2;
@@ -85,13 +85,13 @@ namespace NoNameButtonGame.GameObjects
 
             }
 
-            if (Hover || locked) {
+            if (Hover || Locked) {
                 ImageLocation = new Rectangle((int)FrameSize.X, 0, (int)FrameSize.X, (int)FrameSize.Y);
             } else {
                 ImageLocation = new Rectangle(0, 0, (int)FrameSize.X, (int)FrameSize.Y);
             }
             UpdateHitbox();
-            text.ChangeText(locked? "Locked" : "Unlocked");
+            text.ChangeText(Locked? "Locked" : "Unlocked");
 
             text.Position = rec.Center.ToVector2() - text.rec.Size.ToVector2() / 2;
             text.Position.Y -= 32;
@@ -102,7 +102,6 @@ namespace NoNameButtonGame.GameObjects
         public override void Draw(SpriteBatch sp) {
             base.Draw(sp);
             text.Draw(sp);
-
         }
     }
 }

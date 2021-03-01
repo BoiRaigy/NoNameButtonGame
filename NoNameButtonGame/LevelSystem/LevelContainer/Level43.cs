@@ -17,20 +17,20 @@ using NoNameButtonGame.Text;
 
 namespace NoNameButtonGame.LevelSystem.LevelContainer
 {
-    class Level4 : SampleLevel
+    class Level43 : SampleLevel
     {
 
         AwesomeButton button;
         Cursor cursor;
         TextBuilder[] Infos;
         Laserwall wall;
-        public Level4(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
-            Name = "Level 4 - Bug? No its a Feature!";
+        public Level43(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
+            Name = "Level 4 - Bugs? No its a Feature!";
             button = new AwesomeButton(new Vector2(-256, -0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"));
             button.Click += BtnEvent;
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             Infos = new TextBuilder[2];
-            Infos[0] = new TextBuilder("Thin walls can be penetrated!", new Vector2(80,-132),new Vector2(8,8),null,0);
+            Infos[0] = new TextBuilder("Thin walls can be penetrated!", new Vector2(80, -132), new Vector2(8, 8), null, 0);
             Infos[1] = new TextBuilder("Just move fast enough!", new Vector2(80, -100), new Vector2(8, 8), null, 0);
             wall = new Laserwall(new Vector2(-40, -300), new Vector2(24, 1024), Globals.Content.GetTHBox("zonenew"));
             wall.Enter += WallEvent;
@@ -39,7 +39,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
 
         private void BtnEvent(object sender, EventArgs e) {
-            CallFinish(sender,e);
+            CallFinish(sender, e);
         }
         private void WallEvent(object sender, EventArgs e) {
             CallReset(sender, e);

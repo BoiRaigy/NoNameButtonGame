@@ -17,29 +17,32 @@ using NoNameButtonGame.Text;
 
 namespace NoNameButtonGame.LevelSystem.LevelContainer
 {
-    class Level4 : SampleLevel
+    class Level5 : SampleLevel
     {
 
-        AwesomeButton button;
+        HoldButton button;
         Cursor cursor;
         TextBuilder[] Infos;
-        Laserwall wall;
-        public Level4(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
-            Name = "Level 4 - Bug? No its a Feature!";
-            button = new AwesomeButton(new Vector2(-256, -0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"));
-            button.Click += BtnEvent;
+        LockButton lockbutton;
+        public Level5(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
+            Name = "Level 5 - MORE BUTTONS!";
+            button = new HoldButton(new Vector2(-220, -100), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"));
+            button.Click += EmptyBtnEvent;
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             Infos = new TextBuilder[2];
-            Infos[0] = new TextBuilder("Thin walls can be penetrated!", new Vector2(80,-132),new Vector2(8,8),null,0);
-            Infos[1] = new TextBuilder("Just move fast enough!", new Vector2(80, -100), new Vector2(8, 8), null, 0);
-            wall = new Laserwall(new Vector2(-40, -300), new Vector2(24, 1024), Globals.Content.GetTHBox("zonenew"));
-            wall.Enter += WallEvent;
+            Infos[0] = new TextBuilder("<-- Hold this button till the timer runs out!", new Vector2(-64, -72), new Vector2(8, 8), null, 0);
+            Infos[1] = new TextBuilder("<-- This one will be unlocked then", new Vector2(-64, 32), new Vector2(8, 8), null, 0);
+            lockbutton = new LockButton(new Vector2(-220, 0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"), true);
+            lockbutton.Click += BtnEvent;
         }
 
 
+        private void EmptyBtnEvent(object sender, EventArgs e) {
+            lockbutton.Locked = !lockbutton.Locked;
+        }
 
         private void BtnEvent(object sender, EventArgs e) {
-            CallFinish(sender,e);
+            CallFinish(sender, e);
         }
         private void WallEvent(object sender, EventArgs e) {
             CallReset(sender, e);
@@ -49,7 +52,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             for (int i = 0; i < Infos.Length; i++) {
                 Infos[i].Draw(sp);
             }
-            wall.Draw(sp);
+            lockbutton.Draw(sp);
             cursor.Draw(sp);
         }
 
@@ -62,7 +65,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
             cursor.Position = MousePos - cursor.Size / 2;
             button.Update(gt, cursor.Hitbox[0]);
-            wall.Update(gt, cursor.Hitbox[0]);
+            lockbutton.Update(gt, cursor.Hitbox[0]);
         }
     }
 }

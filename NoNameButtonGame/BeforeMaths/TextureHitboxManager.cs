@@ -32,6 +32,7 @@ namespace NoNameButtonGame.BeforeMaths
                 new Rectangle(1,2,46,12)  };
                     r.Imagesize = new Vector2(48, 16);
                     break;
+                case "emptybutton":
                 case "failbutton":
                     r.Hitbox = new Rectangle[2] { new Rectangle(2,1, 28,14),
                 new Rectangle(1,2,30,12) };
