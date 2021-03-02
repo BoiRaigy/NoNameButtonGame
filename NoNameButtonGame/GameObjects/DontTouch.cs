@@ -19,6 +19,8 @@ namespace NoNameButtonGame.GameObjects
             Position = Pos;
             FrameSize = box.Imagesize;
             hitbox = box.Hitbox;
+            
+            
             if (Size.X % 32 != 0 || Size.Y % 32 != 0) {
                 FrameSize = FrameSize / 32 * Size;
                 for (int i = 0; i < hitbox.Length; i++) {
@@ -28,7 +30,7 @@ namespace NoNameButtonGame.GameObjects
             Texture = box.Texture;
             FrameMax = box.Aniframes;
             Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
-            ImageLocation = new Rectangle(0, 0, (int)box.Imagesize.X, (int)box.Imagesize.Y);
+            ImageLocation = new Rectangle(0,0, (int)box.Imagesize.X, (int)box.Imagesize.Y);
             IGhitbox = new Rectangle[hitbox.Length];
             DrawColor = Color.White;
             for (int i = 0; i < box.Hitbox.Length; i++) {

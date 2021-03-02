@@ -24,8 +24,10 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         Cursor cursor;
         TextBuilder[] Infos;
         LockButton lockbutton;
+        Random rand;
         public Level5(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 5 - MORE BUTTONS!";
+            this.rand = rand;
             button = new HoldButton(new Vector2(-220, -100), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"));
             button.EndHoldTime = 6900;
             button.Click += EmptyBtnEvent;
@@ -64,8 +66,20 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             lockbutton.Draw(sp);
             cursor.Draw(sp);
         }
-
+        float GT;
         public override void Update(GameTime gt) {
+            GT += gt.ElapsedGameTime.Milliseconds;
+            while(GT > 512) {
+                GT -= 512;
+                for (int i = 0; i < Infos.Length; i++) {
+                    Color[] c = new Color[Infos[i].Text.Length];
+                    for (int a = 0; a < Infos[i].Text.Length; a++) {
+                        c[a] = new Color(rand.Next(63, 255), rand.Next(63, 255), rand.Next(63, 255));
+                    }
+                    Infos[i].ChangeColor(c);
+                }
+                
+            }
             cursor.Update(gt);
             base.Update(gt);
             for (int i = 0; i < Infos.Length; i++) {

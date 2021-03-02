@@ -34,24 +34,21 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             Vector2 clustPos = new Vector2(-250, -150);
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             
-            Info = new TextBuilder("this is bad! ->", new Vector2(-32, 132), new Vector2(16, 16), null, 0);
+            Info = new TextBuilder("this is bad! ->", new Vector2(-296, -96), new Vector2(16, 16), null, 0);
             raincolor = new Rainbow {
                 Increment = 32,
                 Speed = 32,
                 Offset = 256
             };
-            laserwall = new Laserwall[6];
-            Vector2 Move = new Vector2(-100,0);
-            button = new AwesomeButton(Move + new Vector2(-110,-110), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton")) {
+            laserwall = new Laserwall[4];
+            button = new AwesomeButton(new Vector2(-64,96), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton")) {
                 DrawColor = Color.White,
             };
             button.Click += CallFinish;
-            laserwall[0] = new Laserwall(new Vector2(Move.X - 128, Move.Y-128), new Vector2(8, 96), Globals.Content.GetTHBox("zonenew"));
-            laserwall[1] = new Laserwall(new Vector2(Move.X - 128, Move.Y - 128), new Vector2(160, 8), Globals.Content.GetTHBox("zonenew"));
-            laserwall[2] = new Laserwall(new Vector2(Move.X + 32, Move.Y - 128), new Vector2(8, 96), Globals.Content.GetTHBox("zonenew"));
-            laserwall[3] = new Laserwall(new Vector2(Move.X - 32, Move.Y - 32), new Vector2(72, 8), Globals.Content.GetTHBox("zonenew"));
-            laserwall[4] = new Laserwall(new Vector2(Move.X - 128, Move.Y - 32), new Vector2(72, 8), Globals.Content.GetTHBox("zonenew"));
-            laserwall[5] = new Laserwall(new Vector2(190, 100), new Vector2(64, 64), Globals.Content.GetTHBox("zonenew"));
+            laserwall[0] = new Laserwall(new Vector2(-320, -256), new Vector2(576, 224), Globals.Content.GetTHBox("zonenew"));
+            laserwall[1] = new Laserwall(new Vector2(-320, -256), new Vector2(224, 576), Globals.Content.GetTHBox("zonenew"));
+            laserwall[2] = new Laserwall(new Vector2(96, -256), new Vector2(224, 576), Globals.Content.GetTHBox("zonenew"));
+            laserwall[3] = new Laserwall(new Vector2(-128, 64), new Vector2(200, 24), Globals.Content.GetTHBox("zonenew"));
             for (int i = 0; i < laserwall.Length; i++) {
                 laserwall[i].Enter += LaserEvent;
             }
@@ -67,11 +64,10 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         }
         public override void Draw(SpriteBatch sp) {
             button.Draw(sp);
-            
-            Info.Draw(sp);
             for (int i = 0; i < laserwall.Length; i++) {
                 laserwall[i].Draw(sp);
             }
+            Info.Draw(sp);
             cursor.Draw(sp);
            
         }
