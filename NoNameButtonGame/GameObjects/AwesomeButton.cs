@@ -11,7 +11,7 @@ using Raigy.Input;
 
 namespace NoNameButtonGame.GameObjects
 {
-    class AwesomeButton : GameObject, IMouseActions, IHitbox
+    class AwesomeButton : GameObject, IMouseActions, IHitbox, IMoveable
     {
 
         public AwesomeButton(Vector2 Pos, Vector2 Size, THBox box) {
@@ -84,6 +84,11 @@ namespace NoNameButtonGame.GameObjects
             Update(gt);
         }
 
-        
+        public bool Move(Vector2 Direction) {
+            try {
+                Position += Direction;
+                return true;
+            } catch { return false; }
+        }
     }
 }
