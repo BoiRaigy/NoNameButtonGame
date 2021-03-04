@@ -28,7 +28,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         Laserwall[] Blocks;
         int WallLength = 10;
         public Level7(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
-            Name = "Level 4 - Bugs? No its a Feature!";
+            Name = "Level 7 - WHAT OUT WHAT OUT OOHHH";
             button = new AwesomeButton(new Vector2(-256, -0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"));
             button.Click += BtnEvent;
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
