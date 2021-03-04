@@ -74,10 +74,8 @@ namespace NoNameButtonGame.GameObjects
             for (int i = 0; i < dt.Length; i++) {
                 dt[i].Update(gt, MousePos);
             }
-            for (int i = 0; i < hitbox.Length; i++) {
-                if (hitbox[i].Intersects(MousePos))
-                    Enter?.Invoke(this, new EventArgs());
-            }
+            if (rec.Intersects(MousePos))
+                Enter?.Invoke(this, new EventArgs());
             base.Update(gt);
         }
 
