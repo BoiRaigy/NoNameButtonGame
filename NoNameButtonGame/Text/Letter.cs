@@ -173,10 +173,7 @@ namespace NoNameButtonGame.Text
             cKOMMA,
             cLEFT,
             cRIGHT,
-            cEMOHAPPY,
-            cEMOSAD,
-            cEMODEFAULT,
-            CEMOSUPRISED,
+            cPARENTHESES,
         }
     }
 }
