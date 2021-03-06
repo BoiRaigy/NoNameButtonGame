@@ -90,7 +90,6 @@ namespace NoNameButtonGame.LevelSystem
                         startScreen = new StartScreen(DWidth, DHeight, Screen, rand);
                         startScreen.Finish += ExitStartScreen;
                         break;
-                    
                 }
             }
             ChangeWindowName((CurrentLevel ?? new SampleLevel(DWidth, DHeight, Screen, rand) { Name = "NoNameButtonGame" }).Name);
@@ -438,10 +437,13 @@ namespace NoNameButtonGame.LevelSystem
                 case StartScreen.ButtonPressed.Start:
                     CanOverallSelect = false;
                     state = MState.BetweenLevel;
+                    RedoCall = true;
+                    LastLevel = Globals.MaxLevel;
                     break;
                 case StartScreen.ButtonPressed.LevelSelect:
                     state = MState.BetweenLevel;
                     CanOverallSelect = true;
+                    RedoCall = false;
                     break;
                 case StartScreen.ButtonPressed.Settings:
                     state = MState.Settings;
