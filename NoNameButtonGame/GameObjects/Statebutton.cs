@@ -76,7 +76,7 @@ namespace NoNameButtonGame.GameObjects
                     if (CurrentState <= 0)
                         Click(this, new EventArgs());
                 } else {
-                    //HoldTime -= gt.ElapsedGameTime.Milliseconds / 2;
+                    //HoldTime -= gt.ElapsedGameTime.TotalMilliseconds / 2;
                 }
             } else {
                 if (Hover)

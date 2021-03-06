@@ -72,7 +72,7 @@ namespace NoNameButtonGame.GameObjects
                         Enter(this, new EventArgs());
                 }
                 if (InputReaderMouse.CheckKey(InputReaderMouse.MouseKeys.Left, false)) {
-                    HoldTime += gt.ElapsedGameTime.Milliseconds;
+                    HoldTime += (float)gt.ElapsedGameTime.TotalMilliseconds;
                     if (HoldTime > EndHoldTime) {
                         if (InputReaderMouse.CheckKey(InputReaderMouse.MouseKeys.Left, true)) {
                             Click(this, new EventArgs());
@@ -83,14 +83,14 @@ namespace NoNameButtonGame.GameObjects
 
                 } else {
 
-                    HoldTime -= gt.ElapsedGameTime.Milliseconds / 2;
+                    HoldTime -= (float)gt.ElapsedGameTime.TotalMilliseconds / 2;
                 }
             } else {
                 if (Hover)
                     if (Leave != null)
                         Leave(this, new EventArgs());
                 Hover = false;
-                HoldTime -= gt.ElapsedGameTime.Milliseconds / 2;
+                HoldTime -= (float)gt.ElapsedGameTime.TotalMilliseconds / 2;
 
             }
             if (HoldTime > EndHoldTime) {

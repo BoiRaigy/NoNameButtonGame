@@ -68,7 +68,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         }
         float GT;
         public override void Update(GameTime gt) {
-            GT += gt.ElapsedGameTime.Milliseconds;
+            GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
             while(GT > 512) {
                 GT -= 512;
                 for (int i = 0; i < Infos.Length; i++) {

@@ -73,7 +73,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         }
 
         public override void Update(GameTime gt) {
-            GT += gt.ElapsedGameTime.Milliseconds;
+            GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
             while(GT > 125) {
                 GT -= 125;
                 //laserwall.Move(new Vector2(1, 0));

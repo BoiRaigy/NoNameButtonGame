@@ -24,7 +24,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         Cursor cursor;
         AwesomeButton button;
         public Level11(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
-            Name = "DEMO END";
+            Name = "Level 11 - ?";
             text = new TextBuilder[15];
             button = new AwesomeButton(new Vector2(0, 8), new Vector2(4, 2), Globals.Content.GetTHBox("emptybutton"));
             button.Click += CallFinish;
@@ -42,7 +42,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             text[11] = new TextBuilder("i usualy like meta games but i though this one was not", new Vector2(0, 0), new Vector2(8, 8), null, 0);
             text[12] = new TextBuilder("one of them. well i must have guessed wrong.", new Vector2(0, 0), new Vector2(8, 8), null, 0);
             text[13] = new TextBuilder(" Or this text was just a distraction so you could not", new Vector2(0, 0), new Vector2(8, 8), null, 0);
-            text[14] = new TextBuilder("see the button hidden behind the text. Oh wow i feel dumb", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[14] = new TextBuilder("see the button hidden behind the  >on< . Oh wow i feel dumb", new Vector2(0, 0), new Vector2(8, 8), null, 0);
             for (int i = 0; i < text.Length; i++) {
                 text[i].ChangePosition(new Vector2(0,-128 + i * 16) - text[i].Size / 2);
                 Color[] c = new Color[text[i].Text.Length];

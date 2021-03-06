@@ -73,7 +73,7 @@ namespace NoNameButtonGame.GameObjects
         float GT;
         public void Update(GameTime gt, Rectangle MousePos) {
             MouseState mouseState = Mouse.GetState();
-            GT += gt.ElapsedGameTime.Milliseconds;
+            GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
             while(GT > FrameSpeed) {
                 GT -= FrameSpeed;
                 FramePos++;

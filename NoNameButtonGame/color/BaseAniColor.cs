@@ -27,7 +27,7 @@ namespace NoNameButtonGame.color
 
         public override void Update(GameTime gt) {
              if (Color.Length != 0 && Speed > 0) {
-                GT += gt.ElapsedGameTime.Milliseconds;
+                GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
                 while (GT > Speed) {
                     GT -= Speed;
                     Index += Increment;

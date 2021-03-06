@@ -72,7 +72,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             cursor.Update(gt);
             base.Update(gt);
             cursor.Position = MousePos - cursor.Size / 2;
-            GT += gt.ElapsedGameTime.Milliseconds;
+            GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
             
             while (GT > 8) {
                 GT -= 8;

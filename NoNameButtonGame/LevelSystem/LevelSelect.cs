@@ -74,7 +74,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         public override void Update(GameTime gt) {
             base.Update(gt);
             if (bMove) {
-                GT += gt.ElapsedGameTime.Milliseconds;
+                GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
                 while (GT > 10) {
                     GT -= 10;
                     Vector2 SinWaveRoute = new Vector2(0, 12.2F * (float)Math.Sin((float)CTicks / 50 * Math.PI));

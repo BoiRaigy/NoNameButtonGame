@@ -72,7 +72,7 @@ namespace NoNameButtonGame.GameObjects
                 if (InputReaderMouse.CheckKey(InputReaderMouse.MouseKeys.Left, true)) {
                         Click(this, new EventArgs());
                 } else {
-                    //HoldTime -= gt.ElapsedGameTime.Milliseconds / 2;
+                    //HoldTime -= gt.ElapsedGameTime.TotalMilliseconds / 2;
                 }
             } else {
                 if (Hover)

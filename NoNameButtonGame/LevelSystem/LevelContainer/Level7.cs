@@ -93,7 +93,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             for (int i = 0; i < Infos.Length; i++) {
                 Infos[i].Update(gt);
             }
-            GT += gt.ElapsedGameTime.Milliseconds;
+            GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
             while (GT > 8) {
                 GT -= 8;
                 for (int i = 0; i < WallLength; i++) {

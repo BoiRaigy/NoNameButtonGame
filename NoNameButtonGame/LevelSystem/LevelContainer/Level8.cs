@@ -70,8 +70,8 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             cursor.Update(gt);
             if (TimerStarted) {
                 Info.Update(gt);
-                GT += gt.ElapsedGameTime.Milliseconds;
-                TGT += gt.ElapsedGameTime.Milliseconds;
+                GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
+                TGT += (float)gt.ElapsedGameTime.TotalMilliseconds;
                 while (GT > 32) {
                     GT -= 32;
                     Vector2 Dir = cursor.Hitbox[0].Center.ToVector2() - wall.rec.Center.ToVector2();

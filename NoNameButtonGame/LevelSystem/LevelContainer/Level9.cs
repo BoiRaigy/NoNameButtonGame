@@ -140,7 +140,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 if (!PlayingSequenz) {
                     Marker[1].Update(gt);
                 } else {
-                    SSGT += gt.ElapsedGameTime.Milliseconds;
+                    SSGT += (float)gt.ElapsedGameTime.TotalMilliseconds;
                     while (SSGT > 500) {
                         SSGT -= 500;
                         BobIt[0].Text.ChangeColor(new Color[1] { Color.Yellow });

@@ -54,7 +54,7 @@ namespace NoNameButtonGame.LevelSystem
         float OutGT;
         public override void Update(GameTime gt) {
             if (Ani || OutAni) {
-                OutGT += gt.ElapsedGameTime.Milliseconds;
+                OutGT += (float)gt.ElapsedGameTime.TotalMilliseconds;
 
                 while (OutGT > 8) {
                     OutGT -= 8;
