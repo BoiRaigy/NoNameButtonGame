@@ -28,7 +28,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         string Sequenz;
         int CurrentSqAmm = 1;
         int PlayedSq;
-        int SqMax = 6;
+        int SqMax = 5;
         AwesomeButton StartBtn;
         Random rand;
         public Level9(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
