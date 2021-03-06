@@ -165,6 +165,16 @@ namespace NoNameButtonGame.Text
             cCROSSOUT,
             CDOWN,
             cUP,
+            cFULL,
+            cLINE,
+            cDOUBLEDOTS,
+            cKOMMA,
+            cLEFT,
+            cRIGHT,
+            cEMOHAPPY,
+            cEMOSAD,
+            cEMODEFAULT,
+            CEMOSUPRISED,
         }
     }
 }
