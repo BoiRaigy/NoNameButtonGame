@@ -31,7 +31,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             button = new LockButton(new Vector2(-256, -128), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"),true);
             button.Click += BtnEvent;
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
-            Info = new TextBuilder("RUN! ITs FOLLOWING!", new Vector2(-64, -132), new Vector2(16, 16), null, 0);
+            Info = new TextBuilder("RUN! IT FOLLOWs you!", new Vector2(-64, -132), new Vector2(16, 16), null, 0);
             
             wall = new Laserwall(new Vector2(-32, -200), new Vector2(64, 64), Globals.Content.GetTHBox("zonenew"));
             wall.Enter += WallEvent;

@@ -46,7 +46,6 @@ namespace NoNameButtonGame.Text
                 case Character.c7:
                 case Character.c8:
                 case Character.c9:
-                case Character.cA:
                 case Character.cB:
                 case Character.cD:
                 case Character.cE:
@@ -67,6 +66,8 @@ namespace NoNameButtonGame.Text
                 case Character.cZ:
                 case Character.cQUESTION:
                     return new Rectangle(1, 0, 5, 7);
+                case Character.cA:
+                    return new Rectangle(1, 0, 6, 7);
                 case Character.c3:
                 case Character.cC:
                 case Character.cK:
@@ -85,6 +86,7 @@ namespace NoNameButtonGame.Text
                 case Character.cM:
                     return new Rectangle(2, 0, 4, 7);
                 case Character.cW:
+                    return new Rectangle(0, 0, 7, 7);
                 case Character.cCROSSOUT:
                     return new Rectangle(0, 0, 8, 8);
                 case Character.cSLASH:
