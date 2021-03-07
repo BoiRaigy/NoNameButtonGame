@@ -77,8 +77,14 @@ namespace NoNameButtonGame.GameObjects
             if (rec.Intersects(MousePos))
                 Enter?.Invoke(this, new EventArgs());
             base.Update(gt);
+            if (DrawColor != OldDrawColor) {
+                for (int i = 0; i < dt.Length; i++) {
+                    dt[i].DrawColor = DrawColor;
+                }
+            }
+            OldDrawColor = DrawColor;
         }
-
+        Color OldDrawColor;
         public override void Draw(SpriteBatch sp) {
             for (int i = 0; i < dt.Length; i++) {
                 dt[i].Draw(sp);

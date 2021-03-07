@@ -42,6 +42,7 @@ namespace NoNameButtonGame.GameObjects
         Vector2 Scale;
         int states;
         public int States { get { return states; } set { states = value; CurrentState = states; } }
+        public int CurrentStates { get { return CurrentState; }}
         int CurrentState;
 
         TextBuilder text;
