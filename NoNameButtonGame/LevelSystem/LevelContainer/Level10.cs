@@ -43,7 +43,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
         private void BtnEvent(object sender, EventArgs e) {
 
-            if (RightAwnsers[Awnsered] != int.Parse((sender as TextButton).Name)) {
+            if (RightAwnsers[Awnsered] != int.Parse((sender as TextButton).Name) && RightAwnsers[Awnsered] != -1) {
                 CallFail(this, e);
             } else {
                 Awnsered++;
