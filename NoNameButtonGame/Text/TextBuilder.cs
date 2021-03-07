@@ -293,6 +293,9 @@ namespace NoNameButtonGame.Text
                     case '\"':
                         Letters.Add(Letter.Character.cPARENTHESES);
                         break;
+                    case '\\':
+                        Letters.Add(Letter.Character.cBACKSLASH);
+                        break;
                     default:
                         throw new Exception("Unknown Character at char \'" + strArr[i] + "\' ");
                 }

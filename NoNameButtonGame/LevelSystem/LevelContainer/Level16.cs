@@ -89,15 +89,21 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             }
             cursor.Draw(sp);
         }
-
+        bool Loaded = false;
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
             button.Update(gt, cursor.Hitbox[0]);
-            for (int i = 0; i < text.Length; i++) {
-                text[i].ChangePosition(new Vector2(24, -120 + i * 16) - text[i].rec.Size.ToVector2() / 2);
-                text[i].Update(gt);
-            }
+            if (!Loaded) {
+                for (int i = 0; i < text.Length; i++) {
+                    text[i].Update(gt);
+                    text[i].ChangePosition(new Vector2(24, -120 + i * 16) - text[i].rec.Size.ToVector2() / 2);
+
+                }
+                Loaded = true;
+            } else
+                for (int i = 0; i < text.Length; i++)
+                    text[i].Update(gt);
             cursor.Position = MousePos - cursor.Size / 2;
         }
     }

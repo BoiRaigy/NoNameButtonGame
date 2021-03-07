@@ -26,7 +26,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         public Level11(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 11 - ?";
             text = new TextBuilder[15];
-            button = new AwesomeButton(new Vector2(0, 8), new Vector2(4, 2), Globals.Content.GetTHBox("emptybutton"));
+            button = new AwesomeButton(new Vector2(-1, 8), new Vector2(8, 4), Globals.Content.GetTHBox("emptybutton"));
             button.Click += CallFinish;
             text[0] = new TextBuilder("So this is Level 11. I though there would be more. the creator must has", new Vector2(0, 0), new Vector2(8, 8), null, 0);
             text[1] = new TextBuilder("run out of Ideas other wise he would have put some effort", new Vector2(0, 0), new Vector2(8, 8), null, 0);
@@ -89,16 +89,22 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             }
             cursor.Draw(sp);
         }
-
+        bool Loaded = false;
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
             button.Update(gt, cursor.Hitbox[0]);
-            for (int i = 0; i < text.Length; i++) {
-                text[i].ChangePosition(new Vector2(24, -120 + i * 16) - text[i].rec.Size.ToVector2() / 2);
-                text[i].Update(gt);
-            }
-                cursor.Position = MousePos - cursor.Size / 2;
+            if (!Loaded) {
+                for (int i = 0; i < text.Length; i++) {
+                    text[i].Update(gt);
+                    text[i].ChangePosition(new Vector2(24, -120 + i * 16) - text[i].rec.Size.ToVector2() / 2);
+
+                }
+                Loaded = true;
+            } else
+                for (int i = 0; i < text.Length; i++)
+                    text[i].Update(gt);
+            cursor.Position = MousePos - cursor.Size / 2;
         }
     }
 }

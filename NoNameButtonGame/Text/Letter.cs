@@ -174,6 +174,7 @@ namespace NoNameButtonGame.Text
             cLEFT,
             cRIGHT,
             cPARENTHESES,
+            cBACKSLASH,
         }
     }
 }
