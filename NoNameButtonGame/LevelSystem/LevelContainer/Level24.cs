@@ -26,7 +26,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         Laserwall[] WallLeft;
         Laserwall[] WallRight;
         Laserwall[] Blocks;
-        int WallLength = 10;
+        int WallLength = 15;
 
         TextBuilder GUN;
 
@@ -99,11 +99,11 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
         float GT2;
         float MGT;
-        float ShotTime = 500;
-        float TravelSpeed = 2;
+        float ShotTime = 700;
+        float TravelSpeed = 5;
         float UpdateSpeed = 2;
-        float MaxUpdateSpeed = 128;
-        float MinUpdateSpeed = 128;
+        float MaxUpdateSpeed = 80;
+        float MinUpdateSpeed = 80;
         Vector2 OldMPos;
         List<int> removeItem = new List<int>();
         public override void Update(GameTime gt) {

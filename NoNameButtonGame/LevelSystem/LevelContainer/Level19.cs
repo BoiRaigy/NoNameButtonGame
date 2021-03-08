@@ -31,7 +31,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             this.rand = rand;
             GUN = new TextBuilder("AGUN", new Vector2(-256, 0), new Vector2(16, 16), null, 0);
             button = new HoldButton(new Vector2(-64, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"));
-            button.EndHoldTime = 30000;
+            button.EndHoldTime = 25000;
             button.Click += EmptyBtnEvent;
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             

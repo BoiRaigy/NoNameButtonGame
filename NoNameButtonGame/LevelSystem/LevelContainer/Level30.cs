@@ -20,49 +20,112 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level30 : SampleLevel
     {
 
-        AwesomeButton button;
+        TextButton[] button;
         Cursor cursor;
-        TextBuilder[] Infos;
-        Laserwall wall;
+        TextBuilder Questions;
+        TextBuilder Timer;
+        int Awnsered;
+        int[] RightAwnsers = new int[7] { -1, 0, 0, 0, 2, 1,2 };
+
         public Level30(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
-            Name = "Level 4 - Bugs? No its a Feature!";
-            button = new AwesomeButton(new Vector2(-256, -0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"));
-            button.Click += BtnEvent;
+            Name = "Level 30 - You now the drill. now it will just get harder(ish)";
+            button = new TextButton[3];
+            Timer = new TextBuilder("", new Vector2(0, 0), new Vector2(16, 16), null, 0);
+            Questions = new TextBuilder("0(n)", new Vector2(-64, -128), new Vector2(8, 8), null, 0);
+            button[0] = new TextButton(new Vector2(-64, -96), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "0", "?", new Vector2(8, 8));
+            button[1] = new TextButton(new Vector2(-64, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "1", "?", new Vector2(8, 8));
+            button[2] = new TextButton(new Vector2(-64, 32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "2", "?", new Vector2(8, 8));
+            for (int i = 0; i < button.Length; i++) {
+                button[i].Click += BtnEvent;
+            }
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
-            Infos = new TextBuilder[2];
-            Infos[0] = new TextBuilder("Thin walls can be penetrated!", new Vector2(80, -132), new Vector2(8, 8), null, 0);
-            Infos[1] = new TextBuilder("Just move fast enough!", new Vector2(80, -100), new Vector2(8, 8), null, 0);
-            wall = new Laserwall(new Vector2(-40, -300), new Vector2(24, 1024), Globals.Content.GetTHBox("zonenew"));
-            wall.Enter += WallEvent;
         }
 
 
 
         private void BtnEvent(object sender, EventArgs e) {
-            CallFinish(sender, e);
-        }
-        private void WallEvent(object sender, EventArgs e) {
-            CallReset(sender, e);
+
+            if (RightAwnsers[Awnsered] != int.Parse((sender as TextButton).Name) && RightAwnsers[Awnsered] != -1) {
+                CallFail(this, e);
+            } else {
+                Awnsered++;
+                if (Awnsered == RightAwnsers.Length)
+                    CallFinish(this, e);
+                else {
+                    switch (Awnsered) {
+                        case 1:
+                            Questions.ChangeText("sin (PI * 2) =");
+                            button[0].Text.ChangeText("0");
+                            button[1].Text.ChangeText("1");
+                            button[2].Text.ChangeText("0.707");
+                            break;
+                        case 2:
+                            Questions.ChangeText("sin(PI) = ");
+                            button[0].Text.ChangeText("0");
+                            button[1].Text.ChangeText("1");
+                            button[2].Text.ChangeText("0.707");
+                            break;
+                        case 3:
+                            Questions.ChangeText("sin(0) = ");
+                            button[0].Text.ChangeText("0");
+                            button[1].Text.ChangeText("1");
+                            button[2].Text.ChangeText("0.707");
+                            break;
+                        case 4:
+                            Questions.ChangeText("sin(PI/4)");
+                            button[0].Text.ChangeText("0");
+                            button[1].Text.ChangeText("1");
+                            button[2].Text.ChangeText("0.707");
+                            break;
+                        case 5:
+                            Questions.ChangeText("sin(PI/2)");
+                            button[0].Text.ChangeText("0");
+                            button[1].Text.ChangeText("1");
+                            button[2].Text.ChangeText("0.707");
+                            break;
+                        case 6:
+                            Questions.ChangeText("sin(PI/2 + PI)");
+                            button[0].Text.ChangeText("0");
+                            button[1].Text.ChangeText("-1");
+                            button[2].Text.ChangeText("-0.707");
+                            break;
+                        case 7:
+                            Questions.ChangeText("sin(PI/4 + PI)");
+                            button[0].Text.ChangeText("0");
+                            button[1].Text.ChangeText("-1");
+                            button[2].Text.ChangeText("-0.707");
+                            break;
+                    }
+
+                }
+            }
+
         }
         public override void Draw(SpriteBatch sp) {
-            button.Draw(sp);
-            for (int i = 0; i < Infos.Length; i++) {
-                Infos[i].Draw(sp);
+            for (int i = 0; i < button.Length; i++) {
+                button[i].Draw(sp);
             }
-            wall.Draw(sp);
+            Questions.Draw(sp);
+            Timer.Draw(sp);
             cursor.Draw(sp);
         }
-
+        float GT;
+        float GTMax = 20000;
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
-            for (int i = 0; i < Infos.Length; i++) {
-                Infos[i].Update(gt);
+            GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
+            Timer.ChangeText(((GTMax - GT) / 1000).ToString("0.0").Replace(',', '.') + "s");
+            Timer.ChangePosition(-Timer.rec.Size.ToVector2() / 2 + new Vector2(0, -160));
+            Timer.Update(gt);
+            if (Timer.Text.Contains("-"))
+                CallReset();
+            Questions.ChangePosition(new Vector2(0, -128) - Questions.rec.Size.ToVector2() / 2);
+            Questions.Update(gt);
+            for (int i = 0; i < button.Length; i++) {
+                button[i].Update(gt, cursor.Hitbox[0]);
             }
-
             cursor.Position = MousePos - cursor.Size / 2;
-            button.Update(gt, cursor.Hitbox[0]);
-            wall.Update(gt, cursor.Hitbox[0]);
         }
     }
 }

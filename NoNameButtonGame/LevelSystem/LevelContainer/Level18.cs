@@ -45,7 +45,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             button = new LockButton(new Vector2(-32, -128), new Vector2(64, 32), Globals.Content.GetTHBox("awesomebutton"), true);
             button.Click += CallFinish;
             UnLockbutton = new HoldButton(new Vector2(-32, 48), new Vector2(64, 32), Globals.Content.GetTHBox("emptybutton"));
-            UnLockbutton.EndHoldTime = 15000;
+            UnLockbutton.EndHoldTime = 10000;
             UnLockbutton.Click += UnlockBtn;
         }
 

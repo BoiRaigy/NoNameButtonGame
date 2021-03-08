@@ -27,7 +27,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         TextBuilder Timer;
         List<Tuple<Laserwall, Vector2>> shots;
         public Level28(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
-            Name = "Level 12 - Super GUN!";
+            Name = "Level 28 - A HOT!";
             Timer = new TextBuilder("", new Vector2(0 - 128), new Vector2(16, 16), null, 0);
             GUN = new TextBuilder("AGUN", new Vector2(-256, 0), new Vector2(16, 16), null, 0);
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
@@ -105,8 +105,8 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             }
             if (TimerC >= TimerMax)
                 CallFinish(this, new EventArgs());
-            Timer.Update(gt);
             Timer.ChangeText(((TimerMax - TimerC) / 1000).ToString("0.0") + "S");
+            Timer.Update(gt);
             cursor.Position = MousePos - cursor.Size / 2;
             OldMPos = MousePos;
         }
