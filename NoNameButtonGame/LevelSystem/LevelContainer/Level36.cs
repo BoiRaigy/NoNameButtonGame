@@ -33,7 +33,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         AwesomeButton StartBtn;
         Random rand;
         public Level36(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
-            Name = "Level 365 - Now you need to remember 9";
+            Name = "Level 36 - Now you need to remember 9";
             BobIt = new TextButton[5];
             this.rand = rand;
             BobIt[0] = new TextButton(new Vector2(-320, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "0", "⬜", new Vector2(16, 16));

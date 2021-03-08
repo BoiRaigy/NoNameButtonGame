@@ -22,15 +22,16 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
        
         Cursor cursor;
-        TextBuilder GUN;
         Laserwall wall;
         TextBuilder Timer;
+        TextBuilder GUN;
         List<Tuple<Laserwall,Vector2>> shots;
         public Level12(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 12 - Super GUN!";
             Timer = new TextBuilder("", new Vector2(0 - 128), new Vector2(16, 16), null, 0);
-            GUN = new TextBuilder("AGUN", new Vector2(-256, 0), new Vector2(16, 16), null, 0);
+            
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
+            GUN = new TextBuilder("AGUN", new Vector2(-256, 0), new Vector2(16, 16), null, 0);
             shots = new List<Tuple<Laserwall, Vector2>>();
         }
 
