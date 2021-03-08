@@ -40,7 +40,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             BobIt[2] = new TextButton(new Vector2(-64, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "2", "⬜", new Vector2(16, 16));
             BobIt[3] = new TextButton(new Vector2(64, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "3", "⬜", new Vector2(16, 16));
             BobIt[4] = new TextButton(new Vector2(192, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "4", "⬜", new Vector2(16, 16));
-            BobIt[0].Text.ChangeColor(new Color[1] { Color.Yellow });
+            BobIt[0].Text.ChangeColor(new Color[1] { Color.Orange });
             BobIt[1].Text.ChangeColor(new Color[1] { Color.DarkRed });
             BobIt[2].Text.ChangeColor(new Color[1] { Color.Green });
             BobIt[3].Text.ChangeColor(new Color[1] { Color.Blue });
@@ -64,6 +64,8 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         }
 
         private void BtnEvent(object sender, EventArgs e) {
+            if (PlayingSequenz)
+                return;
             CurrentSequenz += (sender as TextButton).Name;
             if (CurrentSequenz == Sequenz) {
                 if (SqMax == CurrentSequenz.Length)
@@ -88,7 +90,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 for (int i = 0; i < CurrentSequenz.Length; i++) {
                     switch (int.Parse(CurrentSequenz.Substring(i, 1).ToCharArray()[0].ToString())) {
                         case 0:
-                            mkc[i] = Color.Yellow;
+                            mkc[i] = Color.Orange;
                             break;
                         case 1:
                             mkc[i] = Color.DarkRed;
@@ -144,7 +146,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                     SSGT += (float)gt.ElapsedGameTime.TotalMilliseconds;
                     while (SSGT > 500) {
                         SSGT -= 500;
-                        BobIt[0].Text.ChangeColor(new Color[1] { Color.Yellow });
+                        BobIt[0].Text.ChangeColor(new Color[1] { Color.Orange });
                         BobIt[1].Text.ChangeColor(new Color[1] { Color.DarkRed });
                         BobIt[2].Text.ChangeColor(new Color[1] { Color.Green });
                         BobIt[3].Text.ChangeColor(new Color[1] { Color.Blue });
@@ -163,7 +165,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                                 }
                                 switch (r) {
                                     case 0:
-                                        BobIt[0].Text.ChangeColor(new Color[1] { Color.LightYellow });
+                                        BobIt[0].Text.ChangeColor(new Color[1] { Color.MonoGameOrange });
                                         break;
                                     case 1:
                                         BobIt[1].Text.ChangeColor(new Color[1] { Color.Red });

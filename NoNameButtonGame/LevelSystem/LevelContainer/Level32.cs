@@ -20,20 +20,58 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level32 : SampleLevel
     {
 
-        AwesomeButton button;
+        TextBuilder[] text;
         Cursor cursor;
-        TextBuilder[] Infos;
-        Laserwall wall;
+        AwesomeButton button;
         public Level32(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
-            Name = "Level 4 - Bugs? No its a Feature!";
-            button = new AwesomeButton(new Vector2(-256, -0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"));
-            button.Click += BtnEvent;
+            Name = "Level 32 - THIS ONE AGAIN?! )";
+            text = new TextBuilder[15];
+            button = new AwesomeButton(new Vector2(60, 86), new Vector2(5, 2.5F), Globals.Content.GetTHBox("emptybutton"));
+            button.Click += CallFinish;
+            text[0] = new TextBuilder("at this point this seems like a lazy way of getting the level count to", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[1] = new TextBuilder("100. wait you want to tell me there are only 50? did the creator", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[2] = new TextBuilder("realize that he will not be able to create 100 levels based on the", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[3] = new TextBuilder("14 level \"types\" from the beginning! what an uncreative eediot", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[4] = new TextBuilder("well back to the level. somewere around here should be a button!", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[5] = new TextBuilder("player can you do me a favor and stop reading and press that allready?", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[6] = new TextBuilder("this level type is just bad. end me! just ducking do it!", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[7] = new TextBuilder("press the button! do it eediot! dont make me wait!", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[8] = new TextBuilder(". . . . ", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[9] = new TextBuilder(". . . . ", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[10] = new TextBuilder(". . . . ", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[11] = new TextBuilder(". . . . ", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[12] = new TextBuilder("what are you doing press it allready!", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[13] = new TextBuilder("it is right here -->   <---", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[14] = new TextBuilder("why are you not pressing it!", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            for (int i = 0; i < text.Length; i++) {
+                text[i].ChangePosition(new Vector2(0, -128 + i * 16) - text[i].Size / 2);
+                Color[] c = new Color[text[i].Text.Length];
+                for (int b = 0; b < c.Length; b++) {
+                    if (rand.Next(0, 10) == 0) {
+                        switch (rand.Next(0, 5)) {
+                            case 0:
+                                c[b] = Color.Aqua;
+                                break;
+                            case 1:
+                                c[b] = Color.Aquamarine;
+                                break;
+                            case 2:
+                                c[b] = Color.LightBlue;
+                                break;
+                            case 3:
+                                c[b] = Color.SkyBlue;
+                                break;
+                            case 4:
+                                c[b] = Color.RoyalBlue;
+                                break;
+                        }
+                    } else
+                        c[b] = Color.White;
+                }
+                text[i].ChangeColor(c);
+            }
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
-            Infos = new TextBuilder[2];
-            Infos[0] = new TextBuilder("Thin walls can be penetrated!", new Vector2(80, -132), new Vector2(8, 8), null, 0);
-            Infos[1] = new TextBuilder("Just move fast enough!", new Vector2(80, -100), new Vector2(8, 8), null, 0);
-            wall = new Laserwall(new Vector2(-40, -300), new Vector2(24, 1024), Globals.Content.GetTHBox("zonenew"));
-            wall.Enter += WallEvent;
+
         }
 
 
@@ -46,23 +84,27 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         }
         public override void Draw(SpriteBatch sp) {
             button.Draw(sp);
-            for (int i = 0; i < Infos.Length; i++) {
-                Infos[i].Draw(sp);
+            for (int i = 0; i < text.Length; i++) {
+                text[i].Draw(sp);
             }
-            wall.Draw(sp);
             cursor.Draw(sp);
         }
-
+        bool Loaded = false;
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
-            for (int i = 0; i < Infos.Length; i++) {
-                Infos[i].Update(gt);
-            }
-
-            cursor.Position = MousePos - cursor.Size / 2;
             button.Update(gt, cursor.Hitbox[0]);
-            wall.Update(gt, cursor.Hitbox[0]);
+            if (!Loaded) {
+                for (int i = 0; i < text.Length; i++) {
+                    text[i].Update(gt);
+                    text[i].ChangePosition(new Vector2(24, -120 + i * 16) - text[i].rec.Size.ToVector2() / 2);
+
+                }
+                Loaded = true;
+            } else
+                for (int i = 0; i < text.Length; i++)
+                    text[i].Update(gt);
+            cursor.Position = MousePos - cursor.Size / 2;
         }
     }
 }

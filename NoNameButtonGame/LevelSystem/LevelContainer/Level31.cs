@@ -25,14 +25,14 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         TextBuilder[] Infos;
         Laserwall wall;
         public Level31(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
-            Name = "Level 4 - Bugs? No its a Feature!";
+            Name = "Level 31 - THICC";
             button = new AwesomeButton(new Vector2(-256, -0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"));
             button.Click += BtnEvent;
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             Infos = new TextBuilder[2];
-            Infos[0] = new TextBuilder("Thin walls can be penetrated!", new Vector2(80, -132), new Vector2(8, 8), null, 0);
-            Infos[1] = new TextBuilder("Just move fast enough!", new Vector2(80, -100), new Vector2(8, 8), null, 0);
-            wall = new Laserwall(new Vector2(-40, -300), new Vector2(24, 1024), Globals.Content.GetTHBox("zonenew"));
+            Infos[0] = new TextBuilder("Thin can be penetrated!", new Vector2(80, -132), new Vector2(8, 8), null, 0);
+            Infos[1] = new TextBuilder("But this one is not thin its thicc!", new Vector2(80, -100), new Vector2(8, 8), null, 0);
+            wall = new Laserwall(new Vector2(-120, -300), new Vector2(100, 1024), Globals.Content.GetTHBox("zonenew"));
             wall.Enter += WallEvent;
         }
 
