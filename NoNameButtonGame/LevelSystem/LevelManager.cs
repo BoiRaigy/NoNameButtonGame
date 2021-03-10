@@ -46,7 +46,18 @@ namespace NoNameButtonGame.LevelSystem
             DHeight = Height;
             DWidth = Width;
             this.Screen = Screen;
+            string[] args = Environment.GetCommandLineArgs();
             rand = new Random();
+            for (int i = 0; i < args.Length; i++) {
+                if (args[i] == "-seed") {
+                    if (args.Length > i + 1) {
+                        if (int.TryParse(args[i + 1], out int res))
+                            rand = new Random(res);
+                        
+                    }
+                }
+                    
+            }
             state = MState.Startmenu;
             LastLevel = Globals.MaxLevel;
             startScreen = new StartScreen(Width, Height, Screen, rand);
