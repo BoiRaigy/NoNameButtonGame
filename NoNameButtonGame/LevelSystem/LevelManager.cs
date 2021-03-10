@@ -46,6 +46,7 @@ namespace NoNameButtonGame.LevelSystem
             DHeight = Height;
             DWidth = Width;
             this.Screen = Screen;
+            
             string[] args = Environment.GetCommandLineArgs();
             rand = new Random();
             for (int i = 0; i < args.Length; i++) {
@@ -285,6 +286,9 @@ namespace NoNameButtonGame.LevelSystem
                     break;
                 case 49:
                     CurrentLevel = new Level50(DWidth, DHeight, Screen, rand);
+                    break;
+                default:
+                    CurrentLevel = new LevelNULL(DWidth, DHeight, Screen, rand);
                     break;
             }
             CurrentLevel.Finish += LevelFinish;

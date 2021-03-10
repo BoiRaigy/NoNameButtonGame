@@ -20,49 +20,76 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level44 : SampleLevel
     {
 
-        AwesomeButton button;
+        AwesomeButton[] button;
         Cursor cursor;
-        TextBuilder[] Infos;
-        Laserwall wall;
+        TextBuilder Info;
+        Random rand;
         public Level44(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
-            Name = "Level 4 - Bugs? No its a Feature!";
-            button = new AwesomeButton(new Vector2(-256, -0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"));
-            button.Click += BtnEvent;
+            Name = "Level 44 - we're reaching the tas zone";
+            button = new AwesomeButton[16];
+            this.rand = rand;
+            int randI64 = rand.Next(0, 16);
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
-            Infos = new TextBuilder[2];
-            Infos[0] = new TextBuilder("Thin walls can be penetrated!", new Vector2(80, -132), new Vector2(8, 8), null, 0);
-            Infos[1] = new TextBuilder("Just move fast enough!", new Vector2(80, -100), new Vector2(8, 8), null, 0);
-            wall = new Laserwall(new Vector2(-40, -300), new Vector2(24, 1024), Globals.Content.GetTHBox("zonenew"));
-            wall.Enter += WallEvent;
+            for (int i = 0; i < button.Length; i++) {
+                if (i == randI64) {
+                    button[i] = new AwesomeButton(new Vector2(130 * (i % 4) - 256, (i / 4) * 68 - 128), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton")) {
+                        DrawColor = Color.White,
+                    };
+                    button[i].Click += BtnWinEvent;
+                } else {
+                    button[i] = new AwesomeButton(new Vector2(130 * (i % 4) - 256, (i / 4) * 68 - 128), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton")) {
+                        DrawColor = Color.White,
+                    };
+                    button[i].Click += BtnFailEvent;
+                }
+            }
+            Info = new TextBuilder("Watch out. There Random!", new Vector2(-170, -(defaultHeight / Camera.Zoom / 2) + 32), new Vector2(16, 16), null, 0);
+
         }
 
 
 
-        private void BtnEvent(object sender, EventArgs e) {
-            CallFinish(sender, e);
+        private void BtnFailEvent(object sender, EventArgs e) {
+            CallFail();
         }
-        private void WallEvent(object sender, EventArgs e) {
-            CallReset(sender, e);
+
+        private void BtnWinEvent(object sender, EventArgs e) {
+            CallFinish();
         }
         public override void Draw(SpriteBatch sp) {
-            button.Draw(sp);
-            for (int i = 0; i < Infos.Length; i++) {
-                Infos[i].Draw(sp);
+            for (int i = 0; i < button.Length; i++) {
+                button[i].Draw(sp);
             }
-            wall.Draw(sp);
+            Info.Draw(sp);
             cursor.Draw(sp);
         }
-
+        float GT;
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
-            for (int i = 0; i < Infos.Length; i++) {
-                Infos[i].Update(gt);
+            GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
+            while (GT > 90) {
+                GT -= 90;
+                int randI64 = rand.Next(0, 16);
+                for (int i = 0; i < button.Length; i++) {
+                    if (i == randI64) {
+                        button[i] = new AwesomeButton(new Vector2(130 * (i % 4) - 256, (i / 4) * 68 - 128), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton")) {
+                            DrawColor = Color.White,
+                        };
+                        button[i].Click += BtnWinEvent;
+                    } else {
+                        button[i] = new AwesomeButton(new Vector2(130 * (i % 4) - 256, (i / 4) * 68 - 128), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton")) {
+                            DrawColor = Color.White,
+                        };
+                        button[i].Click += BtnFailEvent;
+                    }
+                }
             }
-
             cursor.Position = MousePos - cursor.Size / 2;
-            button.Update(gt, cursor.Hitbox[0]);
-            wall.Update(gt, cursor.Hitbox[0]);
+            for (int i = 0; i < button.Length; i++) {
+                button[i].Update(gt, cursor.Hitbox[0]);
+            }
+            Info.Update(gt);
         }
     }
 }

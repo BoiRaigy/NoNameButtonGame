@@ -22,7 +22,6 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
        
         Cursor cursor;
-        Laserwall wall;
         TextBuilder Timer;
         TextBuilder GUN;
         List<Tuple<Laserwall,Vector2>> shots;

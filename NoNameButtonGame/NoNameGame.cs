@@ -24,6 +24,30 @@ namespace NoNameButtonGame
         public NoNameGame() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            
+            IsMouseVisible = false;
+            
+        }
+        private void Changesettings(Vector2 Res, bool step, bool full) {
+            IsFixedTimeStep = step;
+            if ((!_graphics.IsFullScreen && full) || (!full && _graphics.IsFullScreen))
+                _graphics.ToggleFullScreen();
+            _graphics.PreferredBackBufferWidth = (int)Res.X;
+            _graphics.PreferredBackBufferHeight = (int)Res.Y;
+            _graphics.ApplyChanges();
+
+            using (StreamWriter sw = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\NoNameButtonGame\\data.txt")) {
+                sw.WriteLine(step);
+                sw.WriteLine(full);
+                sw.WriteLine(Res.X);
+                sw.WriteLine(Res.Y);
+                sw.WriteLine(Globals.MaxLevel);
+            }
+            lvmng.ChangeScreen(new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
+        }
+
+        protected override void Initialize() {
+            base.Initialize();
             IsFixedTimeStep = false;
             if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\NoNameButtonGame")) {
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\NoNameButtonGame");
@@ -59,39 +83,14 @@ namespace NoNameButtonGame
                     IsFixedTimeStep = false;
                 }
             }
-            IsMouseVisible = false;
             Globals.Content = Content;
             Globals.IsFix = IsFixedTimeStep;
-        }
-        private void Changesettings(Vector2 Res, bool step, bool full) {
-            IsFixedTimeStep = step;
-            if ((!_graphics.IsFullScreen && full) || (!full && _graphics.IsFullScreen))
-                _graphics.ToggleFullScreen();
-            _graphics.PreferredBackBufferWidth = (int)Res.X;
-            _graphics.PreferredBackBufferHeight = (int)Res.Y;
-            _graphics.ApplyChanges();
-
-            using (StreamWriter sw = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\NoNameButtonGame\\data.txt")) {
-                sw.WriteLine(step);
-                sw.WriteLine(full);
-                sw.WriteLine(Res.X);
-                sw.WriteLine(Res.Y);
-                sw.WriteLine(Globals.MaxLevel);
-            }
-            lvmng.ChangeScreen(new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
-        }
-
-        protected override void Initialize() {
-            base.Initialize();
             target2D = new RenderTarget2D(GraphicsDevice, (int)DefaultWidth, (int)DefaultHeight);
-            _graphics.PreferredBackBufferWidth = (int)DefaultWidth;
-            _graphics.PreferredBackBufferHeight = (int)DefaultHeight;
-            _graphics.ApplyChanges();
-            lvmng = new LevelManager((int)DefaultHeight, (int)DefaultWidth, new Vector2(DefaultWidth, DefaultHeight), Changesettings) {
+            
+            lvmng = new LevelManager((int)DefaultHeight, (int)DefaultWidth, new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Changesettings) {
                 ChangeWindowName = ChangeTitle
             };
             Mousepoint = Content.GetTHBox("mousepoint").Texture;
-
             //CamPos = new Vector2(button[0].Size.X / 2, button[0].Size.Y / 2);
             //CamPos = new Vector2(700, 400);
         }

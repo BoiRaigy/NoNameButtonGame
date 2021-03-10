@@ -23,7 +23,6 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
         Cursor cursor;
         TextBuilder GUN;
-        Laserwall wall;
         TextBuilder Timer;
         List<Tuple<Laserwall, Vector2>> shots;
         public Level28(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {

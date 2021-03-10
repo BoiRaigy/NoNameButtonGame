@@ -30,7 +30,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             Name = "Start Menu";
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             FixedStep = new TextBuilder("FixedStep", new Vector2(-64, -0), new Vector2(16, 16), null, 0);
-            Resolution = new TextBuilder("1280x720", new Vector2(-64, -64), new Vector2(16, 16), null, 0);
+            Resolution = new TextBuilder(window.X + "x" + window.Y, new Vector2(-64, -64), new Vector2(16, 16), null, 0);
             Fullscreen = new TextBuilder("Fullscreen", new Vector2(-64, 64), new Vector2(16, 16), null, 0);
             ResolutionBn = new TextButton[2];
             ResolutionBn[0] = new TextButton(new Vector2(64, -72), new Vector2(40, 32), Globals.Content.GetTHBox("minibutton"), ">", ">",new Vector2(16,16));
@@ -43,7 +43,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             FullscreenBn = new TextButton(new Vector2(-108, 56), new Vector2(40, 32), Globals.Content.GetTHBox("minibutton"), "Fullscreen", s2, new Vector2(16, 16));
             FullscreenBn.Text.ChangeColor(new Color[1] { s2 == "❌" ? Color.Red : Color.Green });
             FullscreenBn.Click += ChangePressState;
-            VecResolution = new Vector2(1280,720);
+            VecResolution = window;
 
         }
         private void ChangeRes(object sender, EventArgs e) {
