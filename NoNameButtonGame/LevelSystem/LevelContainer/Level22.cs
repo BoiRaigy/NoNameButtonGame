@@ -36,7 +36,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             text[5] = new TextBuilder("distraction and the button is hidden somewere!", new Vector2(0, 0), new Vector2(8, 8), null, 0);
             text[6] = new TextBuilder("i hope this time it wont be as hard because the levels", new Vector2(0, 0), new Vector2(8, 8), null, 0);
             text[7] = new TextBuilder("before were allready way to hard for my liking and", new Vector2(0, 0), new Vector2(8, 8), null, 0);
-            text[8] = new TextBuilder("this game is suppose to have 100 levels! at this", new Vector2(0, 0), new Vector2(8, 8), null, 0);
+            text[8] = new TextBuilder("this game is suppose to have 50 levels! at this", new Vector2(0, 0), new Vector2(8, 8), null, 0);
             text[9] = new TextBuilder("rate the level will become a mario maker type of impossible.", new Vector2(0, 0), new Vector2(8, 8), null, 0);
             text[10] = new TextBuilder("but i should focus on my goals now, which is finding the button", new Vector2(0, 0), new Vector2(8, 8), null, 0);
             text[11] = new TextBuilder("but this time i cannot find it. i hope i dont have to edit the", new Vector2(0, 0), new Vector2(8, 8), null, 0);

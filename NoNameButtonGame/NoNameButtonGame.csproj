@@ -12,11 +12,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Content\bin\DesktopGL\Courier New.xnb" />
-    <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Icon.ico" />
     <EmbeddedResource Include="Icon.bmp" />
   </ItemGroup>
   <ItemGroup>
