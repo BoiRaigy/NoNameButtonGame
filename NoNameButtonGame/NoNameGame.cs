@@ -93,6 +93,7 @@ namespace NoNameButtonGame
             Mousepoint = Content.GetTHBox("mousepoint").Texture;
             //CamPos = new Vector2(button[0].Size.X / 2, button[0].Size.Y / 2);
             //CamPos = new Vector2(700, 400);
+            
         }
         private void ChangeTitle(string NewName) {
             Window.Title = NewName;
