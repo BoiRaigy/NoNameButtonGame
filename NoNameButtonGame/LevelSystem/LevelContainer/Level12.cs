@@ -105,8 +105,8 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             }
             if (TimerC >= TimerMax)
                 CallFinish(this, new EventArgs());
-            Timer.Update(gt);
             Timer.ChangeText(((TimerMax - TimerC) / 1000).ToString("0.0") + "S");
+            Timer.Update(gt);
             cursor.Position = MousePos - cursor.Size / 2;
             OldMPos = MousePos;
         }
