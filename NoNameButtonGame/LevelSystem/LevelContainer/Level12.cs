@@ -53,11 +53,11 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         }
         float GT;
         float MGT;
-        float ShotTime = 200;
-        float TravelSpeed = 2;
-        float UpdateSpeed = 2;
-        float MaxUpdateSpeed = 128;
-        float MinUpdateSpeed = 4;
+        float shotTime = 200;
+        float travelSpeed = 2;
+        float updateSpeed = 2;
+        float maxUpdateSpeed = 128;
+        float minUpdateSpeed = 4;
         Vector2 OldMPos;
         List<int> removeItem = new List<int>();
 
@@ -71,14 +71,14 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             
             MGT += (float)gt.ElapsedGameTime.TotalMilliseconds;
             TimerC += (float)gt.ElapsedGameTime.TotalMilliseconds;
-            while (MGT > UpdateSpeed) {
-                MGT -= UpdateSpeed;
+            while (MGT > updateSpeed) {
+                MGT -= updateSpeed;
                 for (int i = 0; i < shots.Count; i++) {
-                    shots[i].Item1.Move(shots[i].Item2 * TravelSpeed);
+                    shots[i].Item1.Move(shots[i].Item2 * travelSpeed);
                 }
                 GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
-                while (GT > ShotTime) {
-                    GT -= ShotTime;
+                while (GT > shotTime) {
+                    GT -= shotTime;
                     Vector2 Dir = cursor.Hitbox[0].Center.ToVector2() - GUN.rec.Center.ToVector2();
                     shots.Add(new Tuple<Laserwall, Vector2>(new Laserwall(GUN.Position, new Vector2(16,8), Globals.Content.GetTHBox("zonenew")), Dir / Dir.Length()));
                     shots[shots.Count - 1].Item1.Enter += CallFail;
@@ -97,11 +97,11 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 } catch { }
             }
             if (MousePos != OldMPos) {
-                UpdateSpeed -= Vector2.Distance(MousePos,OldMPos) * 10;
-                if (UpdateSpeed < MinUpdateSpeed)
-                    UpdateSpeed = MinUpdateSpeed;
+                updateSpeed -= Vector2.Distance(MousePos,OldMPos) * 10;
+                if (updateSpeed < minUpdateSpeed)
+                    updateSpeed = minUpdateSpeed;
             } else {
-                    UpdateSpeed = MaxUpdateSpeed;
+                    updateSpeed = maxUpdateSpeed;
             }
             if (TimerC >= TimerMax)
                 CallFinish(this, new EventArgs());
