@@ -72,6 +72,12 @@ namespace NoNameButtonGame
                     sw.WriteLine("1280");
                     sw.WriteLine("720");
                 }
+                if (_graphics.IsFullScreen)
+                    _graphics.ToggleFullScreen();
+                _graphics.PreferredBackBufferWidth = 1280;
+                _graphics.PreferredBackBufferHeight = 720;
+                _graphics.ApplyChanges();
+                IsFixedTimeStep = false;
             } else {
                 try {
                     using (StreamReader sr = new StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\NoNameButtonGame\\data.txt")) {
