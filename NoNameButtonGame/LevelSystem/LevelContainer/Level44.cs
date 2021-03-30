@@ -20,10 +20,11 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level44 : SampleLevel
     {
 
-        AwesomeButton[] button;
-        Cursor cursor;
-        TextBuilder Info;
-        Random rand;
+        readonly AwesomeButton[] button;
+        readonly Cursor cursor;
+        readonly TextBuilder Info;
+        readonly Random rand;
+        float GT;
         public Level44(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 44 - we're reaching the tas zone";
             button = new AwesomeButton[16];
@@ -46,9 +47,6 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             Info = new TextBuilder("Watch out. There Random!", new Vector2(-170, -(defaultHeight / Camera.Zoom / 2) + 32), new Vector2(16, 16), null, 0);
 
         }
-
-
-
         private void BtnFailEvent(object sender, EventArgs e) {
             CallFail();
         }
@@ -63,7 +61,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             Info.Draw(sp);
             cursor.Draw(sp);
         }
-        float GT;
+
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
@@ -85,7 +83,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                     }
                 }
             }
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
             for (int i = 0; i < button.Length; i++) {
                 button[i].Update(gt, cursor.Hitbox[0]);
             }

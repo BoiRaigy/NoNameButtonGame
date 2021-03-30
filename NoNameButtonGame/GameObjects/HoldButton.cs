@@ -14,55 +14,59 @@ namespace NoNameButtonGame.GameObjects
 {
     class HoldButton : GameObject, IMouseActions, IHitbox
     {
-        public HoldButton(Vector2 Pos, Vector2 Size, THBox box) {
+        public event EventHandler Leave;
+        public event EventHandler Enter;
+        public event EventHandler Click;
+
+        bool Hover;
+        float HoldTime = 0F;
+        public float EndHoldTime = 10000F;
+
+        Rectangle[] frameHitbox;
+        Rectangle[] ingameHitbox;
+        Vector2 Scale;
+
+        TextBuilder textContainer;
+        public Rectangle[] Hitbox {
+            get => ingameHitbox;
+        }
+
+        public HoldButton(Vector2 Position, Vector2 Size, THBox thBox) {
             base.Size = Size;
-            Position = Pos;
+            base.Position = Position;
             DrawColor = Color.White;
-            ImageLocation = new Rectangle((int)box.Imagesize.X, 0, (int)box.Imagesize.X, (int)box.Imagesize.Y);
-            FrameSize = box.Imagesize;
-            hitbox = new Rectangle[box.Hitbox.Length];
-            Texture = box.Texture;
+            ImageLocation = new Rectangle((int)thBox.Imagesize.X, 0, (int)thBox.Imagesize.X, (int)thBox.Imagesize.Y);
+            FrameSize = thBox.Imagesize;
+            frameHitbox = new Rectangle[thBox.Hitbox.Length];
+            Texture = thBox.Texture;
             Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
-            hitbox = box.Hitbox;
-            text = new TextBuilder("test", new Vector2(float.MinValue, float.MinValue), new Vector2(16, 16), null, 0);
+            frameHitbox = thBox.Hitbox;
+            textContainer = new TextBuilder("test", new Vector2(float.MinValue, float.MinValue), new Vector2(16, 16), null, 0);
 
 
-            IGhitbox = new Rectangle[hitbox.Length];
-            for (int i = 0; i < box.Hitbox.Length; i++) {
-                IGhitbox[i] = new Rectangle((int)(Position.X + (box.Hitbox[i].X * Scale.X)), (int)(Position.Y + (box.Hitbox[i].Y * Scale.Y)), (int)(box.Hitbox[i].Width * Scale.X), (int)(box.Hitbox[i].Height * Scale.Y));
+            ingameHitbox = new Rectangle[frameHitbox.Length];
+            for (int i = 0; i < thBox.Hitbox.Length; i++) {
+                ingameHitbox[i] = new Rectangle((int)(base.Position.X + (thBox.Hitbox[i].X * Scale.X)), (int)(base.Position.Y + (thBox.Hitbox[i].Y * Scale.Y)), (int)(thBox.Hitbox[i].Width * Scale.X), (int)(thBox.Hitbox[i].Height * Scale.Y));
             }
 
         }
 
-        public event EventHandler Leave;
-        public event EventHandler Enter;
-        public event EventHandler Click;
-        bool Hover;
-        float HoldTime = 0F;
-        public float EndHoldTime = 10000F;
-        Rectangle[] hitbox;
-        Rectangle[] IGhitbox;
-        Vector2 Scale;
-
-        TextBuilder text;
-        public Rectangle[] Hitbox {
-            get => IGhitbox;
-        }
-
-        public bool HitboxCheck(Rectangle rec) {
+        public bool HitboxCheck(Rectangle compareTo) {
             for (int i = 0; i < Hitbox.Length; i++) {
-                if (Hitbox[i].Intersects(rec)) {
+                if (Hitbox[i].Intersects(compareTo)) {
                     return true;
                 }
             }
             return false;
         }
+
         private void UpdateHitbox() {
             Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
-            for (int i = 0; i < hitbox.Length; i++) {
-                IGhitbox[i] = new Rectangle((int)(Position.X + (hitbox[i].X * Scale.X)), (int)(Position.Y + (hitbox[i].Y * Scale.Y)), (int)(hitbox[i].Width * Scale.X), (int)(hitbox[i].Height * Scale.Y));
+            for (int i = 0; i < frameHitbox.Length; i++) {
+                ingameHitbox[i] = new Rectangle((int)(Position.X + (frameHitbox[i].X * Scale.X)), (int)(Position.Y + (frameHitbox[i].Y * Scale.Y)), (int)(frameHitbox[i].Width * Scale.X), (int)(frameHitbox[i].Height * Scale.Y));
             }
         }
+
         public void Update(GameTime gt, Rectangle MousePos) {
             MouseState mouseState = Mouse.GetState();
             if (HitboxCheck(MousePos)) {
@@ -105,17 +109,16 @@ namespace NoNameButtonGame.GameObjects
                 ImageLocation = new Rectangle(0, 0, (int)FrameSize.X, (int)FrameSize.Y);
             }
             UpdateHitbox();
-            text.ChangeText((((EndHoldTime - HoldTime) / 1000).ToString("0.0") + "s").Replace(',', '.'));
+            textContainer.ChangeText((((EndHoldTime - HoldTime) / 1000).ToString("0.0") + "s").Replace(',', '.'));
 
-            text.Position = rec.Center.ToVector2() - text.rec.Size.ToVector2() / 2;
-            text.Position.Y -= 32;
-            text.Update(gt);
+            textContainer.Position = rec.Center.ToVector2() - textContainer.rec.Size.ToVector2() / 2;
+            textContainer.Position.Y -= 32;
+            textContainer.Update(gt);
             Update(gt);
         }
-
         public override void Draw(SpriteBatch sp) {
             base.Draw(sp);
-            text.Draw(sp);
+            textContainer.Draw(sp);
 
         }
     }

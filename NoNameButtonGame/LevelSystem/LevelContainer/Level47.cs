@@ -1,16 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-
-using Raigy.Obj;
-using Raigy.Input;
-using Raigy.Camera;
-
-using NoNameButtonGame.Interfaces;
-
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using NoNameButtonGame.BeforeMaths;
 using NoNameButtonGame.GameObjects;
 using NoNameButtonGame.Text;
@@ -21,21 +12,31 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     {
 
 
-        Cursor cursor;
-        TextBuilder Timer;
-        TextBuilder GUN;
-        List<Tuple<Laserwall, Vector2>> shots;
+        readonly Cursor mouseCursor;
+        readonly TextBuilder Timer;
+        readonly TextBuilder Gun;
+        readonly List<Tuple<Laserwall, Vector2>> Shots;
+        readonly float shotTime = 100;
+        readonly float travelSpeed = 10;
+        readonly float maxUpdateSpeed = 64;
+        readonly float minUpdateSpeed = 4;
+        float updateSpeed = 2;
+        Vector2 oldMousePosition;
+        float GT;
+        float MGT;
+        readonly List<int> removeItem = new List<int>();
+
+
+        readonly float timerMax = 30000;
+        float timerCurrent = 0;
         public Level47(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 47 - MEGA GUN!";
             Timer = new TextBuilder("", new Vector2(0 - 128), new Vector2(16, 16), null, 0);
 
-            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
-            GUN = new TextBuilder("AGUN", new Vector2(-256, 0), new Vector2(16, 16), null, 0);
-            shots = new List<Tuple<Laserwall, Vector2>>();
+            mouseCursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
+            Gun = new TextBuilder("AGUN", new Vector2(-256, 0), new Vector2(16, 16), null, 0);
+            Shots = new List<Tuple<Laserwall, Vector2>>();
         }
-
-
-
         private void BtnEvent(object sender, EventArgs e) {
             CallFinish(sender, e);
         }
@@ -44,71 +45,59 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         }
         public override void Draw(SpriteBatch sp) {
 
-            GUN.Draw(sp);
-            for (int i = 0; i < shots.Count; i++) {
-                shots[i].Item1.Draw(sp);
+            Gun.Draw(sp);
+            for (int i = 0; i < Shots.Count; i++) {
+                Shots[i].Item1.Draw(sp);
             }
             Timer.Draw(sp);
-            cursor.Draw(sp);
+            mouseCursor.Draw(sp);
         }
-        float GT;
-        float MGT;
-        float ShotTime = 100;
-        float TravelSpeed = 10;
-        float UpdateSpeed = 2;
-        float MaxUpdateSpeed = 64;
-        float MinUpdateSpeed = 4;
-        Vector2 OldMPos;
-        List<int> removeItem = new List<int>();
-
-
-        float TimerMax = 30000;
-        float TimerC = 0;
+        
         public override void Update(GameTime gt) {
-            cursor.Update(gt);
+            mouseCursor.Update(gt);
             base.Update(gt);
-            GUN.Update(gt);
+            Gun.Update(gt);
 
             MGT += (float)gt.ElapsedGameTime.TotalMilliseconds;
-            TimerC += (float)gt.ElapsedGameTime.TotalMilliseconds;
-            while (MGT > UpdateSpeed) {
-                MGT -= UpdateSpeed;
-                for (int i = 0; i < shots.Count; i++) {
-                    shots[i].Item1.Move(shots[i].Item2 * TravelSpeed);
+            timerCurrent += (float)gt.ElapsedGameTime.TotalMilliseconds;
+            while (MGT > updateSpeed) {
+                MGT -= updateSpeed;
+                for (int i = 0; i < Shots.Count; i++) {
+                    Shots[i].Item1.Move(Shots[i].Item2 * travelSpeed);
                 }
                 GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
-                while (GT > ShotTime) {
-                    GT -= ShotTime;
-                    Vector2 Dir = cursor.Hitbox[0].Center.ToVector2() - GUN.rec.Center.ToVector2();
-                    shots.Add(new Tuple<Laserwall, Vector2>(new Laserwall(GUN.Position, new Vector2(16, 8), Globals.Content.GetTHBox("zonenew")), Dir / Dir.Length()));
-                    shots[shots.Count - 1].Item1.Enter += CallFail;
+                while (GT > shotTime) {
+                    GT -= shotTime;
+                    Vector2 Dir = mouseCursor.Hitbox[0].Center.ToVector2() - Gun.rec.Center.ToVector2();
+                    Shots.Add(new Tuple<Laserwall, Vector2>(new Laserwall(Gun.Position, new Vector2(16, 8), Globals.Content.GetTHBox("zonenew")), Dir / Dir.Length()));
+                    Shots[^1].Item1.Enter += CallFail;
                 }
             }
             removeItem.Clear();
-            for (int i = 0; i < shots.Count; i++) {
-                shots[i].Item1.Update(gt, cursor.Hitbox[0]);
-                if (!shots[i].Item1.rec.Intersects(CamRec)) {
+            for (int i = 0; i < Shots.Count; i++) {
+                Shots[i].Item1.Update(gt, mouseCursor.Hitbox[0]);
+                if (!Shots[i].Item1.rec.Intersects(cameraRectangle)) {
                     removeItem.Add(i);
                 }
             }
             for (int i = 0; i < removeItem.Count; i++) {
                 try {
-                    shots.RemoveAt(removeItem[i]);
+                    Shots.RemoveAt(removeItem[i]);
                 } catch { }
             }
-            if (MousePos != OldMPos) {
-                UpdateSpeed -= Vector2.Distance(MousePos, OldMPos) * 10;
-                if (UpdateSpeed < MinUpdateSpeed)
-                    UpdateSpeed = MinUpdateSpeed;
+            if (mousePosition != oldMousePosition) {
+                updateSpeed -= Vector2.Distance(mousePosition, oldMousePosition) * 10;
+                if (updateSpeed < minUpdateSpeed)
+                    updateSpeed = minUpdateSpeed;
             } else {
-                UpdateSpeed = MaxUpdateSpeed;
+                updateSpeed = maxUpdateSpeed;
             }
-            if (TimerC >= TimerMax)
+            if (timerCurrent >= timerMax)
                 CallFinish(this, new EventArgs());
             Timer.Update(gt);
-            Timer.ChangeText(((TimerMax - TimerC) / 1000).ToString("0.0") + "S");
-            cursor.Position = MousePos - cursor.Size / 2;
-            OldMPos = MousePos;
+            Timer.ChangeText(((timerMax - timerCurrent) / 1000).ToString("0.0") + "S");
+            mouseCursor.Position = mousePosition - mouseCursor.Size / 2;
+            oldMousePosition = mousePosition;
         }
     }
 }

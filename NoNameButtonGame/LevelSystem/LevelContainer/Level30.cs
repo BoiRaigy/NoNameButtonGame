@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Raigy.Obj;
-using Raigy.Input;
-using Raigy.Camera;
-
-using NoNameButtonGame.Interfaces;
-
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using NoNameButtonGame.BeforeMaths;
 using NoNameButtonGame.GameObjects;
 using NoNameButtonGame.Text;
@@ -20,13 +10,17 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level30 : SampleLevel
     {
 
-        TextButton[] button;
-        Cursor cursor;
-        TextBuilder Questions;
-        TextBuilder Timer;
-        int Awnsered;
-        int[] RightAwnsers = new int[7] { -1, 0, 0, 0, 2, 1,2 };
+        readonly TextButton[] button;
+        readonly Cursor cursor;
+        readonly TextBuilder Questions;
+        readonly TextBuilder Timer;
+        
+        readonly int[] RightAwnsers = new int[7] { -1, 0, 0, 0, 2, 1,2 };
+        readonly float GTMax = 20000;
 
+        int Awnsered;
+        float GT;
+        
         public Level30(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 30 - You now the drill. now it will just get harder(ish)";
             button = new TextButton[3];
@@ -109,8 +103,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             Timer.Draw(sp);
             cursor.Draw(sp);
         }
-        float GT;
-        float GTMax = 20000;
+
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
@@ -125,7 +118,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             for (int i = 0; i < button.Length; i++) {
                 button[i].Update(gt, cursor.Hitbox[0]);
             }
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
         }
     }
 }

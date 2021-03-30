@@ -20,12 +20,13 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level33 : SampleLevel
     {
 
-        AwesomeButton button;
-        Cursor cursor;
-        TextBuilder Info;
-        Rainbow raincolor;
-        Laserwall[] laserwall;
+        readonly AwesomeButton button;
+        readonly Cursor cursor;
+        readonly TextBuilder Info;
+        readonly Rainbow raincolor;
+        readonly Laserwall[] laserwall;
         float GT;
+        bool Left;
         public Level33(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 33 - Tutorial time?";
 
@@ -71,7 +72,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             cursor.Draw(sp);
 
         }
-        bool Left;
+
         public override void Update(GameTime gt) {
             GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
             while (GT > 80) {
@@ -94,7 +95,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 laserwall[i].Update(gt, cursor.Hitbox[0]);
             }
 
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
             button.Update(gt, cursor.Hitbox[0]);
         }
     }

@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Raigy.Obj;
-using Raigy.Input;
-using Raigy.Camera;
-
-using NoNameButtonGame.Interfaces;
-
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using NoNameButtonGame.BeforeMaths;
 using NoNameButtonGame.GameObjects;
 using NoNameButtonGame.Text;
@@ -20,12 +10,15 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level29 : SampleLevel
     {
 
-        LockButton button;
-        Cursor cursor;
-        TextBuilder Info;
-        Laserwall wall;
-        TextButton ButtonStartTimer;
-        TextBuilder Timer;
+        readonly LockButton button;
+        readonly Cursor cursor;
+        readonly TextBuilder Info;
+        readonly Laserwall wall;
+        readonly TextButton ButtonStartTimer;
+        readonly TextBuilder Timer;
+        bool TimerStarted;
+        float GT;
+        float TGT;
         public Level29(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 29 - Get duck";
             button = new LockButton(new Vector2(-256, -128), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"), true);
@@ -41,7 +34,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
         }
 
-        bool TimerStarted;
+
         private void StartTimer(object s, EventArgs e) {
             TimerStarted = true;
         }
@@ -62,11 +55,10 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 ButtonStartTimer.Draw(sp);
             cursor.Draw(sp);
         }
-        float GT;
-        float TGT;
+
         public override void Update(GameTime gt) {
             base.Update(gt);
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
             cursor.Update(gt);
             if (TimerStarted) {
                 Info.Update(gt);

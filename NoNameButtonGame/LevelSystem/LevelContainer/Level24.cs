@@ -1,16 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-
-using Raigy.Obj;
-using Raigy.Input;
-using Raigy.Camera;
-
-using NoNameButtonGame.Interfaces;
-
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using NoNameButtonGame.BeforeMaths;
 using NoNameButtonGame.GameObjects;
 using NoNameButtonGame.Text;
@@ -20,17 +11,26 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level24 : SampleLevel
     {
 
-        AwesomeButton button;
-        Cursor cursor;
-        TextBuilder[] Infos;
-        Laserwall[] WallLeft;
-        Laserwall[] WallRight;
-        Laserwall[] Blocks;
-        int WallLength = 15;
+        readonly AwesomeButton button;
+        readonly Cursor cursor;
+        readonly TextBuilder[] Infos;
+        readonly Laserwall[] WallLeft;
+        readonly Laserwall[] WallRight;
+        readonly Laserwall[] Blocks;
+        readonly TextBuilder GUN;
+        readonly int WallLength = 15;
+        readonly List<Tuple<Laserwall, Vector2>> shots;
+        float GT;
 
-        TextBuilder GUN;
-
-        List<Tuple<Laserwall, Vector2>> shots;
+        float GT2;
+        float MGT;
+        readonly float ShotTime = 700;
+        readonly float TravelSpeed = 5;
+        float UpdateSpeed = 2;
+        readonly float MaxUpdateSpeed = 80;
+        readonly float MinUpdateSpeed = 80;
+        Vector2 OldMPos;
+        readonly List<int> removeItem = new List<int>();
         public Level24(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 24 - now with a gun";
             button = new AwesomeButton(new Vector2(-256, -0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"));
@@ -79,14 +79,14 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 Infos[i].Draw(sp);
             }
             for (int i = 0; i < WallLength; i++) {
-                if (WallLeft[i].rec.Intersects(CamRec))
+                if (WallLeft[i].rec.Intersects(cameraRectangle))
                     WallLeft[i].Draw(sp);
-                if (WallRight[i].rec.Intersects(CamRec))
+                if (WallRight[i].rec.Intersects(cameraRectangle))
                     WallRight[i].Draw(sp);
 
             }
             for (int i = 0; i < Blocks.Length; i++) {
-                if (Blocks[i].rec.Intersects(CamRec))
+                if (Blocks[i].rec.Intersects(cameraRectangle))
                     Blocks[i].Draw(sp);
             }
             GUN.Draw(sp);
@@ -95,17 +95,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             }
             cursor.Draw(sp);
         }
-        float GT;
 
-        float GT2;
-        float MGT;
-        float ShotTime = 700;
-        float TravelSpeed = 5;
-        float UpdateSpeed = 2;
-        float MaxUpdateSpeed = 80;
-        float MinUpdateSpeed = 80;
-        Vector2 OldMPos;
-        List<int> removeItem = new List<int>();
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
@@ -135,16 +125,17 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 while (GT2 > ShotTime) {
                     GT2 -= ShotTime;
                     Vector2 Dir = cursor.Hitbox[0].Center.ToVector2() - GUN.rec.Center.ToVector2();
-                    Laserwall ls = new Laserwall(GUN.Position, new Vector2(16, 8), Globals.Content.GetTHBox("zonenew"));
-                    ls.DrawColor = Color.Green;
+                    var ls = new Laserwall(GUN.Position, new Vector2(16, 8), Globals.Content.GetTHBox("zonenew")) {
+                        DrawColor = Color.Green
+                    };
                     shots.Add(new Tuple<Laserwall, Vector2>(ls, Dir / Dir.Length()));
-                    shots[shots.Count - 1].Item1.Enter += CallFail;
+                    shots[^1].Item1.Enter += CallFail;
                 }
             }
             removeItem.Clear();
             for (int i = 0; i < shots.Count; i++) {
                 shots[i].Item1.Update(gt, cursor.Hitbox[0]);
-                if (!shots[i].Item1.rec.Intersects(CamRec)) {
+                if (!shots[i].Item1.rec.Intersects(cameraRectangle)) {
                     removeItem.Add(i);
                 }
             }
@@ -153,14 +144,14 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                     shots.RemoveAt(removeItem[i]);
                 } catch { }
             }
-            if (MousePos != OldMPos) {
-                UpdateSpeed -= Vector2.Distance(MousePos, OldMPos) * 10;
+            if (mousePosition != OldMPos) {
+                UpdateSpeed -= Vector2.Distance(mousePosition, OldMPos) * 10;
                 if (UpdateSpeed < MinUpdateSpeed)
                     UpdateSpeed = MinUpdateSpeed;
             } else {
                 UpdateSpeed = MaxUpdateSpeed;
             }
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
             button.Update(gt, cursor.Hitbox[0]);
             for (int i = 0; i < WallLength; i++) {
                 WallLeft[i].Update(gt, cursor.Hitbox[0]);
@@ -169,7 +160,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             for (int i = 0; i < Blocks.Length; i++) {
                 Blocks[i].Update(gt, cursor.Hitbox[0]);
             }
-            OldMPos = MousePos;
+            OldMPos = mousePosition;
         }
     }
 }

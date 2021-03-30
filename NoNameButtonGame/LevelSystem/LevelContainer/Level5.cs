@@ -20,16 +20,18 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level5 : SampleLevel
     {
 
-        HoldButton button;
-        Cursor cursor;
-        TextBuilder[] Infos;
-        LockButton lockbutton;
-        Random rand;
+        readonly HoldButton button;
+        readonly Cursor cursor;
+        readonly TextBuilder[] Infos;
+        readonly LockButton lockbutton;
+        readonly Random rand;
+        float GT;
         public Level5(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 5 - MORE BUTTONS!";
             this.rand = rand;
-            button = new HoldButton(new Vector2(-220, -100), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"));
-            button.EndHoldTime = 6900;
+            button = new HoldButton(new Vector2(-220, -100), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton")) {
+                EndHoldTime = 6900
+            };
             button.Click += EmptyBtnEvent;
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             Infos = new TextBuilder[2];
@@ -66,7 +68,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             lockbutton.Draw(sp);
             cursor.Draw(sp);
         }
-        float GT;
+
         public override void Update(GameTime gt) {
             GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
             while(GT > 512) {
@@ -85,7 +87,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             for (int i = 0; i < Infos.Length; i++) {
                 Infos[i].Update(gt);
             }
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
             button.Update(gt, cursor.Hitbox[0]);
             lockbutton.Update(gt, cursor.Hitbox[0]);
         }

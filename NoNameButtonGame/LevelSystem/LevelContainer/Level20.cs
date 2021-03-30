@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Raigy.Obj;
-using Raigy.Input;
-using Raigy.Camera;
-
-using NoNameButtonGame.Interfaces;
-
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using NoNameButtonGame.BeforeMaths;
 using NoNameButtonGame.GameObjects;
 using NoNameButtonGame.Text;
@@ -20,47 +10,51 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level20 : SampleLevel
     {
 
-        TextButton[] BobIt;
-        Cursor cursor;
-        TextBuilder[] Marker;
+        readonly TextButton[] bobIt;
+        readonly Cursor mouseCursor;
+        readonly TextBuilder[] Marker;
+        AwesomeButton startButton;
+        readonly Random globalRandom;
+
+        readonly int sequenzLength = 7;
         bool PlayingSequenz = false;
         string CurrentSequenz;
         string Sequenz;
-        int CurrentSqAmm = 1;
-        int PlayedSq;
-        int SqMax = 7;
-        AwesomeButton StartBtn;
-        Random rand;
+        int currentSequenzAmmount = 1;
+        int playedSequenz;
+        
+        float SSGT;
+        bool Display = false;
         public Level20(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 20 - I HATE THIS LEVEL MORE";
-            BobIt = new TextButton[5];
-            this.rand = rand;
-            BobIt[0] = new TextButton(new Vector2(-320, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "0", "⬜", new Vector2(16, 16));
-            BobIt[1] = new TextButton(new Vector2(-192, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "1", "⬜", new Vector2(16, 16));
-            BobIt[2] = new TextButton(new Vector2(-64, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "2", "⬜", new Vector2(16, 16));
-            BobIt[3] = new TextButton(new Vector2(64, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "3", "⬜", new Vector2(16, 16));
-            BobIt[4] = new TextButton(new Vector2(192, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "4", "⬜", new Vector2(16, 16));
-            BobIt[0].Text.ChangeColor(new Color[1] { Color.Orange });
-            BobIt[1].Text.ChangeColor(new Color[1] { Color.DarkRed });
-            BobIt[2].Text.ChangeColor(new Color[1] { Color.Green });
-            BobIt[3].Text.ChangeColor(new Color[1] { Color.Blue });
-            BobIt[4].Text.ChangeColor(new Color[1] { Color.Purple });
-            for (int i = 0; i < BobIt.Length; i++) {
-                BobIt[i].Click += BtnEvent;
+            bobIt = new TextButton[5];
+            this.globalRandom = rand;
+            bobIt[0] = new TextButton(new Vector2(-320, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "0", "⬜", new Vector2(16, 16));
+            bobIt[1] = new TextButton(new Vector2(-192, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "1", "⬜", new Vector2(16, 16));
+            bobIt[2] = new TextButton(new Vector2(-64, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "2", "⬜", new Vector2(16, 16));
+            bobIt[3] = new TextButton(new Vector2(64, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "3", "⬜", new Vector2(16, 16));
+            bobIt[4] = new TextButton(new Vector2(192, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "4", "⬜", new Vector2(16, 16));
+            bobIt[0].Text.ChangeColor(new Color[1] { Color.Orange });
+            bobIt[1].Text.ChangeColor(new Color[1] { Color.DarkRed });
+            bobIt[2].Text.ChangeColor(new Color[1] { Color.Green });
+            bobIt[3].Text.ChangeColor(new Color[1] { Color.Blue });
+            bobIt[4].Text.ChangeColor(new Color[1] { Color.Purple });
+            for (int i = 0; i < bobIt.Length; i++) {
+                bobIt[i].Click += BtnEvent;
             }
             Sequenz = string.Empty;
-            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
+            mouseCursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             Marker = new TextBuilder[2];
             Marker[0] = new TextBuilder("Simon says!", new Vector2(-70, -132), new Vector2(16, 16), null, 0);
             Marker[0].Position = Vector2.Zero - Marker[0].rec.Size.ToVector2() / 2;
             Marker[1] = new TextBuilder("", new Vector2(-40, 128), new Vector2(16, 16), null, 0);
-            StartBtn = new AwesomeButton(new Vector2(-80, -32), new Vector2(160, 64), Globals.Content.GetTHBox("startbutton"));
-            StartBtn.Click += StartEvent;
+            startButton = new AwesomeButton(new Vector2(-80, -32), new Vector2(160, 64), Globals.Content.GetTHBox("startbutton"));
+            startButton.Click += StartEvent;
         }
 
         private void StartEvent(object sender, EventArgs e) {
             PlayingSequenz = true;
-            StartBtn = null;
+            startButton = null;
         }
 
         private void BtnEvent(object sender, EventArgs e) {
@@ -68,22 +62,22 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 return;
             CurrentSequenz += (sender as TextButton).Name;
             if (CurrentSequenz == Sequenz) {
-                if (SqMax == CurrentSequenz.Length)
+                if (sequenzLength == CurrentSequenz.Length)
                     CallFinish(this, e);
                 else {
-                    CurrentSqAmm++;
+                    currentSequenzAmmount++;
                     CurrentSequenz = string.Empty;
                     PlayingSequenz = true;
-                    PlayedSq = 0;
+                    playedSequenz = 0;
                     Marker[1] = new TextBuilder("", new Vector2(-40, 128), new Vector2(16, 16), null, 0);
                     Marker[1].Position = Vector2.Zero - Marker[1].rec.Size.ToVector2() / 2;
                 }
                 return;
             }
-            if (Sequenz.Substring(0, CurrentSqAmm).StartsWith(CurrentSequenz)) {
+            if (Sequenz.Substring(0, currentSequenzAmmount).StartsWith(CurrentSequenz)) {
                 string mk = string.Empty;
-                Color[] mkc = new Color[CurrentSqAmm];
-                for (int i = 0; i < CurrentSqAmm; i++) {
+                Color[] mkc = new Color[currentSequenzAmmount];
+                for (int i = 0; i < currentSequenzAmmount; i++) {
                     mk += "⬜";
 
                 }
@@ -114,30 +108,28 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             CallFail(sender, e);
         }
         public override void Draw(SpriteBatch sp) {
-            if (!(StartBtn is null))
-                StartBtn.Draw(sp);
+            if (!(startButton is null))
+                startButton.Draw(sp);
             else {
                 if (!PlayingSequenz) {
                     Marker[1].Draw(sp);
                 }
-                for (int i = 0; i < BobIt.Length; i++) {
-                    BobIt[i].Draw(sp);
+                for (int i = 0; i < bobIt.Length; i++) {
+                    bobIt[i].Draw(sp);
                 }
             }
 
             Marker[0].Draw(sp);
-            cursor.Draw(sp);
+            mouseCursor.Draw(sp);
         }
-        float SSGT;
-        bool Display = false;
         public override void Update(GameTime gt) {
-            cursor.Update(gt);
+            mouseCursor.Update(gt);
             base.Update(gt);
 
             Marker[0].Update(gt);
 
-            if (!(StartBtn is null))
-                StartBtn.Update(gt, cursor.Hitbox[0]);
+            if (!(startButton is null))
+                startButton.Update(gt, mouseCursor.Hitbox[0]);
             else {
 
                 if (!PlayingSequenz) {
@@ -146,52 +138,52 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                     SSGT += (float)gt.ElapsedGameTime.TotalMilliseconds;
                     while (SSGT > 500) {
                         SSGT -= 500;
-                        BobIt[0].Text.ChangeColor(new Color[1] { Color.Orange });
-                        BobIt[1].Text.ChangeColor(new Color[1] { Color.DarkRed });
-                        BobIt[2].Text.ChangeColor(new Color[1] { Color.Green });
-                        BobIt[3].Text.ChangeColor(new Color[1] { Color.Blue });
-                        BobIt[4].Text.ChangeColor(new Color[1] { Color.Purple });
+                        bobIt[0].Text.ChangeColor(new Color[1] { Color.Orange });
+                        bobIt[1].Text.ChangeColor(new Color[1] { Color.DarkRed });
+                        bobIt[2].Text.ChangeColor(new Color[1] { Color.Green });
+                        bobIt[3].Text.ChangeColor(new Color[1] { Color.Blue });
+                        bobIt[4].Text.ChangeColor(new Color[1] { Color.Purple });
                         if (Display) {
-                            if (PlayedSq >= CurrentSqAmm) {
+                            if (playedSequenz >= currentSequenzAmmount) {
                                 PlayingSequenz = false;
 
                             } else {
                                 int r;
-                                if (PlayedSq + 1 <= Sequenz.Length && Sequenz.Length != 0) {
-                                    r = int.Parse(Sequenz.ToCharArray()[PlayedSq].ToString());
+                                if (playedSequenz + 1 <= Sequenz.Length && Sequenz.Length != 0) {
+                                    r = int.Parse(Sequenz.ToCharArray()[playedSequenz].ToString());
                                 } else {
-                                    r = rand.Next(0, 5);
+                                    r = globalRandom.Next(0, 5);
                                     Sequenz += r;
                                 }
                                 switch (r) {
                                     case 0:
-                                        BobIt[0].Text.ChangeColor(new Color[1] { Color.MonoGameOrange });
+                                        bobIt[0].Text.ChangeColor(new Color[1] { Color.MonoGameOrange });
                                         break;
                                     case 1:
-                                        BobIt[1].Text.ChangeColor(new Color[1] { Color.Red });
+                                        bobIt[1].Text.ChangeColor(new Color[1] { Color.Red });
                                         break;
                                     case 2:
-                                        BobIt[2].Text.ChangeColor(new Color[1] { Color.LightGreen });
+                                        bobIt[2].Text.ChangeColor(new Color[1] { Color.LightGreen });
                                         break;
                                     case 3:
-                                        BobIt[3].Text.ChangeColor(new Color[1] { Color.LightBlue });
+                                        bobIt[3].Text.ChangeColor(new Color[1] { Color.LightBlue });
                                         break;
                                     case 4:
-                                        BobIt[4].Text.ChangeColor(new Color[1] { Color.LightPink });
+                                        bobIt[4].Text.ChangeColor(new Color[1] { Color.LightPink });
                                         break;
                                 }
 
-                                PlayedSq++;
+                                playedSequenz++;
                             }
                         }
                         Display = !Display;
                     }
                 }
-                for (int i = 0; i < BobIt.Length; i++) {
-                    BobIt[i].Update(gt, cursor.Hitbox[0]);
+                for (int i = 0; i < bobIt.Length; i++) {
+                    bobIt[i].Update(gt, mouseCursor.Hitbox[0]);
                 }
             }
-            cursor.Position = MousePos - cursor.Size / 2;
+            mouseCursor.Position = mousePosition - mouseCursor.Size / 2;
         }
     }
 }

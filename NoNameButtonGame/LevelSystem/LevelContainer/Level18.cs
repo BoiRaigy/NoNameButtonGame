@@ -20,20 +20,21 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level18 : SampleLevel
     {
 
-        Cursor cursor;
-        Laserwall WallLeft;
-        Laserwall WallRight;
-        Laserwall WallButtom;
+        readonly Cursor mouseCursor;
+        readonly Laserwall WallLeft;
+        readonly Laserwall WallRight;
+        readonly Laserwall WallButtom;
 
-        Laserwall Block;
-        LockButton button;
-        HoldButton UnLockbutton;
-        Random rand;
+        readonly Laserwall Block;
+        readonly LockButton lockedButton;
+        readonly HoldButton unlockButton;
+        float gameTimeMoveBlock;
+        bool MoveLeft = false;
+
         public Level18(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
-            this.rand = rand;
             Name = "Level 18 - oh no";
 
-            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
+            mouseCursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             WallLeft = new Laserwall(new Vector2(-512, -512), new Vector2(420, 1024), Globals.Content.GetTHBox("zonenew"));
             WallRight = new Laserwall(new Vector2(96, -512), new Vector2(420, 1024), Globals.Content.GetTHBox("zonenew"));
             WallButtom = new Laserwall(new Vector2(-512, 96), new Vector2(1024, 1024), Globals.Content.GetTHBox("zonenew"));
@@ -42,40 +43,40 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             WallLeft.Enter += CallFail;
             WallButtom.Enter += CallFail;
             Block.Enter += CallFail;
-            button = new LockButton(new Vector2(-32, -128), new Vector2(64, 32), Globals.Content.GetTHBox("awesomebutton"), true);
-            button.Click += CallFinish;
-            UnLockbutton = new HoldButton(new Vector2(-32, 48), new Vector2(64, 32), Globals.Content.GetTHBox("emptybutton"));
-            UnLockbutton.EndHoldTime = 10000;
-            UnLockbutton.Click += UnlockBtn;
+            lockedButton = new LockButton(new Vector2(-32, -128), new Vector2(64, 32), Globals.Content.GetTHBox("awesomebutton"), true);
+            lockedButton.Click += CallFinish;
+            unlockButton = new HoldButton(new Vector2(-32, 48), new Vector2(64, 32), Globals.Content.GetTHBox("emptybutton")) {
+                EndHoldTime = 10000
+            };
+            unlockButton.Click += UnlockBtn;
         }
 
         private void UnlockBtn(object sender, EventArgs e) {
-            button.Locked = false;
+            lockedButton.Locked = false;
         }
 
         private void WallEvent(object sender, EventArgs e) {
             CallReset(sender, e);
         }
         public override void Draw(SpriteBatch sp) {
-            button.Draw(sp);
-            UnLockbutton.Draw(sp);
+            lockedButton.Draw(sp);
+            unlockButton.Draw(sp);
             Block.Draw(sp);
             WallLeft.Draw(sp);
             WallRight.Draw(sp);
             WallButtom.Draw(sp);
 
-            cursor.Draw(sp);
+            mouseCursor.Draw(sp);
         }
-        float GT;
-        bool MoveLeft = false;
-        public override void Update(GameTime gt) {
-            cursor.Update(gt);
-            base.Update(gt);
-            cursor.Position = MousePos - cursor.Size / 2;
-            GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
 
-            while (GT > 8) {
-                GT -= 8;
+        public override void Update(GameTime gt) {
+            mouseCursor.Update(gt);
+            base.Update(gt);
+            mouseCursor.Position = mousePosition - mouseCursor.Size / 2;
+            gameTimeMoveBlock += (float)gt.ElapsedGameTime.TotalMilliseconds;
+
+            while (gameTimeMoveBlock > 8) {
+                gameTimeMoveBlock -= 8;
                 if (MoveLeft) {
                     Block.Move(new Vector2(-3, 0));
                 } else {
@@ -86,12 +87,12 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 if (Block.Position.X < -180)
                     MoveLeft = false;
             }
-            UnLockbutton.Update(gt, cursor.Hitbox[0]);
-            button.Update(gt, cursor.Hitbox[0]);
-            WallLeft.Update(gt, cursor.Hitbox[0]);
-            WallRight.Update(gt, cursor.Hitbox[0]);
-            WallButtom.Update(gt, cursor.Hitbox[0]);
-            Block.Update(gt, cursor.Hitbox[0]);
+            unlockButton.Update(gt, mouseCursor.Hitbox[0]);
+            lockedButton.Update(gt, mouseCursor.Hitbox[0]);
+            WallLeft.Update(gt, mouseCursor.Hitbox[0]);
+            WallRight.Update(gt, mouseCursor.Hitbox[0]);
+            WallButtom.Update(gt, mouseCursor.Hitbox[0]);
+            Block.Update(gt, mouseCursor.Hitbox[0]);
         }
     }
 }

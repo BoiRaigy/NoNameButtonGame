@@ -20,20 +20,35 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level40 : SampleLevel
     {
 
-        AwesomeButton button;
-        Cursor cursor;
-        Laserwall wallup;
-        Laserwall walldown;
+        readonly AwesomeButton button;
+        readonly Cursor cursor;
+        readonly Laserwall wallup;
+        readonly Laserwall walldown;
 
-        TextBuilder GUN;
-        List<Tuple<Laserwall, Vector2>> shots;
+        readonly TextBuilder GUN;
+        readonly List<Tuple<Laserwall, Vector2>> shots;
+
+        readonly float ShotTime = 500;
+        readonly float TravelSpeed = 5;
+        readonly float MaxUpdateSpeed = 32;
+        readonly float MinUpdateSpeed = 32;
+        readonly float Multiplier = 185;
+
+        readonly List<int> removeItem = new List<int>();
+        float UpdateSpeed = 2;
+        Vector2 OldMPos;
+
+        float EGT;
+        float GT;
+        float MGT;
+
         public Level40(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 40 - 10 Left";
             button = new AwesomeButton(new Vector2(-256, -0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"));
             button.Click += CallFinish;
             cursor = new Cursor(new Vector2(0, 32), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
-            wallup = new Laserwall(new Vector2(-(defaultWidth / Camera.Zoom), -defaultHeight - 40), new Vector2(DefaultWidth, defaultHeight - 40), Globals.Content.GetTHBox("zonenew"));
-            walldown = new Laserwall(new Vector2(-(defaultWidth / Camera.Zoom), 40 + 40), new Vector2(DefaultWidth, defaultHeight), Globals.Content.GetTHBox("zonenew"));
+            wallup = new Laserwall(new Vector2(-(defaultWidth / Camera.Zoom), -defaultHeight - 40), new Vector2(base.defaultWidth, defaultHeight - 40), Globals.Content.GetTHBox("zonenew"));
+            walldown = new Laserwall(new Vector2(-(defaultWidth / Camera.Zoom), 40 + 40), new Vector2(base.defaultWidth, defaultHeight), Globals.Content.GetTHBox("zonenew"));
             wallup.Enter += CallFail;
             walldown.Enter += CallFail;
             GUN = new TextBuilder("AGUN", new Vector2(-256, 0), new Vector2(16, 16), null, 0);
@@ -50,17 +65,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             }
             cursor.Draw(sp);
         }
-        float GT;
-        float MGT;
-        float ShotTime = 500;
-        float TravelSpeed = 5;
-        float UpdateSpeed = 2;
-        float MaxUpdateSpeed = 32;
-        float MinUpdateSpeed = 32;
-        Vector2 OldMPos;
-        List<int> removeItem = new List<int>();
-        float Multiplier = 185;
-        float EGT;
+
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
@@ -78,13 +83,13 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                     GT -= ShotTime;
                     Vector2 Dir = button.rec.Center.ToVector2() - GUN.rec.Center.ToVector2();
                     shots.Add(new Tuple<Laserwall, Vector2>(new Laserwall(GUN.Position, new Vector2(16, 8), Globals.Content.GetTHBox("zonenew")), Dir / Dir.Length()));
-                    shots[shots.Count - 1].Item1.Enter += CallFail;
+                    shots[^1].Item1.Enter += CallFail;
                 }
             }
             removeItem.Clear();
             for (int i = 0; i < shots.Count; i++) {
                 shots[i].Item1.Update(gt, cursor.Hitbox[0]);
-                if (!shots[i].Item1.rec.Intersects(CamRec)) {
+                if (!shots[i].Item1.rec.Intersects(cameraRectangle)) {
                     removeItem.Add(i);
                 }
             }
@@ -93,8 +98,8 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                     shots.RemoveAt(removeItem[i]);
                 } catch { }
             }
-            if (MousePos != OldMPos) {
-                UpdateSpeed -= Vector2.Distance(MousePos, OldMPos) * 10;
+            if (mousePosition != OldMPos) {
+                UpdateSpeed -= Vector2.Distance(mousePosition, OldMPos) * 10;
                 if (UpdateSpeed < MinUpdateSpeed)
                     UpdateSpeed = MinUpdateSpeed;
             } else {
@@ -106,12 +111,12 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 EGT += (float)gt.ElapsedGameTime.TotalMilliseconds;
             double angle = (EGT % 1000 / 1000F * Math.PI * 2);
             cursor.Position = new Vector2(Multiplier * (float)Math.Sin(angle), Multiplier * (float)Math.Cos(angle));
-            button.Position = MousePos - button.Size / 2;
+            button.Position = mousePosition - button.Size / 2;
             wallup.Update(gt, button.rec);
             walldown.Update(gt, button.rec);
             button.Update(gt, cursor.Hitbox[0]);
 
-            OldMPos = MousePos;
+            OldMPos = mousePosition;
         }
     }
 }

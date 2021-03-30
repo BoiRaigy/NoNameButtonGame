@@ -20,17 +20,17 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level6 : SampleLevel
     {
 
-        Cursor cursor;
-        Laserwall WallLeft;
-        Laserwall WallRight;
-        Laserwall WallButtom;
+        readonly Cursor cursor;
+        readonly Laserwall WallLeft;
+        readonly Laserwall WallRight;
+        readonly Laserwall WallButtom;
 
-        Laserwall Block;
-        LockButton button;
-        HoldButton UnLockbutton;
-        Random rand;
+        readonly Laserwall Block;
+        readonly LockButton button;
+        readonly HoldButton UnLockbutton;
+        float GT;
+        bool MoveLeft = false;
         public Level6(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
-            this.rand = rand;
             Name = "Level 6 - Now what?!";
 
             cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
@@ -44,8 +44,9 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             Block.Enter += CallFail;
             button = new LockButton(new Vector2(-32, -128), new Vector2(64, 32), Globals.Content.GetTHBox("awesomebutton"),true);
             button.Click += CallFinish;
-            UnLockbutton = new HoldButton(new Vector2(-32, 48), new Vector2(64, 32), Globals.Content.GetTHBox("emptybutton"));
-            UnLockbutton.EndHoldTime = 5000;
+            UnLockbutton = new HoldButton(new Vector2(-32, 48), new Vector2(64, 32), Globals.Content.GetTHBox("emptybutton")) {
+                EndHoldTime = 5000
+            };
             UnLockbutton.Click += UnlockBtn;
         }
 
@@ -66,12 +67,11 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
            
             cursor.Draw(sp);
         }
-        float GT;
-        bool MoveLeft = false;
+
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
             GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
             
             while (GT > 8) {

@@ -20,38 +20,37 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level15 : SampleLevel
     {
 
-        StateButton button;
-        Cursor cursor;
-        TextBuilder Info;
+        readonly StateButton stateButton;
+        readonly Cursor mouseCursor;
+        readonly TextBuilder infoText;
         public Level15(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
 
-            button = new StateButton(new Vector2(-64, -32), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"),100) {
+            stateButton = new StateButton(new Vector2(-64, -32), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"),100) {
                 DrawColor = Color.White,
             };
-            button.Click += BtnEvent;
+            stateButton.Click += BtnEvent;
             Name = "Level 15 - Back to the roots!";
-            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
-            Info = new TextBuilder("THiS AGAIN!", new Vector2(-128, -0), new Vector2(16, 16), null, 0);
+            mouseCursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
+            infoText = new TextBuilder("THiS AGAIN!", new Vector2(-128, -0), new Vector2(16, 16), null, 0);
         }
-
-
 
         private void BtnEvent(object sender, EventArgs e) {
             CallFinish();
         }
+
         public override void Draw(SpriteBatch sp) {
-            Info.Draw(sp);
-            button.Draw(sp);
-            cursor.Draw(sp);
+            infoText.Draw(sp);
+            stateButton.Draw(sp);
+            mouseCursor.Draw(sp);
         }
 
         public override void Update(GameTime gt) {
-            cursor.Update(gt);
+            mouseCursor.Update(gt);
             base.Update(gt);
-            Info.ChangePosition(- Info.rec.Size.ToVector2() / 2 + new Vector2(0,-64));
-            cursor.Position = MousePos - cursor.Size / 2;
-            button.Update(gt, cursor.Hitbox[0]);
-            Info.Update(gt);
+            infoText.ChangePosition(- infoText.rec.Size.ToVector2() / 2 + new Vector2(0,-64));
+            mouseCursor.Position = mousePosition - mouseCursor.Size / 2;
+            stateButton.Update(gt, mouseCursor.Hitbox[0]);
+            infoText.Update(gt);
         }
     }
 }

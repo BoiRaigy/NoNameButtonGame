@@ -57,7 +57,6 @@ namespace NoNameButtonGame.LevelSystem
                         
                     }
                 }
-                    
             }
             state = MState.Startmenu;
             LastLevel = Globals.MaxLevel;
@@ -136,167 +135,65 @@ namespace NoNameButtonGame.LevelSystem
 
         }
         private void SelectLevel(int LL) {
-            switch (LL) {
-                case 0:
-                    CurrentLevel = new Level1(DWidth, DHeight, Screen, rand);
-                    break;
-                case 1:
-                    CurrentLevel = new Level2(DWidth, DHeight, Screen, rand);
-                    break;
-                case 2:
-                    CurrentLevel = new Level3(DWidth, DHeight, Screen, rand);
-                    break;
-                case 3:
-                    CurrentLevel = new Level4(DWidth, DHeight, Screen, rand);
-                    break;
-                case 4:
-                    CurrentLevel = new Level5(DWidth, DHeight, Screen, rand);
-                    break;
-                case 5:
-                    CurrentLevel = new Level6(DWidth, DHeight, Screen, rand);
-                    break;
-                case 6:
-                    CurrentLevel = new Level7(DWidth, DHeight, Screen, rand);
-                    break;
-                case 7:
-                    CurrentLevel = new Level8(DWidth, DHeight, Screen, rand);
-                    break;
-                case 8:
-                    CurrentLevel = new Level9(DWidth, DHeight, Screen, rand);
-                    break;
-                case 9:
-                    CurrentLevel = new Level10(DWidth, DHeight, Screen, rand);
-                    break;
-                case 10:
-                    CurrentLevel = new Level11(DWidth, DHeight, Screen, rand);
-                    break;
-                case 11:
-                    CurrentLevel = new Level12(DWidth, DHeight, Screen, rand);
-                    break;
-                case 12:
-                    CurrentLevel = new Level13(DWidth, DHeight, Screen, rand);
-                    break;
-                case 13:
-                    CurrentLevel = new Level14(DWidth, DHeight, Screen, rand);
-                    break;
-                case 14:
-                    CurrentLevel = new Level15(DWidth, DHeight, Screen, rand);
-                    break;
-                case 15:
-                    CurrentLevel = new Level16(DWidth, DHeight, Screen, rand);
-                    break;
-                case 16:
-                    CurrentLevel = new Level17(DWidth, DHeight, Screen, rand);
-                    break;
-                case 17:
-                    CurrentLevel = new Level18(DWidth, DHeight, Screen, rand);
-                    break;
-                case 18:
-                    CurrentLevel = new Level19(DWidth, DHeight, Screen, rand);
-                    break;
-                case 19:
-                    CurrentLevel = new Level20(DWidth, DHeight, Screen, rand);
-                    break;
-                case 20:
-                    CurrentLevel = new Level21(DWidth, DHeight, Screen, rand);
-                    break;
-                case 21:
-                    CurrentLevel = new Level22(DWidth, DHeight, Screen, rand);
-                    break;
-                case 22:
-                    CurrentLevel = new Level23(DWidth, DHeight, Screen, rand);
-                    break;
-                case 23:
-                    CurrentLevel = new Level24(DWidth, DHeight, Screen, rand);
-                    break;
-                case 24:
-                    CurrentLevel = new Level25(DWidth, DHeight, Screen, rand);
-                    break;
-                case 25:
-                    CurrentLevel = new Level26(DWidth, DHeight, Screen, rand);
-                    break;
-                case 26:
-                    CurrentLevel = new Level27(DWidth, DHeight, Screen, rand);
-                    break;
-                case 27:
-                    CurrentLevel = new Level28(DWidth, DHeight, Screen, rand);
-                    break;
-                case 28:
-                    CurrentLevel = new Level29(DWidth, DHeight, Screen, rand);
-                    break;
-                case 29:
-                    CurrentLevel = new Level30(DWidth, DHeight, Screen, rand);
-                    break;
-                case 30:
-                    CurrentLevel = new Level31(DWidth, DHeight, Screen, rand);
-                    break;
-                case 31:
-                    CurrentLevel = new Level32(DWidth, DHeight, Screen, rand);
-                    break;
-                case 32:
-                    CurrentLevel = new Level33(DWidth, DHeight, Screen, rand);
-                    break;
-                case 33:
-                    CurrentLevel = new Level34(DWidth, DHeight, Screen, rand);
-                    break;
-                case 34:
-                    CurrentLevel = new Level35(DWidth, DHeight, Screen, rand);
-                    break;
-                case 35:
-                    CurrentLevel = new Level36(DWidth, DHeight, Screen, rand);
-                    break;
-                case 36:
-                    CurrentLevel = new Level37(DWidth, DHeight, Screen, rand);
-                    break;
-                case 37:
-                    CurrentLevel = new Level38(DWidth, DHeight, Screen, rand);
-                    break;
-                case 38:
-                    CurrentLevel = new Level39(DWidth, DHeight, Screen, rand);
-                    break;
-                case 39:
-                    CurrentLevel = new Level40(DWidth, DHeight, Screen, rand);
-                    break;
-                case 40:
-                    CurrentLevel = new Level41(DWidth, DHeight, Screen, rand);
-                    break;
-                case 41:
-                    CurrentLevel = new Level42(DWidth, DHeight, Screen, rand);
-                    break;
-                case 42:
-                    CurrentLevel = new Level43(DWidth, DHeight, Screen, rand);
-                    break;
-                case 43:
-                    CurrentLevel = new Level44(DWidth, DHeight, Screen, rand);
-                    break;
-                case 44:
-                    CurrentLevel = new Level45(DWidth, DHeight, Screen, rand);
-                    break;
-                case 45:
-                    CurrentLevel = new Level46(DWidth, DHeight, Screen, rand);
-                    break;
-                case 46:
-                    CurrentLevel = new Level47(DWidth, DHeight, Screen, rand);
-                    break;
-                case 47:
-                    CurrentLevel = new Level48(DWidth, DHeight, Screen, rand);
-                    break;
-                case 48:
-                    CurrentLevel = new Level49(DWidth, DHeight, Screen, rand);
-                    break;
-                case 49:
-                    CurrentLevel = new Level50(DWidth, DHeight, Screen, rand);
-                    break;
-                default:
-                    CurrentLevel = new LevelNULL(DWidth, DHeight, Screen, rand);
-                    break;
-            }
+            CurrentLevel = LL switch {
+                0 => new Level1(DWidth, DHeight, Screen, rand),
+                1 => new Level2(DWidth, DHeight, Screen, rand),
+                2 => new Level3(DWidth, DHeight, Screen, rand),
+                3 => new Level4(DWidth, DHeight, Screen, rand),
+                4 => new Level5(DWidth, DHeight, Screen, rand),
+                5 => new Level6(DWidth, DHeight, Screen, rand),
+                6 => new Level7(DWidth, DHeight, Screen, rand),
+                7 => new Level8(DWidth, DHeight, Screen, rand),
+                8 => new Level9(DWidth, DHeight, Screen, rand),
+                9 => new Level10(DWidth, DHeight, Screen, rand),
+                10 => new Level11(DWidth, DHeight, Screen, rand),
+                11 => new Level12(DWidth, DHeight, Screen, rand),
+                12 => new Level13(DWidth, DHeight, Screen, rand),
+                13 => new Level14(DWidth, DHeight, Screen, rand),
+                14 => new Level15(DWidth, DHeight, Screen, rand),
+                15 => new Level16(DWidth, DHeight, Screen, rand),
+                16 => new Level17(DWidth, DHeight, Screen, rand),
+                17 => new Level18(DWidth, DHeight, Screen, rand),
+                18 => new Level19(DWidth, DHeight, Screen, rand),
+                19 => new Level20(DWidth, DHeight, Screen, rand),
+                20 => new Level21(DWidth, DHeight, Screen, rand),
+                21 => new Level22(DWidth, DHeight, Screen, rand),
+                22 => new Level23(DWidth, DHeight, Screen, rand),
+                23 => new Level24(DWidth, DHeight, Screen, rand),
+                24 => new Level25(DWidth, DHeight, Screen, rand),
+                25 => new Level26(DWidth, DHeight, Screen, rand),
+                26 => new Level27(DWidth, DHeight, Screen, rand),
+                27 => new Level28(DWidth, DHeight, Screen, rand),
+                28 => new Level29(DWidth, DHeight, Screen, rand),
+                29 => new Level30(DWidth, DHeight, Screen, rand),
+                30 => new Level31(DWidth, DHeight, Screen, rand),
+                31 => new Level32(DWidth, DHeight, Screen, rand),
+                32 => new Level33(DWidth, DHeight, Screen, rand),
+                33 => new Level34(DWidth, DHeight, Screen, rand),
+                34 => new Level35(DWidth, DHeight, Screen, rand),
+                35 => new Level36(DWidth, DHeight, Screen, rand),
+                36 => new Level37(DWidth, DHeight, Screen, rand),
+                37 => new Level38(DWidth, DHeight, Screen, rand),
+                38 => new Level39(DWidth, DHeight, Screen, rand),
+                39 => new Level40(DWidth, DHeight, Screen, rand),
+                40 => new Level41(DWidth, DHeight, Screen, rand),
+                41 => new Level42(DWidth, DHeight, Screen, rand),
+                42 => new Level43(DWidth, DHeight, Screen, rand),
+                43 => new Level44(DWidth, DHeight, Screen, rand),
+                44 => new Level45(DWidth, DHeight, Screen, rand),
+                45 => new Level46(DWidth, DHeight, Screen, rand),
+                46 => new Level47(DWidth, DHeight, Screen, rand),
+                47 => new Level48(DWidth, DHeight, Screen, rand),
+                48 => new Level49(DWidth, DHeight, Screen, rand),
+                49 => new Level50(DWidth, DHeight, Screen, rand),
+                _ => new LevelNULL(DWidth, DHeight, Screen, rand),
+            };
             CurrentLevel.Finish += LevelFinish;
             CurrentLevel.Fail += LevelFail;
             CurrentLevel.Reset += LevelReset;
         }
         private void ExitStartScreen(object sender, EventArgs e) {
-            StartScreen.ButtonPressed action = (sender as StartScreen).Action;
+            StartScreen.ButtonPressed action = (sender as StartScreen).pressedAction;
             switch (action) {
                 case StartScreen.ButtonPressed.Start:
                     CanOverallSelect = false;

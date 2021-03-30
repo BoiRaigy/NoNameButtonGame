@@ -14,38 +14,37 @@ namespace NoNameButtonGame.GameObjects
 {
     class TextButton : GameObject, IMouseActions, IHitbox
     {
+        public event EventHandler Leave;
+        public event EventHandler Enter;
+        public event EventHandler Click;
+        bool Hover;
+        Rectangle[] textureHitbox;
+        Rectangle[] IngameHitbox;
+        Vector2 Scale;
+        public string Name;
+
+        TextBuilder textContainer;
+        public TextBuilder Text { get { return textContainer; } }
+        public Rectangle[] Hitbox {
+            get => IngameHitbox;
+        }
         public TextButton(Vector2 Pos, Vector2 Size, THBox box, string Name,string Text, Vector2 TextSize) {
             base.Size = Size;
             Position = Pos;
             DrawColor = Color.White;
             ImageLocation = new Rectangle((int)box.Imagesize.X, 0, (int)box.Imagesize.X, (int)box.Imagesize.Y);
             FrameSize = box.Imagesize;
-            hitbox = new Rectangle[box.Hitbox.Length];
+            textureHitbox = new Rectangle[box.Hitbox.Length];
             Texture = box.Texture;
             Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
-            hitbox = box.Hitbox;
-            text = new TextBuilder(Text, Position, TextSize, null, 0);
-            text.ChangeText(Text);
+            textureHitbox = box.Hitbox;
+            textContainer = new TextBuilder(Text, Position, TextSize, null, 0);
+            textContainer.ChangeText(Text);
             this.Name = Name;
-            IGhitbox = new Rectangle[hitbox.Length];
+            IngameHitbox = new Rectangle[textureHitbox.Length];
             for (int i = 0; i < box.Hitbox.Length; i++) {
-                IGhitbox[i] = new Rectangle((int)(Position.X + (box.Hitbox[i].X * Scale.X)), (int)(Position.Y + (box.Hitbox[i].Y * Scale.Y)), (int)(box.Hitbox[i].Width * Scale.X), (int)(box.Hitbox[i].Height * Scale.Y));
+                IngameHitbox[i] = new Rectangle((int)(Position.X + (box.Hitbox[i].X * Scale.X)), (int)(Position.Y + (box.Hitbox[i].Y * Scale.Y)), (int)(box.Hitbox[i].Width * Scale.X), (int)(box.Hitbox[i].Height * Scale.Y));
             }
-        }
-
-        public event EventHandler Leave;
-        public event EventHandler Enter;
-        public event EventHandler Click;
-        bool Hover;
-        Rectangle[] hitbox;
-        Rectangle[] IGhitbox;
-        Vector2 Scale;
-        public string Name;
-
-        TextBuilder text;
-        public TextBuilder Text { get { return text; } }
-        public Rectangle[] Hitbox {
-            get => IGhitbox;
         }
         
         public bool HitboxCheck(Rectangle rec) {
@@ -58,8 +57,8 @@ namespace NoNameButtonGame.GameObjects
         }
         private void UpdateHitbox() {
             Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
-            for (int i = 0; i < hitbox.Length; i++) {
-                IGhitbox[i] = new Rectangle((int)(Position.X + (hitbox[i].X * Scale.X)), (int)(Position.Y + (hitbox[i].Y * Scale.Y)), (int)(hitbox[i].Width * Scale.X), (int)(hitbox[i].Height * Scale.Y));
+            for (int i = 0; i < textureHitbox.Length; i++) {
+                IngameHitbox[i] = new Rectangle((int)(Position.X + (textureHitbox[i].X * Scale.X)), (int)(Position.Y + (textureHitbox[i].Y * Scale.Y)), (int)(textureHitbox[i].Width * Scale.X), (int)(textureHitbox[i].Height * Scale.Y));
             }
         }
         public void Update(GameTime gt, Rectangle MousePos) {
@@ -86,14 +85,14 @@ namespace NoNameButtonGame.GameObjects
                 ImageLocation = new Rectangle(0, 0, (int)FrameSize.X, (int)FrameSize.Y);
             }
             UpdateHitbox();
-            text.ChangePosition(rec.Center.ToVector2() - text.rec.Size.ToVector2() / 2);
-            text.Update(gt);
+            textContainer.ChangePosition(rec.Center.ToVector2() - textContainer.rec.Size.ToVector2() / 2);
+            textContainer.Update(gt);
             Update(gt);
         }
        
         public override void Draw(SpriteBatch sp) {
             base.Draw(sp);
-            text.Draw(sp);
+            textContainer.Draw(sp);
         }
     }
 }

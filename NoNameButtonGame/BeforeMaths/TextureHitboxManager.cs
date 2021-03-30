@@ -17,7 +17,9 @@ namespace NoNameButtonGame.BeforeMaths
     }
     public static class TextureHitboxManager
     {
+        
         public static THBox GetTHBox(this ContentManager mam, string tname) {
+            //I dont now if this is a good way to do this, it works which is fine my me.
             THBox r = new THBox {
                 Texture = mam.Load<Texture2D>(tname)
             };

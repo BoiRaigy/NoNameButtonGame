@@ -20,9 +20,9 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level50 : SampleLevel
     {
 
-        StateButton button;
-        Cursor cursor;
-        TextBuilder Info;
+        readonly StateButton button;
+        readonly Cursor cursor;
+        readonly TextBuilder Info;
         public Level50(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
 
             button = new StateButton(new Vector2(-64, -32), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"), 1337) {
@@ -49,7 +49,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             base.Update(gt);
             Info.ChangePosition(-Info.rec.Size.ToVector2() / 2 + new Vector2(0, -64));
             
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
             button.Update(gt, cursor.Hitbox[0]);
             Info.Update(gt);
         }

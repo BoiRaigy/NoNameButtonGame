@@ -20,32 +20,30 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level2 : SampleLevel
     {
 
-        AwesomeButton[] button;
-        Cursor cursor;
-        TextBuilder Info;
+        readonly AwesomeButton[] buttonGrid;
+        readonly Cursor mouseCursor;
+        readonly TextBuilder Info;
         public Level2(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 2 - WHAAT?!? There is more to this Game?!";
-            button = new AwesomeButton[16];
+            buttonGrid = new AwesomeButton[16];
             int randI64 = rand.Next(0, 16);
-            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
-            for (int i = 0; i < button.Length; i++) {
+            mouseCursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
+            for (int i = 0; i < buttonGrid.Length; i++) {
                 if (i == randI64) {
-                    button[i] = new AwesomeButton(new Vector2(130 * (i % 4) - 256, (i / 4) * 68 - 128), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton")) {
+                    buttonGrid[i] = new AwesomeButton(new Vector2(130 * (i % 4) - 256, (i / 4) * 68 - 128), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton")) {
                         DrawColor = Color.White,
                     };
-                    button[i].Click += BtnWinEvent;
+                    buttonGrid[i].Click += BtnWinEvent;
                 } else {
-                    button[i] = new AwesomeButton(new Vector2(130 * (i % 4) - 256, (i / 4) * 68 - 128), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton")) {
+                    buttonGrid[i] = new AwesomeButton(new Vector2(130 * (i % 4) - 256, (i / 4) * 68 - 128), new Vector2(128, 64), Globals.Content.GetTHBox("failbutton")) {
                         DrawColor = Color.White,
                     };
-                    button[i].Click += BtnFailEvent;
+                    buttonGrid[i].Click += BtnFailEvent;
                 }
             }
             Info = new TextBuilder("Watch out. There Random!", new Vector2(-170, -(defaultHeight / Camera.Zoom / 2) + 32), new Vector2(16, 16), null, 0);
             
         }
-
-
 
         private void BtnFailEvent(object sender, EventArgs e) {
             CallFail();
@@ -55,19 +53,19 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             CallFinish();
         }
         public override void Draw(SpriteBatch sp) {
-            for (int i = 0; i < button.Length; i++) {
-                button[i].Draw(sp);
+            for (int i = 0; i < buttonGrid.Length; i++) {
+                buttonGrid[i].Draw(sp);
             }
             Info.Draw(sp);
-            cursor.Draw(sp);
+            mouseCursor.Draw(sp);
         }
 
         public override void Update(GameTime gt) {
-            cursor.Update(gt);
+            mouseCursor.Update(gt);
             base.Update(gt);
-            cursor.Position = MousePos - cursor.Size / 2;
-            for (int i = 0; i < button.Length; i++) {
-                button[i].Update(gt, cursor.Hitbox[0]);
+            mouseCursor.Position = mousePosition - mouseCursor.Size / 2;
+            for (int i = 0; i < buttonGrid.Length; i++) {
+                buttonGrid[i].Update(gt, mouseCursor.Hitbox[0]);
             }
             Info.Update(gt);
         }

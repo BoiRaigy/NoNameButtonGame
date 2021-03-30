@@ -10,32 +10,32 @@ namespace NoNameButtonGame
 {
     public class NoNameGame : Game
     {
-        private GraphicsDeviceManager _graphics;
+        private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
         private RenderTarget2D target2D;
-
-        float DefaultWidth = 1280F;
-        float DefaultHeight = 720F;
-        LevelManager lvmng;
+        readonly float defaultWidth = 1280F;
+        readonly float defaultHeight = 720F;
+        LevelManager levelManager;
         Texture2D Mousepoint;
         Vector2 MousepointTopLeft;
-        bool ShowActualMousePos = false;
+         bool ShowActualMousePos = false;
         public NoNameGame() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            
             IsMouseVisible = false;
             
         }
         private void Changesettings(Vector2 Res, bool step, bool full) {
             IsFixedTimeStep = step;
+            //Apply settings
             if ((!_graphics.IsFullScreen && full) || (!full && _graphics.IsFullScreen))
                 _graphics.ToggleFullScreen();
             _graphics.PreferredBackBufferWidth = (int)Res.X;
             _graphics.PreferredBackBufferHeight = (int)Res.Y;
             _graphics.ApplyChanges();
 
+            //Write settings
             using (StreamWriter sw = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\NoNameButtonGame\\data.txt")) {
                 sw.WriteLine(step);
                 sw.WriteLine(full);
@@ -43,12 +43,25 @@ namespace NoNameButtonGame
                 sw.WriteLine(Res.Y);
                 sw.WriteLine(Globals.MaxLevel);
             }
-            lvmng.ChangeScreen(new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
+            //Apply window changes
+            levelManager.ChangeScreen(new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
         }
 
         protected override void Initialize() {
             base.Initialize();
+            #region LoadArgs
+            string[] args = Environment.GetCommandLineArgs();
+           
+            for (int i = 0; i < args.Length; i++) {
+                if (args[i] == "-showmouse") {
+                    ShowActualMousePos = true;
+                }
+
+            }
+            #endregion
+
             IsFixedTimeStep = false;
+            #region Storage
             if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\NoNameButtonGame")) {
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\NoNameButtonGame");
             }
@@ -85,12 +98,16 @@ namespace NoNameButtonGame
             }
             Globals.Content = Content;
             Globals.IsFix = IsFixedTimeStep;
-            target2D = new RenderTarget2D(GraphicsDevice, (int)DefaultWidth, (int)DefaultHeight);
-            
-            lvmng = new LevelManager((int)DefaultHeight, (int)DefaultWidth, new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Changesettings) {
+            #endregion
+
+
+            target2D = new RenderTarget2D(GraphicsDevice, (int)defaultWidth, (int)defaultHeight);
+            levelManager = new LevelManager((int)defaultHeight, (int)defaultWidth, new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Changesettings) {
                 ChangeWindowName = ChangeTitle
             };
+
             Mousepoint = Content.GetTHBox("mousepoint").Texture;
+
             //CamPos = new Vector2(button[0].Size.X / 2, button[0].Size.Y / 2);
             //CamPos = new Vector2(700, 400);
             
@@ -101,6 +118,7 @@ namespace NoNameButtonGame
         protected override void LoadContent() {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
         }
+        //SHOUTOUT: https://youtu.be/yUSB_wAVtE8
         Rectangle BackbufferBounds;
         float backbufferAspectRatio;
         float ScreenAspectRatio;
@@ -113,7 +131,7 @@ namespace NoNameButtonGame
             base.Update(gameTime);
 
 
-            lvmng.Update(gameTime);
+            levelManager.Update(gameTime);
 
             //SHOUTOUT: https://youtu.be/yUSB_wAVtE8
             BackbufferBounds = GraphicsDevice.PresentationParameters.Bounds;
@@ -138,21 +156,25 @@ namespace NoNameButtonGame
             GraphicsDevice.SetRenderTarget(target2D);
             GraphicsDevice.Clear(new Color(50, 50, 50));
 
-            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, transformMatrix: lvmng.GetCurrentCamera().CamMatrix);
+            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, transformMatrix: levelManager.GetCurrentCamera().CamMatrix);
 
-            lvmng.Draw(_spriteBatch);
+            levelManager.Draw(_spriteBatch);
 
             _spriteBatch.End();
             GraphicsDevice.SetRenderTarget(null);
 
 
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, null);
+
             Rectangle DesRec = new Rectangle((int)rx, (int)ry, (int)rw, (int)rh);
             GraphicsDevice.Clear(Color.HotPink);
             _spriteBatch.Draw(target2D, DesRec, null, Color.White);
+
             if (ShowActualMousePos)
                 _spriteBatch.Draw(Mousepoint, new Rectangle(MousepointTopLeft.ToPoint(), new Point(6, 6)), Color.White);
+
             _spriteBatch.End();
+
             base.Draw(gameTime);
         }
     }

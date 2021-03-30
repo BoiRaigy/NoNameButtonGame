@@ -20,12 +20,15 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level8 : SampleLevel
     {
 
-        LockButton button;
-        Cursor cursor;
-        TextBuilder Info;
-        Laserwall wall;
-        TextButton ButtonStartTimer;
-        TextBuilder Timer;
+        readonly LockButton button;
+        readonly Cursor cursor;
+        readonly TextBuilder Info;
+        readonly Laserwall wall;
+        readonly TextButton ButtonStartTimer;
+        readonly TextBuilder Timer;
+        bool TimerStarted;
+        float GT;
+        float TGT;
         public Level8(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 8 - RUN FOREST, RUN!!!";
             button = new LockButton(new Vector2(-256, -128), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"),true);
@@ -40,8 +43,6 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             Timer = new TextBuilder("0.0S", new Vector2(-16, 64), new Vector2(16, 16), null, 0);
 
         }
-
-        bool TimerStarted;
         private void StartTimer(object s, EventArgs e) {
             TimerStarted = true;
         }
@@ -62,11 +63,10 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             ButtonStartTimer.Draw(sp);
             cursor.Draw(sp);
         }
-        float GT;
-        float TGT;
+
         public override void Update(GameTime gt) {
             base.Update(gt);
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
             cursor.Update(gt);
             if (TimerStarted) {
                 Info.Update(gt);

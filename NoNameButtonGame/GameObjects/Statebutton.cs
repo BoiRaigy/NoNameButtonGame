@@ -14,41 +14,41 @@ namespace NoNameButtonGame.GameObjects
 {
     class StateButton : GameObject, IMouseActions, IHitbox
     {
+        public event EventHandler Leave;
+        public event EventHandler Enter;
+        public event EventHandler Click;
+        bool Hover;
+        Rectangle[] frameHitbox;
+        Rectangle[] ingameHitbox;
+        Vector2 Scale;
+        int ammoutStates;
+        public int States { get { return ammoutStates; } set { ammoutStates = value; CurrentState = ammoutStates; } }
+        public int CurrentStates { get { return CurrentState; } }
+        int CurrentState;
+
+        TextBuilder textContainer;
+        public Rectangle[] Hitbox {
+            get => ingameHitbox;
+        }
         public StateButton(Vector2 Pos, Vector2 Size, THBox box, int States) {
             base.Size = Size;
             Position = Pos;
             ImageLocation = new Rectangle((int)box.Imagesize.X, 0, (int)box.Imagesize.X, (int)box.Imagesize.Y);
             FrameSize = box.Imagesize;
-            hitbox = new Rectangle[box.Hitbox.Length];
+            frameHitbox = new Rectangle[box.Hitbox.Length];
             Texture = box.Texture;
             Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
-            hitbox = box.Hitbox;
-            text = new TextBuilder("test", new Vector2(float.MinValue, float.MinValue), new Vector2(16, 16), null, 0);
+            frameHitbox = box.Hitbox;
+            textContainer = new TextBuilder("test", new Vector2(float.MinValue, float.MinValue), new Vector2(16, 16), null, 0);
 
-            IGhitbox = new Rectangle[hitbox.Length];
+            ingameHitbox = new Rectangle[frameHitbox.Length];
             for (int i = 0; i < box.Hitbox.Length; i++) {
-                IGhitbox[i] = new Rectangle((int)(Position.X + (box.Hitbox[i].X * Scale.X)), (int)(Position.Y + (box.Hitbox[i].Y * Scale.Y)), (int)(box.Hitbox[i].Width * Scale.X), (int)(box.Hitbox[i].Height * Scale.Y));
+                ingameHitbox[i] = new Rectangle((int)(Position.X + (box.Hitbox[i].X * Scale.X)), (int)(Position.Y + (box.Hitbox[i].Y * Scale.Y)), (int)(box.Hitbox[i].Width * Scale.X), (int)(box.Hitbox[i].Height * Scale.Y));
             }
             CurrentState = States;
-            states = States;
+            ammoutStates = States;
         }
 
-        public event EventHandler Leave;
-        public event EventHandler Enter;
-        public event EventHandler Click;
-        bool Hover;
-        Rectangle[] hitbox;
-        Rectangle[] IGhitbox;
-        Vector2 Scale;
-        int states;
-        public int States { get { return states; } set { states = value; CurrentState = states; } }
-        public int CurrentStates { get { return CurrentState; }}
-        int CurrentState;
-
-        TextBuilder text;
-        public Rectangle[] Hitbox {
-            get => IGhitbox;
-        }
 
         public bool HitboxCheck(Rectangle rec) {
             for (int i = 0; i < Hitbox.Length; i++) {
@@ -60,8 +60,8 @@ namespace NoNameButtonGame.GameObjects
         }
         private void UpdateHitbox() {
             Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
-            for (int i = 0; i < hitbox.Length; i++) {
-                IGhitbox[i] = new Rectangle((int)(Position.X + (hitbox[i].X * Scale.X)), (int)(Position.Y + (hitbox[i].Y * Scale.Y)), (int)(hitbox[i].Width * Scale.X), (int)(hitbox[i].Height * Scale.Y));
+            for (int i = 0; i < frameHitbox.Length; i++) {
+                ingameHitbox[i] = new Rectangle((int)(Position.X + (frameHitbox[i].X * Scale.X)), (int)(Position.Y + (frameHitbox[i].Y * Scale.Y)), (int)(frameHitbox[i].Width * Scale.X), (int)(frameHitbox[i].Height * Scale.Y));
             }
         }
         public void Update(GameTime gt, Rectangle MousePos) {
@@ -94,17 +94,17 @@ namespace NoNameButtonGame.GameObjects
                 ImageLocation = new Rectangle(0, 0, (int)FrameSize.X, (int)FrameSize.Y);
             }
             UpdateHitbox();
-            text.ChangeText(CurrentState.ToString());
+            textContainer.ChangeText(CurrentState.ToString());
 
-            text.Position = rec.Center.ToVector2() - text.rec.Size.ToVector2() / 2;
-            text.Position.Y -= 32;
-            text.Update(gt);
+            textContainer.Position = rec.Center.ToVector2() - textContainer.rec.Size.ToVector2() / 2;
+            textContainer.Position.Y -= 32;
+            textContainer.Update(gt);
             Update(gt);
         }
 
         public override void Draw(SpriteBatch sp) {
             base.Draw(sp);
-            text.Draw(sp);
+            textContainer.Draw(sp);
 
         }
     }

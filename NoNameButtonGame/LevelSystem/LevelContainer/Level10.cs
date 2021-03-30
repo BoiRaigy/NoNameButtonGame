@@ -20,48 +20,48 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level10 : SampleLevel
     {
 
-        TextButton[] button;
-        Cursor cursor;
-        TextBuilder Questions;
-        int Awnsered;
-        int[] RightAwnsers = new int[3] { 0, 2, 1 };
+        readonly TextButton[] awnserButtons;
+        readonly Cursor mouseCursor;
+        readonly TextBuilder Questions;
+        int ammountAwnsered;
+        readonly int[] RightAwnsers = new int[3] { 0, 2, 1 };
         
         public Level10(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 10 - QnA Time!";
-            button = new TextButton[3];
+            awnserButtons = new TextButton[3];
             Questions = new TextBuilder("3 + 4 = 5 => 5 + 5 =?", new Vector2(-64, -128), new Vector2(8, 8), null, 0);
-            button[0] = new TextButton(new Vector2(-64, -96), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "0", "7", new Vector2(8, 8));
-            button[1] = new TextButton(new Vector2(-64, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "1", "11", new Vector2(8, 8));
-            button[2] = new TextButton(new Vector2(-64, 32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "2", "5", new Vector2(8, 8));
-            for (int i = 0; i < button.Length; i++) {
-                button[i].Click += BtnEvent;
+            awnserButtons[0] = new TextButton(new Vector2(-64, -96), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "0", "7", new Vector2(8, 8));
+            awnserButtons[1] = new TextButton(new Vector2(-64, -32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "1", "11", new Vector2(8, 8));
+            awnserButtons[2] = new TextButton(new Vector2(-64, 32), new Vector2(128, 64), Globals.Content.GetTHBox("emptybutton"), "2", "5", new Vector2(8, 8));
+            for (int i = 0; i < awnserButtons.Length; i++) {
+                awnserButtons[i].Click += BtnEvent;
             }
-            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
+            mouseCursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
         }
 
 
 
         private void BtnEvent(object sender, EventArgs e) {
 
-            if (RightAwnsers[Awnsered] != int.Parse((sender as TextButton).Name) && RightAwnsers[Awnsered] != -1) {
+            if (RightAwnsers[ammountAwnsered] != int.Parse((sender as TextButton).Name) && RightAwnsers[ammountAwnsered] != -1) {
                 CallFail(this, e);
             } else {
-                Awnsered++;
-                if (Awnsered == RightAwnsers.Length)
+                ammountAwnsered++;
+                if (ammountAwnsered == RightAwnsers.Length)
                     CallFinish(this, e);
                 else {
-                    switch (Awnsered) {
+                    switch (ammountAwnsered) {
                         case 1:
                             Questions.ChangeText("Level 2 has ? Buttons!");
-                            button[0].Text.ChangeText("25");
-                            button[1].Text.ChangeText("20");
-                            button[2].Text.ChangeText("16");
+                            awnserButtons[0].Text.ChangeText("25");
+                            awnserButtons[1].Text.ChangeText("20");
+                            awnserButtons[2].Text.ChangeText("16");
                             break;
                         case 2:
                             Questions.ChangeText("What previous Level had you hold a button");
-                            button[0].Text.ChangeText("3!");
-                            button[1].Text.ChangeText("6!");
-                            button[2].Text.ChangeText("4!");
+                            awnserButtons[0].Text.ChangeText("3!");
+                            awnserButtons[1].Text.ChangeText("6!");
+                            awnserButtons[2].Text.ChangeText("4!");
                             break;
                     }
                     
@@ -70,22 +70,22 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
         }
         public override void Draw(SpriteBatch sp) {
-            for (int i = 0; i < button.Length; i++) {
-                button[i].Draw(sp);
+            for (int i = 0; i < awnserButtons.Length; i++) {
+                awnserButtons[i].Draw(sp);
             }
             Questions.Draw(sp);
-            cursor.Draw(sp);
+            mouseCursor.Draw(sp);
         }
 
         public override void Update(GameTime gt) {
-            cursor.Update(gt);
+            mouseCursor.Update(gt);
             base.Update(gt);
             Questions.ChangePosition(new Vector2(0, -128) - Questions.rec.Size.ToVector2() / 2);
             Questions.Update(gt);
-            for (int i = 0; i < button.Length; i++) {
-                button[i].Update(gt, cursor.Hitbox[0]);
+            for (int i = 0; i < awnserButtons.Length; i++) {
+                awnserButtons[i].Update(gt, mouseCursor.Hitbox[0]);
             }
-            cursor.Position = MousePos - cursor.Size / 2;
+            mouseCursor.Position = mousePosition - mouseCursor.Size / 2;
         }
     }
 }

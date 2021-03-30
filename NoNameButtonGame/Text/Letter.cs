@@ -7,14 +7,14 @@ namespace NoNameButtonGame.Text
 {
     class Letter : GameObject
     {
-        Character character;
-        public Letter(Vector2 Position, Vector2 Size, Character Cchar, Color CColor) {
+        //Character character; /*unused*/
+        public Letter(Vector2 Position, Vector2 Size, Character Character, Color CColor) {
             this.Position = Position;
             this.Size = Size;
             this.Texture = Globals.Content.Load<Texture2D>("Font");
             DrawColor = CColor;
             FrameSize = new Vector2(8, 8);
-            ChangeCharacter(Cchar);
+            ChangeCharacter(Character);
             rec = new Rectangle((Position + FrameSpace.Location.ToVector2()).ToPoint(), (Size + FrameSpace.Size.ToVector2()).ToPoint());
         }
         public Rectangle FrameSpace;
@@ -22,7 +22,7 @@ namespace NoNameButtonGame.Text
             DrawColor = Ccolor;
         }
         public void ChangeCharacter(Character Cchar) {
-            character = Cchar;
+            // character = Cchar; /*unused*/
             FrameSpace = GenerateRec(Cchar);
             ImageLocation = new Rectangle(new Point((int)Cchar % 5 * 8, (int)Cchar / 5 * 8 ), (FrameSize).ToPoint());
         }

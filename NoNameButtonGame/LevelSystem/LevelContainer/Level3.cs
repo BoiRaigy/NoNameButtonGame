@@ -20,11 +20,11 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level3 : SampleLevel
     {
 
-        AwesomeButton button;
-        Cursor cursor;
-        TextBuilder Info;
-        Rainbow raincolor;
-        Laserwall[] laserwall;
+        readonly AwesomeButton button;
+        readonly Cursor cursor;
+        readonly TextBuilder Info;
+        readonly Rainbow raincolor;
+        readonly Laserwall[] laserwall;
         float GT;
         public Level3(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 3 - Tutorial time!";
@@ -87,7 +87,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 laserwall[i].Update(gt, cursor.Hitbox[0]);
             }
             
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
             button.Update(gt, cursor.Hitbox[0]);
         }
     }

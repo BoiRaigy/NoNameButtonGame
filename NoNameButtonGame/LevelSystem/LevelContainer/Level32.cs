@@ -20,9 +20,10 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level32 : SampleLevel
     {
 
-        TextBuilder[] text;
-        Cursor cursor;
-        AwesomeButton button;
+        readonly TextBuilder[] text;
+        readonly Cursor cursor;
+        readonly AwesomeButton button;
+        bool Loaded = false;
         public Level32(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 32 - THIS ONE AGAIN?! )";
             text = new TextBuilder[15];
@@ -89,7 +90,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             }
             cursor.Draw(sp);
         }
-        bool Loaded = false;
+
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
@@ -104,7 +105,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             } else
                 for (int i = 0; i < text.Length; i++)
                     text[i].Update(gt);
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
         }
     }
 }

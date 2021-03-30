@@ -15,35 +15,38 @@ namespace NoNameButtonGame.LevelSystem
         public event EventHandler Fail;
         public event EventHandler Reset;
         public event EventHandler Finish;
-
-        public int DefaultWidth;
-        public int DefaultHeight;
-        public Vector2 Window;
         public CameraClass Camera;
-        public Vector2 CamPos;
+
+        public Vector2 Window;
+        public Vector2 cameraPosition;
+        public Vector2 mousePosition;
+        public Rectangle cameraRectangle;
+        public int defaultWidth;
+        public int defaultHeight;
         public string Name;
-        public Vector2 MousePos;
-        public Rectangle CamRec;
-        bool Ani = true;
-        bool OutAni = false;
-        int OutMathValue = 90;
+        Lstate levelEndState;
+
         int OutMath;
-        Random rand;
-        bool Started = false;
-        Lstate Lthis;
+        readonly int OutMathValue = 90;
+        bool animationIn = true;
+        bool animationOut = false;
+        bool levelStarted = false;
+        
+        float OutGT;
+        object senderForEvent;
+        EventArgs argsForEvent;
         enum Lstate
         {
             Fail,
             Win,
             Reset,
         }
-        public SampleLevel(int defaultWidth, int defaultHeight, Vector2 window, Random rand) {
-            DefaultWidth = defaultWidth;
-            DefaultHeight = defaultHeight;
-            CamPos = new Vector2(0, -2291.5984F);
+        public SampleLevel(int defaultWidth, int defaultHeight, Vector2 window, Random random) {
+            this.defaultWidth = defaultWidth;
+            this.defaultHeight = defaultHeight;
+            cameraPosition = new Vector2(0, -2291.5984F); //Dont ask why it just needs to be
             OutMath = OutMathValue;
             Window = window;
-            this.rand = rand;
             Camera = new CameraClass(new Vector2(defaultWidth, defaultHeight));
             
         }
@@ -51,45 +54,45 @@ namespace NoNameButtonGame.LevelSystem
         public override void Draw(SpriteBatch sp) {
             throw new NotImplementedException();
         }
-        float OutGT;
+        
         public override void Update(GameTime gt) {
-            if (Ani || OutAni) {
+            if (animationIn || animationOut) {
                 OutGT += (float)gt.ElapsedGameTime.TotalMilliseconds;
 
                 while (OutGT > 8) {
                     OutGT -= 8;
                     Vector2 SinWaveRoute = new Vector2(0, 40F * (float)Math.Sin((float)OutMath / OutMathValue * (Math.PI * 1 )));
                     OutMath--;
-                    if (!OutAni)
-                        CamPos += SinWaveRoute;
+                    if (!animationOut)
+                        cameraPosition += SinWaveRoute;
                     else
-                        CamPos -= SinWaveRoute;
+                        cameraPosition -= SinWaveRoute;
 
                     if (OutMath == 0) {
-                        Ani = false;
+                        animationIn = false;
                         OutMath = OutMathValue;
-                        if (OutAni) {
-                            OutAni = false;
-                            switch (Lthis) {
+                        if (animationOut) {
+                            animationOut = false;
+                            switch (levelEndState) {
                                 case Lstate.Fail:
-                                    Fail(send ?? this, args ?? new EventArgs());
+                                    Fail(senderForEvent ?? this, argsForEvent ?? new EventArgs());
                                     break;
                                 case Lstate.Win:
-                                    Finish(send ?? this, args ?? new EventArgs());
+                                    Finish(senderForEvent ?? this, argsForEvent ?? new EventArgs());
                                     break;
                                 case Lstate.Reset:
-                                    Reset(send ?? this, args ?? new EventArgs());
+                                    Reset(senderForEvent ?? this, argsForEvent ?? new EventArgs());
                                     break;
                                 default:
                                     break;
                             }
                             
                         } else {
-                            CamPos = Vector2.Zero;
+                            cameraPosition = Vector2.Zero;
                         }
-                        if (!Started) {
+                        if (!levelStarted) {
                             Mouse.SetPosition((int)Window.X / 2, (int)Window.Y / 2);
-                            Started = true;
+                            levelStarted = true;
                         }
                             
                     }
@@ -99,15 +102,15 @@ namespace NoNameButtonGame.LevelSystem
 
             {
 
-                Camera.Update(CamPos, new Vector2(0, 0));
-                CamRec = new Rectangle((CamPos - new Vector2(DefaultWidth, DefaultHeight)).ToPoint(), new Point(DefaultWidth * 2, DefaultHeight * 2));
-                if (!(Ani || OutAni)) {
+                Camera.Update(cameraPosition, new Vector2(0, 0));
+                cameraRectangle = new Rectangle((cameraPosition - new Vector2(defaultWidth, defaultHeight)).ToPoint(), new Point(defaultWidth * 2, defaultHeight * 2));
+                if (!(animationIn || animationOut)) {
                     MouseState mouseState = Mouse.GetState();
                     Vector2 VecMouse = mouseState.Position.ToVector2();
-                    float TargetScreenDifX = Window.X / DefaultWidth;
-                    float TargetScreenDifY = Window.Y / DefaultHeight;
+                    float TargetScreenDifX = Window.X / defaultWidth;
+                    float TargetScreenDifY = Window.Y / defaultHeight;
                     Vector2 VMP = new Vector2(VecMouse.X / TargetScreenDifX, VecMouse.Y / TargetScreenDifY);
-                    MousePos = new Vector2(VMP.X / Camera.Zoom + CamPos.X - (DefaultWidth / Camera.Zoom) / 2, VMP.Y / Camera.Zoom + CamPos.Y - (DefaultHeight / Camera.Zoom) / 2);
+                    mousePosition = new Vector2(VMP.X / Camera.Zoom + cameraPosition.X - (defaultWidth / Camera.Zoom) / 2, VMP.Y / Camera.Zoom + cameraPosition.Y - (defaultHeight / Camera.Zoom) / 2);
 
                 }
             }
@@ -124,56 +127,55 @@ namespace NoNameButtonGame.LevelSystem
             //    CamPos.Y += 45;
             //}
         }
-        object send;
-        EventArgs args;
+
         public virtual void SetScreen(Vector2 Screen) {
             Window = Screen;
         }
         public virtual void CallFinish() {
             if (Finish != null && Finish.GetInvocationList().Length > 0) {
-                OutAni = true;
-                Lthis = Lstate.Win;
+                animationOut = true;
+                levelEndState = Lstate.Win;
             }
                 
         }
         public virtual void CallFail() {
             if (Fail != null && Fail.GetInvocationList().Length > 0) {
-                OutAni = true;
-                Lthis = Lstate.Fail;
+                animationOut = true;
+                levelEndState = Lstate.Fail;
             }
 
         }
         public virtual void CallReset() {
             if (Reset != null && Reset.GetInvocationList().Length > 0) {
-                OutAni = true;
-                Lthis = Lstate.Reset;
+                animationOut = true;
+                levelEndState = Lstate.Reset;
             }
 
         }
         public virtual void CallFinish(object s, EventArgs e) {
             if (Finish != null && Finish.GetInvocationList().Length > 0) {
-                send = s;
-                args = e;
-                OutAni = true;
-                Lthis = Lstate.Win;
+                senderForEvent = s;
+                argsForEvent = e;
+                animationOut = true;
+                levelEndState = Lstate.Win;
             }
 
         }
         public virtual void CallFail(object s, EventArgs e) {
             if (Fail != null && Fail.GetInvocationList().Length > 0) {
-                send = s;
-                args = e;
-                OutAni = true;
-                Lthis = Lstate.Fail;
+                senderForEvent = s;
+                argsForEvent = e;
+                animationOut = true;
+                levelEndState = Lstate.Fail;
             }
 
         }
         public virtual void CallReset(object s, EventArgs e) {
             if (Reset != null && Reset.GetInvocationList().Length > 0) {
-                send = s;
-                args = e;
-                OutAni = true;
-                Lthis = Lstate.Reset;
+                senderForEvent = s;
+                argsForEvent = e;
+                animationOut = true;
+                levelEndState = Lstate.Reset;
             }
 
         }

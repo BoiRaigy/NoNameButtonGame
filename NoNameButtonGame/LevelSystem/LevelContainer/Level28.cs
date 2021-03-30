@@ -21,10 +21,23 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     {
 
 
-        Cursor cursor;
-        TextBuilder GUN;
-        TextBuilder Timer;
-        List<Tuple<Laserwall, Vector2>> shots;
+        readonly Cursor cursor;
+        readonly TextBuilder GUN;
+        readonly TextBuilder Timer;
+        readonly List<Tuple<Laserwall, Vector2>> shots;
+        float GT;
+        float MGT;
+        readonly float ShotTime = 420;
+        readonly float TravelSpeed = 4;
+        float UpdateSpeed = 2;
+        readonly float MaxUpdateSpeed = 56;
+        readonly float MinUpdateSpeed = 4;
+        Vector2 OldMPos;
+        readonly List<int> removeItem = new List<int>();
+
+
+        readonly float TimerMax = 42000;
+        float TimerC = 0;
         public Level28(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 28 - A HOT!";
             Timer = new TextBuilder("", new Vector2(0 - 128), new Vector2(16, 16), null, 0);
@@ -50,19 +63,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             Timer.Draw(sp);
             cursor.Draw(sp);
         }
-        float GT;
-        float MGT;
-        float ShotTime = 420;
-        float TravelSpeed = 4;
-        float UpdateSpeed = 2;
-        float MaxUpdateSpeed = 56;
-        float MinUpdateSpeed = 4;
-        Vector2 OldMPos;
-        List<int> removeItem = new List<int>();
 
-
-        float TimerMax = 42000;
-        float TimerC = 0;
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
@@ -80,13 +81,13 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                     GT -= ShotTime;
                     Vector2 Dir = cursor.Hitbox[0].Center.ToVector2() - GUN.rec.Center.ToVector2();
                     shots.Add(new Tuple<Laserwall, Vector2>(new Laserwall(GUN.Position, new Vector2(16, 8), Globals.Content.GetTHBox("zonenew")), Dir / Dir.Length()));
-                    shots[shots.Count - 1].Item1.Enter += CallFail;
+                    shots[^1].Item1.Enter += CallFail;
                 }
             }
             removeItem.Clear();
             for (int i = 0; i < shots.Count; i++) {
                 shots[i].Item1.Update(gt, cursor.Hitbox[0]);
-                if (!shots[i].Item1.rec.Intersects(CamRec)) {
+                if (!shots[i].Item1.rec.Intersects(cameraRectangle)) {
                     removeItem.Add(i);
                 }
             }
@@ -95,8 +96,8 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                     shots.RemoveAt(removeItem[i]);
                 } catch { }
             }
-            if (MousePos != OldMPos) {
-                UpdateSpeed -= Vector2.Distance(MousePos, OldMPos) * 10;
+            if (mousePosition != OldMPos) {
+                UpdateSpeed -= Vector2.Distance(mousePosition, OldMPos) * 10;
                 if (UpdateSpeed < MinUpdateSpeed)
                     UpdateSpeed = MinUpdateSpeed;
             } else {
@@ -106,8 +107,8 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 CallFinish(this, new EventArgs());
             Timer.ChangeText(((TimerMax - TimerC) / 1000).ToString("0.0") + "S");
             Timer.Update(gt);
-            cursor.Position = MousePos - cursor.Size / 2;
-            OldMPos = MousePos;
+            cursor.Position = mousePosition - cursor.Size / 2;
+            OldMPos = mousePosition;
         }
     }
 }

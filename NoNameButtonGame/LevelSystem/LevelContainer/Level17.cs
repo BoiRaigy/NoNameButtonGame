@@ -20,37 +20,38 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level17 : SampleLevel
     {
 
-        AwesomeButton button;
-        Cursor cursor;
-        TextBuilder Info;
-        Rainbow raincolor;
-        Laserwall[] laserwall;
-        float GT;
+        readonly AwesomeButton finishButton;
+        readonly Cursor mouseCursor;
+        readonly TextBuilder Info;
+        readonly Rainbow rainbowColorTransition;
+        readonly Laserwall[] laserWalls;
+        float gameTimeMoveWalls;
+        bool Left;
         public Level17(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 17 - Tutorial time?";
 
 
 
             Vector2 clustPos = new Vector2(-250, -150);
-            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
+            mouseCursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
 
             Info = new TextBuilder("this is still bad! ->", new Vector2(-296, -96), new Vector2(16, 16), null, 0);
-            raincolor = new Rainbow {
+            rainbowColorTransition = new Rainbow {
                 Increment = 32,
                 Speed = 32,
                 Offset = 256
             };
-            laserwall = new Laserwall[4];
-            button = new AwesomeButton(new Vector2(-64, 96), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton")) {
+            laserWalls = new Laserwall[4];
+            finishButton = new AwesomeButton(new Vector2(-64, 96), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton")) {
                 DrawColor = Color.White,
             };
-            button.Click += CallFinish;
-            laserwall[0] = new Laserwall(new Vector2(-320, -256), new Vector2(576, 224), Globals.Content.GetTHBox("zonenew"));
-            laserwall[1] = new Laserwall(new Vector2(-320, -256), new Vector2(224, 576), Globals.Content.GetTHBox("zonenew"));
-            laserwall[2] = new Laserwall(new Vector2(96, -256), new Vector2(224, 576), Globals.Content.GetTHBox("zonenew"));
-            laserwall[3] = new Laserwall(new Vector2(-128, 64), new Vector2(200, 48), Globals.Content.GetTHBox("zonenew"));
-            for (int i = 0; i < laserwall.Length; i++) {
-                laserwall[i].Enter += LaserEvent;
+            finishButton.Click += CallFinish;
+            laserWalls[0] = new Laserwall(new Vector2(-320, -256), new Vector2(576, 224), Globals.Content.GetTHBox("zonenew"));
+            laserWalls[1] = new Laserwall(new Vector2(-320, -256), new Vector2(224, 576), Globals.Content.GetTHBox("zonenew"));
+            laserWalls[2] = new Laserwall(new Vector2(96, -256), new Vector2(224, 576), Globals.Content.GetTHBox("zonenew"));
+            laserWalls[3] = new Laserwall(new Vector2(-128, 64), new Vector2(200, 48), Globals.Content.GetTHBox("zonenew"));
+            for (int i = 0; i < laserWalls.Length; i++) {
+                laserWalls[i].Enter += LaserEvent;
             }
 
         }
@@ -63,39 +64,38 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             CallFinish(sender, e);
         }
         public override void Draw(SpriteBatch sp) {
-            button.Draw(sp);
-            for (int i = 0; i < laserwall.Length; i++) {
-                laserwall[i].Draw(sp);
+            finishButton.Draw(sp);
+            for (int i = 0; i < laserWalls.Length; i++) {
+                laserWalls[i].Draw(sp);
             }
             Info.Draw(sp);
-            cursor.Draw(sp);
+            mouseCursor.Draw(sp);
 
         }
-        bool Left;
         public override void Update(GameTime gt) {
-            GT += (float)gt.ElapsedGameTime.TotalMilliseconds;
-            while (GT > 80) {
-                GT -= 80;
+            gameTimeMoveWalls += (float)gt.ElapsedGameTime.TotalMilliseconds;
+            while (gameTimeMoveWalls > 80) {
+                gameTimeMoveWalls -= 80;
                 if (Left)
-                    laserwall[3].Move(new Vector2(-10, 0));
+                    laserWalls[3].Move(new Vector2(-10, 0));
                 else
-                    laserwall[3].Move(new Vector2(10, 0));
-                if (laserwall[3].Position.X >= -80)
+                    laserWalls[3].Move(new Vector2(10, 0));
+                if (laserWalls[3].Position.X >= -80)
                     Left = true;
-                if (laserwall[3].Position.X <= -128)
+                if (laserWalls[3].Position.X <= -128)
                     Left = false;
             }
-            cursor.Update(gt);
-            raincolor.Update(gt);
-            Info.ChangeColor(raincolor.GetColor(Info.Text.Length));
+            mouseCursor.Update(gt);
+            rainbowColorTransition.Update(gt);
+            Info.ChangeColor(rainbowColorTransition.GetColor(Info.Text.Length));
             Info.Update(gt);
             base.Update(gt);
-            for (int i = 0; i < laserwall.Length; i++) {
-                laserwall[i].Update(gt, cursor.Hitbox[0]);
+            for (int i = 0; i < laserWalls.Length; i++) {
+                laserWalls[i].Update(gt, mouseCursor.Hitbox[0]);
             }
 
-            cursor.Position = MousePos - cursor.Size / 2;
-            button.Update(gt, cursor.Hitbox[0]);
+            mouseCursor.Position = mousePosition - mouseCursor.Size / 2;
+            finishButton.Update(gt, mouseCursor.Hitbox[0]);
         }
     }
 }

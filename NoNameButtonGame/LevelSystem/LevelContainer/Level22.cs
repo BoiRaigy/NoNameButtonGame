@@ -20,9 +20,10 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level22 : SampleLevel
     {
 
-        TextBuilder[] text;
-        Cursor cursor;
-        AwesomeButton button;
+        readonly TextBuilder[] text;
+        readonly Cursor cursor;
+        readonly AwesomeButton button;
+        bool Loaded = false;
         public Level22(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 22 - Random.org do be choosing the same levels over and over again! ( I created them based on a random result )";
             text = new TextBuilder[15];
@@ -74,8 +75,6 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
         }
 
-
-
         private void BtnEvent(object sender, EventArgs e) {
             CallFinish(sender, e);
         }
@@ -89,7 +88,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             }
             cursor.Draw(sp);
         }
-        bool Loaded = false;
+
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
@@ -105,7 +104,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             else 
                 for (int i = 0; i < text.Length; i++)
                 text[i].Update(gt);
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
         }
     }
 }

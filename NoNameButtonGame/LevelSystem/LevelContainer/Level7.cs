@@ -20,13 +20,14 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level7 : SampleLevel
     {
 
-        AwesomeButton button;
-        Cursor cursor;
-        TextBuilder[] Infos;
-        Laserwall[] WallLeft;
-        Laserwall[] WallRight;
-        Laserwall[] Blocks;
-        int WallLength = 10;
+        readonly AwesomeButton button;
+        readonly Cursor cursor;
+        readonly TextBuilder[] Infos;
+        readonly Laserwall[] WallLeft;
+        readonly Laserwall[] WallRight;
+        readonly Laserwall[] Blocks;
+        readonly int WallLength = 10;
+        float GT;
         public Level7(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 7 - WHAT OUT WHAT OUT OOHHH";
             button = new AwesomeButton(new Vector2(-256, -0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"));
@@ -73,20 +74,20 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 Infos[i].Draw(sp);
             }
             for (int i = 0; i < WallLength; i++) {
-                if (WallLeft[i].rec.Intersects(CamRec))
+                if (WallLeft[i].rec.Intersects(cameraRectangle))
                     WallLeft[i].Draw(sp);
-                if (WallRight[i].rec.Intersects(CamRec))
+                if (WallRight[i].rec.Intersects(cameraRectangle))
                     WallRight[i].Draw(sp);
 
             }
             for (int i = 0; i < Blocks.Length; i++) {
-                if (Blocks[i].rec.Intersects(CamRec))
+                if (Blocks[i].rec.Intersects(cameraRectangle))
                     Blocks[i].Draw(sp);
             }
 
             cursor.Draw(sp);
         }
-        float GT;
+
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
@@ -104,7 +105,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                     Blocks[i].Move(new Vector2(0, -2));
                 }
             }
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
             button.Update(gt, cursor.Hitbox[0]);
             for (int i = 0; i < WallLength; i++) {
                 WallLeft[i].Update(gt, cursor.Hitbox[0]);

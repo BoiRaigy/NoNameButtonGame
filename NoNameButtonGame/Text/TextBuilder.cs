@@ -16,6 +16,8 @@ namespace NoNameButtonGame.Text
         int spacing;
         int Length;
         public int Spacing { get { return spacing; } set { spacing = value; CreateLetters(); } }
+        public string Text { get { return textstr; } }
+
         public TextBuilder(string InitText,Vector2 Position, Vector2 LSize, Color[] LColor, int Spacing) {
             this.Size = LSize;
             spacing = Spacing;
@@ -317,8 +319,5 @@ namespace NoNameButtonGame.Text
                 LetterAry[i].Draw(sp);
             }
         }
-
-        public string Text { get { return textstr; } }
-
     }
 }

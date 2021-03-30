@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Raigy.Obj;
-using Raigy.Input;
-using Raigy.Camera;
-
-using NoNameButtonGame.Interfaces;
-
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using NoNameButtonGame.BeforeMaths;
 using NoNameButtonGame.GameObjects;
 using NoNameButtonGame.Text;
@@ -20,10 +10,11 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level27 : SampleLevel
     {
 
-        AwesomeButton[] button;
-        Cursor cursor;
-        TextBuilder Info;
-        Random rand;
+        readonly AwesomeButton[] button;
+        readonly Cursor cursor;
+        readonly TextBuilder Info;
+        readonly Random rand;
+        float GT;
         public Level27(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 27 - I hope you have a good reaction time";
             button = new AwesomeButton[16];
@@ -47,8 +38,6 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 
         }
 
-
-
         private void BtnFailEvent(object sender, EventArgs e) {
             CallFail();
         }
@@ -63,7 +52,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             Info.Draw(sp);
             cursor.Draw(sp);
         }
-        float GT;
+
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
@@ -85,7 +74,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                     }
                 }
             }
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
             for (int i = 0; i < button.Length; i++) {
                 button[i].Update(gt, cursor.Hitbox[0]);
             }

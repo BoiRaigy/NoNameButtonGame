@@ -20,17 +20,19 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level38 : SampleLevel
     {
 
-        AwesomeButton button;
-        Cursor cursor;
-        Laserwall wallup;
-        Laserwall walldown;
+        readonly AwesomeButton button;
+        readonly Cursor cursor;
+        readonly Laserwall wallup;
+        readonly Laserwall walldown;
+        readonly float Multiplier = 200;
+        float GT;
         public Level38(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 38 - Swap time. again idk";
             button = new AwesomeButton(new Vector2(-256, -0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"));
             button.Click += CallFinish;
             cursor = new Cursor(new Vector2(0, 32), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
-            wallup = new Laserwall(new Vector2(-(defaultWidth / Camera.Zoom), -defaultHeight - 40), new Vector2(DefaultWidth, defaultHeight), Globals.Content.GetTHBox("zonenew"));
-            walldown = new Laserwall(new Vector2(-(defaultWidth / Camera.Zoom), 40), new Vector2(DefaultWidth, defaultHeight), Globals.Content.GetTHBox("zonenew"));
+            wallup = new Laserwall(new Vector2(-(defaultWidth / Camera.Zoom), -defaultHeight - 40), new Vector2(base.defaultWidth, defaultHeight), Globals.Content.GetTHBox("zonenew"));
+            walldown = new Laserwall(new Vector2(-(defaultWidth / Camera.Zoom), 40), new Vector2(base.defaultWidth, defaultHeight), Globals.Content.GetTHBox("zonenew"));
             wallup.Enter += CallFail;
             walldown.Enter += CallFail;
         }
@@ -42,15 +44,13 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             cursor.Draw(sp);
         }
 
-        float Multiplier = 200;
-        float GT;
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
             GT += (float) gt.ElapsedGameTime.TotalMilliseconds * 10;
             double angle = (GT % 1000  / 1000F * Math.PI * 2);
             cursor.Position = new Vector2(Multiplier * (float)Math.Cos(angle), Multiplier * (float)Math.Sin(angle));
-            button.Position = MousePos - button.Size / 2;
+            button.Position = mousePosition - button.Size / 2;
             wallup.Update(gt, button.rec);
             walldown.Update(gt, button.rec);
             button.Update(gt, cursor.Hitbox[0]);

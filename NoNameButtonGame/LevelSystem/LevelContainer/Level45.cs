@@ -20,10 +20,10 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level45 : SampleLevel
     {
 
-        AwesomeButton button;
-        Cursor cursor;
-        TextBuilder[] Infos;
-        Laserwall wall;
+        readonly AwesomeButton button;
+        readonly Cursor cursor;
+        readonly TextBuilder[] Infos;
+        readonly Laserwall wall;
         public Level45(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 45 - and the mexicans paid for it!";
             button = new AwesomeButton(new Vector2(-256, -0), new Vector2(128, 64), Globals.Content.GetTHBox("awesomebutton"));
@@ -60,7 +60,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                 Infos[i].Update(gt);
             }
 
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
             button.Update(gt, cursor.Hitbox[0]);
             wall.Update(gt, cursor.Hitbox[0]);
         }

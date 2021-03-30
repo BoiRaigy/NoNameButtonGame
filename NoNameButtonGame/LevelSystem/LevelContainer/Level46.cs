@@ -20,17 +20,19 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
     class Level46 : SampleLevel
     {
 
-        TextButton[] BobIt;
-        Cursor cursor;
-        TextBuilder[] Marker;
+        readonly TextButton[] BobIt;
+        readonly Cursor cursor;
+        readonly TextBuilder[] Marker;
+        readonly Random rand;
+        readonly int SqMax = 15;
         bool PlayingSequenz = false;
         string CurrentSequenz;
         string Sequenz;
         int CurrentSqAmm = 1;
         int PlayedSq;
-        int SqMax = 15;
         AwesomeButton StartBtn;
-        Random rand;
+        float SSGT;
+        bool Display = false;
         public Level46(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level 46 - THE FINAL SIMON gl. hf";
             BobIt = new TextButton[5];
@@ -128,8 +130,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             Marker[0].Draw(sp);
             cursor.Draw(sp);
         }
-        float SSGT;
-        bool Display = false;
+
         public override void Update(GameTime gt) {
             cursor.Update(gt);
             base.Update(gt);
@@ -191,7 +192,7 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                     BobIt[i].Update(gt, cursor.Hitbox[0]);
                 }
             }
-            cursor.Position = MousePos - cursor.Size / 2;
+            cursor.Position = mousePosition - cursor.Size / 2;
         }
     }
 }

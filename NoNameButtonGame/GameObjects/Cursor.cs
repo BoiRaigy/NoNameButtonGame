@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Raigy.Obj;
 using NoNameButtonGame.BeforeMaths;
@@ -11,24 +8,26 @@ namespace NoNameButtonGame.GameObjects
 {
     class Cursor : GameObject, IHitbox
     {
-        public Cursor(Vector2 Pos, Vector2 Size, THBox box) {
+        Rectangle[] textureHitbox;
+        Rectangle[] ingameHitbox;
+        Vector2 Scale;
+
+        public Rectangle[] Hitbox => ingameHitbox;
+
+        public Cursor(Vector2 Position, Vector2 Size, THBox thBox) {
             base.Size = Size;
-            Position = Pos;
+            base.Position = Position;
             ImageLocation = new Rectangle(0,0,0,0);
-            FrameSize = box.Imagesize;
-            Texture = box.Texture;
+            FrameSize = thBox.Imagesize;
+            Texture = thBox.Texture;
             DrawColor = Color.White;
-            hitbox = box.Hitbox;
-            IGhitbox = new Rectangle[hitbox.Length];
+            textureHitbox = thBox.Hitbox;
+            ingameHitbox = new Rectangle[textureHitbox.Length];
             Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
-            for (int i = 0; i < box.Hitbox.Length; i++) {
-                IGhitbox[i] = new Rectangle((int)(Position.X + (box.Hitbox[i].X * Scale.X)), (int)(Position.Y + (box.Hitbox[i].Y * Scale.Y)), (int)(box.Hitbox[i].Width * Scale.X), (int)(box.Hitbox[i].Height * Scale.Y));
+            for (int i = 0; i < thBox.Hitbox.Length; i++) {
+                ingameHitbox[i] = new Rectangle((int)(base.Position.X + (thBox.Hitbox[i].X * Scale.X)), (int)(base.Position.Y + (thBox.Hitbox[i].Y * Scale.Y)), (int)(thBox.Hitbox[i].Width * Scale.X), (int)(thBox.Hitbox[i].Height * Scale.Y));
             }
         }
-        Rectangle[] hitbox;
-        Rectangle[] IGhitbox;
-        Vector2 Scale;
-        public Rectangle[] Hitbox => IGhitbox;
 
         public override void Draw(SpriteBatch sp) {
             base.Draw(sp);
@@ -40,8 +39,8 @@ namespace NoNameButtonGame.GameObjects
         }
         private void UpdateHitbox() {
             Scale = new Vector2(Size.X / FrameSize.X, Size.Y / FrameSize.Y);
-            for (int i = 0; i < hitbox.Length; i++) {
-                IGhitbox[i] = new Rectangle((int)(Position.X + (hitbox[i].X * Scale.X)), (int)(Position.Y + (hitbox[i].Y * Scale.Y)), (int)(hitbox[i].Width * Scale.X), (int)(hitbox[i].Height * Scale.Y));
+            for (int i = 0; i < textureHitbox.Length; i++) {
+                ingameHitbox[i] = new Rectangle((int)(Position.X + (textureHitbox[i].X * Scale.X)), (int)(Position.Y + (textureHitbox[i].Y * Scale.Y)), (int)(textureHitbox[i].Width * Scale.X), (int)(textureHitbox[i].Height * Scale.Y));
             }
         }
     }

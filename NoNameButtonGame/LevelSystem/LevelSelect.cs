@@ -11,16 +11,16 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
 {
     class LevelSelect : SampleLevel
     {
-        TextButton[] LevelButton;
-        TextButton[] Down;
-        TextButton[] Up;
-        Cursor cursor;
-        int LevelAmmount = 1000;
+        readonly TextButton[] levelButton;
+        readonly TextButton[] Down;
+        readonly TextButton[] Up;
+        readonly Cursor mouseCursor;
+        readonly int LevelAmmount = 1000;
         public LevelSelect(int defaultWidth, int defaultHeight, Vector2 window, Random rand) : base(defaultWidth, defaultHeight, window, rand) {
             Name = "Level Selection";
             LevelAmmount = Globals.MaxLevel;
-            LevelButton = new TextButton[LevelAmmount];
-            cursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
+            levelButton = new TextButton[LevelAmmount];
+            mouseCursor = new Cursor(new Vector2(0, 0), new Vector2(7, 10), Globals.Content.GetTHBox("cursor"));
             int Screen = LevelAmmount / 30;
             Down = new TextButton[Screen];
             Up = new TextButton[Screen];
@@ -34,8 +34,8 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
             }
             
             for (int i = 0; i < LevelAmmount; i++) {
-                LevelButton[i] = new TextButton(new Vector2(-200 + 100 * (i % 5), -140 + 50 * (i / 5) + 60 * (int)(i / 30)), new Vector2(64, 32), Globals.Content.GetTHBox("minibutton"), (i + 1).ToString(), (i + 1).ToString(), new Vector2(16, 16));
-            LevelButton[i].Click += SelectLevel;
+                levelButton[i] = new TextButton(new Vector2(-200 + 100 * (i % 5), -140 + 50 * (i / 5) + 60 * (int)(i / 30)), new Vector2(64, 32), Globals.Content.GetTHBox("minibutton"), (i + 1).ToString(), (i + 1).ToString(), new Vector2(16, 16));
+            levelButton[i].Click += SelectLevel;
             } 
 
         }
@@ -59,16 +59,16 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
         public override void Draw(SpriteBatch sp) {
             
             for (int i = 0; i < LevelAmmount; i++) {
-                if (LevelButton[i].rec.Intersects(CamRec))
-                LevelButton[i].Draw(sp);
+                if (levelButton[i].rec.Intersects(cameraRectangle))
+                levelButton[i].Draw(sp);
             }
             for (int i = 0; i < Down.Length; i++) {
-                if (Down[i].rec.Intersects(CamRec))
+                if (Down[i].rec.Intersects(cameraRectangle))
                     Down[i].Draw(sp);
-                if (Up[i].rec.Intersects(CamRec))
+                if (Up[i].rec.Intersects(cameraRectangle))
                     Up[i].Draw(sp);
             }
-            cursor.Draw(sp);
+            mouseCursor.Draw(sp);
         }
         float GT;
         public override void Update(GameTime gt) {
@@ -79,33 +79,33 @@ namespace NoNameButtonGame.LevelSystem.LevelContainer
                     GT -= 10;
                     Vector2 SinWaveRoute = new Vector2(0, 12.2F * (float)Math.Sin((float)CTicks / 50 * Math.PI));
                     if (bUp)
-                        CamPos -= SinWaveRoute;
+                        cameraPosition -= SinWaveRoute;
                     else
-                        CamPos += SinWaveRoute;
+                        cameraPosition += SinWaveRoute;
                     CTicks--;
                     if (CTicks == 0) {
-                        float ftmp = CamPos.Y % (DefaultHeight / Camera.Zoom);
+                        float ftmp = cameraPosition.Y % (defaultHeight / Camera.Zoom);
                         if (!bUp)
-                            CamPos.Y += (DefaultHeight / Camera.Zoom) - ftmp;
+                            cameraPosition.Y += (defaultHeight / Camera.Zoom) - ftmp;
                         else
-                            CamPos.Y -= ftmp;
+                            cameraPosition.Y -= ftmp;
                         bMove = false;
                     }
 
                 }
             }
-            cursor.Update(gt);
-            cursor.Position = MousePos - cursor.Size / 2;
+            mouseCursor.Update(gt);
+            mouseCursor.Position = mousePosition - mouseCursor.Size / 2;
             for (int i = 0; i < Down.Length; i++) {
-                if (Down[i].rec.Intersects(CamRec))
-                    Down[i].Update(gt, cursor.Hitbox[0]);
-                if (Up[i].rec.Intersects(CamRec))
-                    Up[i].Update(gt, cursor.Hitbox[0]);
+                if (Down[i].rec.Intersects(cameraRectangle))
+                    Down[i].Update(gt, mouseCursor.Hitbox[0]);
+                if (Up[i].rec.Intersects(cameraRectangle))
+                    Up[i].Update(gt, mouseCursor.Hitbox[0]);
             }
 
             for (int i = 0; i < LevelAmmount; i++) {
-                if (LevelButton[i].rec.Intersects(CamRec))
-                    LevelButton[i].Update(gt, cursor.Hitbox[0]);
+                if (levelButton[i].rec.Intersects(cameraRectangle))
+                    levelButton[i].Update(gt, mouseCursor.Hitbox[0]);
             }
         }
     }
